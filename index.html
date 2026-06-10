@@ -1,834 +1,1647 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Sistema Excretor — Laboratorio interactivo</title>
+<title>The French and Indian War — Study & Debate Camp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#EAF4EF;
-    --paper:#FFFFFF;
-    --ink:#173A3B;
-    --ink-soft:#4C6B6A;
-    --teal:#0FA38B;
-    --teal-deep:#0B7A68;
-    --coral:#FF6F5E;
-    --coral-deep:#E2503F;
-    --sun:#FFC23C;
-    --leaf:#74C24A;
-    --grape:#7C6CE0;
-    --line:#D5E6DF;
-    --shadow:0 14px 30px -16px rgba(11,122,104,.45);
-    --shadow-sm:0 6px 16px -10px rgba(11,122,104,.5);
-    --r:20px;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font-family:'Nunito',system-ui,sans-serif;font-size:18px;line-height:1.6;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  }
-  h1,h2,h3,.display{font-family:'Baloo 2',cursive;line-height:1.1;margin:0}
-  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
-  section{padding:46px 0;position:relative}
+:root{
+  --paper:#f4f1e7;
+  --card:#fffdf6;
+  --ink:#27313d;
+  --ink-dim:#5d6675;
+  --border:#ded5bf;
+  --gb:#b3271e;        /* redcoat scarlet */
+  --gb-soft:#f8e4e1;
+  --gb-deep:#8c1d16;
+  --fr:#2a5da8;        /* royal blue */
+  --fr-soft:#e2ebf8;
+  --fr-deep:#1d4076;
+  --nat:#3c7a4f;       /* forest green */
+  --nat-soft:#e3f0e6;
+  --gold:#b98a22;      /* treaty gold */
+  --gold-soft:#f7eed3;
+  --ok:#2e7d4f;
+  --ok-soft:#e1f1e7;
+  --bad:#b3271e;
+  --bad-soft:#f8e4e1;
+  --radius:14px;
+  --shadow:0 2px 10px rgba(39,49,61,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(39,49,61,.022) 0 1px, transparent 1px 34px),
+    radial-gradient(ellipse at 15% 8%, rgba(185,138,34,.07), transparent 45%),
+    radial-gradient(ellipse at 85% 95%, rgba(42,93,168,.05), transparent 45%);
+  color:var(--ink);
+  font-family:'Atkinson Hyperlegible',system-ui,sans-serif;
+  font-size:17.5px;
+  line-height:1.65;
+  min-height:100vh;
+}
+h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif}
+.mono{font-family:'IBM Plex Mono',monospace}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
 
-  /* ---------- decorative blobs ---------- */
-  .blob{position:absolute;border-radius:50%;filter:blur(34px);opacity:.5;z-index:0;pointer-events:none}
+/* ===== NAV ===== */
+nav{
+  position:sticky;top:0;z-index:90;
+  background:rgba(244,241,231,.96);
+  backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--border);
+}
+.nav-ribbon{height:5px;background:linear-gradient(90deg,var(--gb) 0 50%,var(--fr) 50% 100%)}
+.nav-inner{
+  max-width:980px;margin:0 auto;padding:0 .6rem;
+  display:flex;align-items:stretch;gap:.15rem;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-logo{
+  font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;
+  color:var(--gold);display:flex;align-items:center;padding:.7rem .6rem .7rem .2rem;
+  white-space:nowrap;flex-shrink:0;
+}
+.nav-tab{
+  background:none;border:none;border-bottom:3px solid transparent;
+  padding:.85rem .75rem;font-weight:700;font-size:.86rem;color:var(--ink-dim);
+  white-space:nowrap;flex-shrink:0;transition:color .15s,border-color .15s;
+}
+.nav-tab:hover{color:var(--ink)}
+.nav-tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+.nav-tab .ico{margin-right:.25rem}
 
-  /* ---------- progress nav ---------- */
-  .nav{position:sticky;top:0;z-index:60;background:rgba(234,244,239,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .nav .wrap{display:flex;align-items:center;gap:10px;padding-top:10px;padding-bottom:10px;overflow-x:auto;scrollbar-width:none}
-  .nav .wrap::-webkit-scrollbar{display:none}
-  .brand{font-family:'Baloo 2';font-weight:800;color:var(--teal-deep);white-space:nowrap;font-size:1.05rem;display:flex;align-items:center;gap:6px}
-  .navlinks{display:flex;gap:6px;margin-left:auto}
-  .navlinks a{white-space:nowrap;text-decoration:none;color:var(--ink-soft);font-weight:700;font-size:.82rem;padding:6px 12px;border-radius:999px;transition:.18s}
-  .navlinks a:hover,.navlinks a:focus-visible{background:var(--teal);color:#fff;outline:none}
+/* ===== LAYOUT ===== */
+.page{display:none;max-width:980px;margin:0 auto;padding:1.6rem 1rem 4.5rem}
+.page.active{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1.3rem 1.25rem;margin-bottom:1.1rem;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;
+}
+.page h1{font-size:clamp(1.9rem,5.5vw,2.9rem);font-weight:900;line-height:1.12;margin-bottom:.4rem}
+.page h2{font-size:1.45rem;font-weight:800;margin-bottom:.55rem}
+.page h3{font-size:1.12rem;font-weight:800;margin:.9rem 0 .35rem}
+.lead{font-size:1.06rem;color:var(--ink-dim)}
+.divider{border:none;border-top:1.5px dashed var(--border);margin:1.4rem 0}
 
-  /* ---------- hero ---------- */
-  .hero{text-align:center;padding-top:42px}
-  .eyebrow{display:inline-block;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--teal-deep);background:#fff;padding:7px 15px;border-radius:999px;box-shadow:var(--shadow-sm)}
-  .hero h1{font-size:clamp(2.6rem,9vw,4.6rem);font-weight:800;margin:18px 0 6px;color:var(--ink)}
-  .hero h1 .glow{color:var(--teal-deep);position:relative;display:inline-block}
-  .hero h1 .glow::after{content:"";position:absolute;left:-4px;right:-4px;bottom:6px;height:38%;background:linear-gradient(90deg,#BFE9C8,#9fe6d6);z-index:-1;border-radius:6px;transform:rotate(-1deg)}
-  .hero p.lead{font-size:1.15rem;color:var(--ink-soft);max-width:560px;margin:8px auto 24px}
-  .cta{display:inline-flex;align-items:center;gap:9px;background:var(--coral);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:1.05rem;border:none;padding:14px 26px;border-radius:999px;cursor:pointer;box-shadow:0 12px 22px -10px var(--coral-deep);transition:.18s}
-  .cta:hover{transform:translateY(-2px)}
-  .cta.sec{background:#fff;color:var(--teal-deep)}
+/* Team coloring — the app's signature */
+.side-gb{border-left:6px solid var(--gb)}
+.side-fr{border-left:6px solid var(--fr)}
+.side-nat{border-left:6px solid var(--nat)}
+.side-gold{border-left:6px solid var(--gold)}
+.chip{
+  display:inline-block;padding:.18rem .65rem;border-radius:99px;
+  font-size:.78rem;font-weight:700;letter-spacing:.02em;
+}
+.chip-gb{background:var(--gb-soft);color:var(--gb-deep)}
+.chip-fr{background:var(--fr-soft);color:var(--fr-deep)}
+.chip-nat{background:var(--nat-soft);color:var(--nat)}
+.chip-gold{background:var(--gold-soft);color:var(--gold)}
 
-  /* floating body */
-  .bodyfig{width:130px;height:auto;margin:6px auto 0;display:block;animation:bob 4s ease-in-out infinite}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* ===== SPANISH TOGGLE ===== */
+.es-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  background:var(--gold-soft);border:1.5px solid #e3cf9a;border-radius:99px;
+  padding:.32rem .85rem;font-size:.82rem;font-weight:700;color:#8a661a;
+  margin-top:.6rem;transition:background .15s;
+  min-height:38px;
+}
+.es-btn:hover{background:#f1e3bd}
+.es-block{
+  display:none;margin-top:.6rem;padding:.85rem 1rem;
+  background:var(--gold-soft);border-left:4px solid var(--gold);
+  border-radius:0 10px 10px 0;font-size:.97rem;color:#574212;
+}
+.es-block.show{display:block;animation:fadeUp .25s ease}
+.es-block strong{color:#3f3009}
 
-  /* ---------- generic card ---------- */
-  .card{background:var(--paper);border-radius:var(--r);box-shadow:var(--shadow);padding:26px;position:relative;z-index:1}
-  .sec-title{font-size:clamp(1.7rem,5vw,2.3rem);font-weight:800;margin-bottom:6px}
-  .sec-num{font-family:'Baloo 2';font-weight:800;color:var(--teal);font-size:1rem;display:block;letter-spacing:.05em}
-  .sec-intro{color:var(--ink-soft);max-width:640px;margin:4px 0 26px}
+/* ===== TAPPABLE TERMS ===== */
+.term{
+  border-bottom:2px dotted var(--gold);cursor:pointer;font-weight:700;
+  color:inherit;background:none;border-top:none;border-left:none;border-right:none;
+  padding:0;font-size:inherit;line-height:inherit;font-family:inherit;
+}
+.term:hover{background:var(--gold-soft)}
+.sheet-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(39,49,61,.45);z-index:200;
+}
+.sheet-backdrop.show{display:block}
+.sheet{
+  position:fixed;left:50%;bottom:0;transform:translateX(-50%) translateY(105%);
+  width:min(560px,100%);background:var(--card);z-index:201;
+  border-radius:18px 18px 0 0;border:1.5px solid var(--border);border-bottom:none;
+  padding:1.2rem 1.3rem 1.6rem;box-shadow:0 -8px 30px rgba(0,0,0,.18);
+  transition:transform .25s ease;
+}
+.sheet.show{transform:translateX(-50%) translateY(0)}
+.sheet-word{font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem}
+.sheet-es{font-size:1.1rem;font-weight:700;color:var(--gold);margin:.2rem 0 .5rem}
+.sheet-def{color:var(--ink-dim)}
+.sheet-close{
+  position:absolute;top:.7rem;right:.8rem;background:var(--paper);
+  border:1.5px solid var(--border);border-radius:99px;width:38px;height:38px;
+  font-size:1rem;font-weight:700;color:var(--ink-dim);
+}
 
-  /* ---------- definition reveal ---------- */
-  .def-demo{display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center}
-  .tox-field{position:relative;width:100%;max-width:460px;height:130px;background:linear-gradient(180deg,#FDEEEA,#FFF6F1);border:2px dashed #FAD3CB;border-radius:18px;overflow:hidden}
-  .tox{position:absolute;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:800;color:#fff;background:var(--coral);box-shadow:0 4px 8px -3px rgba(0,0,0,.3);transition:transform .9s cubic-bezier(.6,-0.2,.3,1.4),opacity .9s}
-  .tox.gone{transform:translateY(180px) scale(.4);opacity:0}
-  .def-text{font-size:1.18rem;font-weight:700;max-width:560px}
-  .def-text b{color:var(--teal-deep)}
-  .pill-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-  .pill{background:#E7F6F1;color:var(--teal-deep);font-weight:800;padding:6px 14px;border-radius:999px;font-size:.9rem}
+/* ===== SUB-NAV PILLS ===== */
+.pills{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.2rem}
+.pill{
+  background:var(--card);border:1.5px solid var(--border);border-radius:99px;
+  padding:.5rem 1rem;font-weight:700;font-size:.88rem;color:var(--ink-dim);
+  transition:all .15s;min-height:42px;
+}
+.pill:hover{border-color:var(--gold);color:var(--ink)}
+.pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill .done{color:var(--ok);margin-left:.3rem}
+.pill.active .done{color:#9fe0b8}
+.subpage{display:none}
+.subpage.active{display:block;animation:fadeUp .3s ease}
 
-  /* ---------- flip cards ---------- */
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .flip{background:transparent;perspective:1000px;height:230px;cursor:pointer;border:none;padding:0;font-family:inherit}
-  .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
-  .flip.is-flipped .flip-inner{transform:rotateY(180deg)}
-  .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow)}
-  .flip-front{background:var(--paper)}
-  .flip-front .emoji{font-size:3rem;margin-bottom:8px}
-  .flip-front h3{font-size:1.25rem;color:var(--ink)}
-  .flip-front small{color:var(--ink-soft);font-weight:700;margin-top:10px}
-  .flip-back{transform:rotateY(180deg);color:#fff}
-  .flip-back p{font-size:.98rem;font-weight:600;margin:0}
-  .flip-back.t1{background:linear-gradient(150deg,var(--teal),var(--teal-deep))}
-  .flip-back.t2{background:linear-gradient(150deg,var(--sun),#E8A21F)}
-  .flip-back.t3{background:linear-gradient(150deg,var(--grape),#5d4cc0)}
+/* ===== HOME ===== */
+.hero{
+  position:relative;background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;
+  padding:2.2rem 1.4rem 1.8rem;margin-bottom:1.1rem;text-align:center;
+}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:7px;
+  background:linear-gradient(90deg,var(--gb) 0 50%,var(--fr) 50% 100%)}
+.hero .dates{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--gold);
+  letter-spacing:.2em;font-size:.95rem;margin-bottom:.3rem}
+.hero .vs-row{
+  display:flex;justify-content:center;align-items:center;gap:1rem;margin:1.1rem 0 .4rem;
+  flex-wrap:wrap;
+}
+.flag-box{
+  padding:.55rem 1.1rem;border-radius:12px;font-weight:800;font-size:1.05rem;
+}
+.flag-gb{background:var(--gb-soft);color:var(--gb-deep);border:2px solid var(--gb)}
+.flag-fr{background:var(--fr-soft);color:var(--fr-deep);border:2px solid var(--fr)}
+.vs{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;color:var(--ink-dim)}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.home-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:1.2rem;text-align:left;transition:transform .15s,border-color .15s;
+}
+.home-card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.home-card .big-ico{font-size:1.8rem;display:block;margin-bottom:.4rem}
+.home-card h3{margin:.1rem 0 .25rem}
+.home-card p{font-size:.9rem;color:var(--ink-dim)}
+.mission-card{border-left:6px solid var(--fr)}
+.mission-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
 
-  /* ---------- organ table / accordion ---------- */
-  .organ{background:var(--paper);border-radius:var(--r);box-shadow:var(--shadow-sm);margin-bottom:14px;overflow:hidden;border-left:8px solid var(--teal)}
-  .organ.o2{border-left-color:var(--sun)}
-  .organ.o3{border-left-color:var(--grape)}
-  .organ-head{display:flex;align-items:center;gap:14px;width:100%;background:none;border:none;padding:18px 20px;cursor:pointer;text-align:left;font-family:inherit}
-  .organ-head .ic{font-size:1.8rem}
-  .organ-head h3{font-size:1.2rem;flex:1}
-  .organ-head .chev{font-size:1.4rem;color:var(--teal);transition:transform .3s}
-  .organ.open .chev{transform:rotate(180deg)}
-  .organ-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
-  .organ-inner{padding:0 20px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .fact{background:var(--bg);border-radius:14px;padding:12px}
-  .fact .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--ink-soft)}
-  .fact .val{font-family:'Baloo 2';font-weight:700;font-size:1.05rem;color:var(--ink)}
+/* ===== QUIZ COMPONENTS ===== */
+.q-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:1.1rem 1.15rem;margin-bottom:1rem;box-shadow:var(--shadow);
+}
+.q-num{font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;
+  color:var(--gold);letter-spacing:.12em;margin-bottom:.25rem}
+.q-text{font-weight:700;font-size:1.02rem;margin-bottom:.7rem}
+.opt{
+  display:block;width:100%;text-align:left;background:var(--paper);
+  border:1.5px solid var(--border);border-radius:10px;padding:.7rem .9rem;
+  margin-bottom:.5rem;font-size:.95rem;transition:all .15s;min-height:46px;
+}
+.opt:hover:not(:disabled){border-color:var(--gold);background:var(--gold-soft)}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.faded{opacity:.5}
+.fb{
+  display:none;margin-top:.5rem;padding:.8rem .95rem;border-radius:10px;font-size:.93rem;
+}
+.fb.show{display:block;animation:fadeUp .25s ease}
+.fb.good{background:var(--ok-soft);border-left:4px solid var(--ok)}
+.fb.bad{background:var(--bad-soft);border-left:4px solid var(--bad)}
+.fb .fb-es{display:block;margin-top:.45rem;padding-top:.45rem;border-top:1px dashed rgba(0,0,0,.15);
+  font-style:italic;color:#574212;font-size:.9rem}
+.tf-row{display:flex;gap:.6rem}
+.tf-row .opt{flex:1;text-align:center;font-weight:700}
 
-  /* ---------- nephron interactive ---------- */
-  .neph-stage{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center}
-  .neph-svg{width:100%;height:auto;background:#F4FBF8;border-radius:18px;border:1px solid var(--line)}
-  .hot{cursor:pointer;transition:.2s}
-  .hot:hover circle,.hot:hover path,.hot:hover rect{filter:brightness(1.06)}
-  .neph-info h3{color:var(--teal-deep);font-size:1.3rem;margin-bottom:6px}
-  .neph-info p{margin:0;color:var(--ink-soft);font-weight:600;min-height:80px}
-  .steps{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
-  .stepbtn{flex:1;min-width:90px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;font-family:'Baloo 2';font-weight:700;color:var(--ink-soft);transition:.18s;font-size:.92rem}
-  .stepbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);transform:translateY(-2px)}
-  .dot-blood{fill:var(--coral)}
-  .dot-water{fill:#3FA9F5}
-  .glow-part{animation:pulse 1.1s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+/* score panel */
+.score-panel{
+  display:none;text-align:center;background:var(--card);border:2px solid var(--gold);
+  border-radius:var(--radius);padding:1.4rem;margin-top:1rem;
+}
+.score-panel.show{display:block;animation:fadeUp .3s ease}
+.score-big{font-family:'Fraunces',serif;font-weight:900;font-size:3rem;line-height:1}
+.score-big small{font-size:1.3rem;color:var(--ink-dim)}
+.score-msg{font-weight:700;margin-top:.3rem}
+.score-msg-es{font-size:.9rem;color:#8a661a;margin-top:.15rem}
+.btn{
+  display:inline-block;background:var(--ink);color:#fff;border:none;border-radius:10px;
+  padding:.7rem 1.4rem;font-weight:700;font-size:.95rem;margin-top:.8rem;
+  transition:opacity .15s;min-height:46px;
+}
+.btn:hover{opacity:.85}
+.btn-ghost{background:var(--paper);color:var(--ink);border:1.5px solid var(--border)}
+.btn-gold{background:var(--gold);color:#fff}
 
-  /* ---------- dangers ---------- */
-  .danger-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .danger{border-radius:var(--r);padding:22px;color:#fff;position:relative;overflow:hidden;min-height:170px;display:flex;flex-direction:column;justify-content:space-between}
-  .danger h3{font-size:1.5rem}
-  .danger .sub{font-weight:700;font-size:1rem;opacity:.95}
-  .danger .big{position:absolute;right:-10px;bottom:-22px;font-size:6rem;font-weight:800;font-family:'Baloo 2';opacity:.16}
-  .d1{background:linear-gradient(150deg,#FF8A5B,#E2503F)}
-  .d2{background:linear-gradient(150deg,#5BC0DE,#2E86AB)}
-  .d3{background:linear-gradient(150deg,#9d8bff,#6a55d6)}
+/* progress chips */
+.prog-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.1rem}
+.prog-chip{
+  font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:600;
+  background:var(--card);border:1.5px solid var(--border);border-radius:8px;
+  padding:.3rem .6rem;color:var(--ink-dim);
+}
+.prog-chip.scored{border-color:var(--gold);color:var(--ink)}
 
-  /* ---------- QUIZ ---------- */
-  .quiz-head{text-align:center;margin-bottom:8px}
-  .qblock{margin-bottom:30px}
-  .qkind{display:inline-block;font-family:'Baloo 2';font-weight:700;background:var(--ink);color:#fff;padding:5px 14px;border-radius:999px;font-size:.85rem;margin-bottom:14px}
-  .q{background:var(--paper);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;margin-bottom:14px}
-  .q .qtext{font-weight:800;font-size:1.05rem;margin-bottom:12px}
-  .q .qtext .n{color:var(--teal)}
-  .opts{display:flex;flex-direction:column;gap:9px}
-  .opt{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid transparent;border-radius:12px;padding:11px 14px;cursor:pointer;font-weight:700;transition:.15s;text-align:left;font-family:inherit;font-size:1rem;color:var(--ink)}
-  .opt:hover{border-color:var(--teal)}
-  .opt.sel{border-color:var(--teal);background:#E7F6F1}
-  .opt.correct{border-color:var(--leaf);background:#E9F8DF}
-  .opt.wrong{border-color:var(--coral);background:#FDEDEA}
-  .opt .mk{width:24px;height:24px;border-radius:50%;border:2px solid var(--ink-soft);display:grid;place-items:center;flex:none;font-weight:800;font-size:.8rem}
-  .opt.sel .mk{background:var(--teal);border-color:var(--teal);color:#fff}
-  .vf{display:flex;gap:10px}
-  .vf .opt{flex:1;justify-content:center}
-  .feedback{margin-top:10px;font-weight:700;font-size:.92rem;display:none}
-  .feedback.show{display:block}
-  .feedback.ok{color:var(--teal-deep)}
-  .feedback.no{color:var(--coral-deep)}
-  .exlist{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-  .exline{font-size:.88rem;font-weight:600;line-height:1.45;color:var(--ink);background:var(--bg);border-radius:10px;padding:9px 12px;border-left:4px solid var(--leaf)}
-  .exline.no{border-left-color:var(--coral)}
-  .exline b{display:block;margin-bottom:1px}
-  .exline.ok b{color:var(--teal-deep)}
-  .exline.no b{color:var(--coral-deep)}
+/* ===== TIMELINE EXERCISE ===== */
+.tl-pool{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1rem}
+.tl-event{
+  background:var(--card);border:1.5px solid var(--border);border-radius:10px;
+  padding:.75rem .95rem;text-align:left;font-size:.95rem;transition:all .15s;min-height:46px;
+}
+.tl-event:hover:not(:disabled){border-color:var(--gold);background:var(--gold-soft)}
+.tl-event.placed{display:none}
+.tl-event.shake{animation:shake .35s ease;border-color:var(--bad);background:var(--bad-soft)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.tl-built{list-style:none;margin-bottom:1rem}
+.tl-built li{
+  display:flex;gap:.7rem;align-items:flex-start;background:var(--ok-soft);
+  border-left:4px solid var(--ok);border-radius:0 10px 10px 0;
+  padding:.65rem .9rem;margin-bottom:.5rem;animation:fadeUp .3s ease;
+}
+.tl-built .n{
+  font-family:'Fraunces',serif;font-weight:900;color:var(--ok);flex-shrink:0;
+  font-size:1.15rem;line-height:1.4;
+}
+.tl-built .why{display:block;font-size:.85rem;color:var(--ink-dim);margin-top:.15rem}
+.tl-hint{
+  display:none;background:var(--bad-soft);border-left:4px solid var(--bad);
+  border-radius:0 10px 10px 0;padding:.7rem .9rem;font-size:.92rem;margin-bottom:.8rem;
+}
+.tl-hint.show{display:block;animation:fadeUp .25s ease}
 
-  /* match game */
-  .match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .match-col h4{font-family:'Baloo 2';color:var(--ink-soft);text-align:center;margin:0 0 10px;font-size:.95rem;text-transform:uppercase;letter-spacing:.05em}
-  .mtoken{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px;font-weight:800;text-align:center;cursor:pointer;transition:.15s}
-  .mtoken.pickA{border-color:var(--teal);background:#E7F6F1}
-  .mtoken.done{opacity:.55;cursor:default;border-style:dashed}
-  .mtoken.done.ok{border-color:var(--leaf);background:#E9F8DF}
-  .mtoken.done.no{border-color:var(--coral);background:#FDEDEA}
+/* ===== TEAM SORTER ===== */
+.sort-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:1rem 1.1rem;margin-bottom:.8rem;box-shadow:var(--shadow);
+}
+.sort-card .st{font-weight:700;margin-bottom:.6rem}
+.sort-btns{display:flex;gap:.6rem}
+.sort-btns .opt{flex:1;text-align:center;font-weight:700;margin-bottom:0}
+.sort-card.got-gb{border-left:6px solid var(--gb)}
+.sort-card.got-fr{border-left:6px solid var(--fr)}
 
-  /* fill in blanks */
-  .bank{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-  .word{background:var(--grape);color:#fff;font-weight:800;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s;border:none;font-family:inherit;font-size:.95rem}
-  .word:hover{transform:translateY(-2px)}
-  .word.used{opacity:.3;pointer-events:none}
-  .fillpar{font-weight:700;font-size:1.08rem;line-height:2.1}
-  .slot{display:inline-flex;min-width:120px;justify-content:center;border-bottom:3px solid var(--teal);padding:2px 8px;margin:0 2px;color:var(--teal-deep);font-weight:800;cursor:pointer}
-  .slot.empty{color:#B9C9C4}
-  .slot.ok{border-color:var(--leaf);color:var(--teal-deep)}
-  .slot.no{border-color:var(--coral);color:var(--coral-deep)}
+/* ===== GAP FILL ===== */
+.gap-sentence{font-size:1.05rem;font-weight:400;margin-bottom:.7rem}
+.gap-slot{
+  display:inline-block;min-width:110px;border-bottom:2.5px solid var(--gold);
+  text-align:center;font-weight:800;color:var(--gold);padding:0 .3rem;
+}
+.gap-slot.filled-ok{color:var(--ok);border-color:var(--ok)}
+.gap-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.gap-chips .opt{width:auto;flex:1;min-width:100px;text-align:center;margin-bottom:0}
 
-  /* result */
-  .gradebtn{display:block;width:100%;max-width:340px;margin:20px auto 0;background:var(--teal);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:1.2rem;border:none;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 14px 26px -12px var(--teal-deep);transition:.18s}
-  .gradebtn:hover{transform:translateY(-2px)}
-  .gradebtn:disabled{background:#B9C9C4;cursor:not-allowed;box-shadow:none;transform:none}
-  .result{display:none;text-align:center}
-  .result.show{display:block;animation:pop .5s cubic-bezier(.2,.8,.3,1.3)}
-  @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
-  .scorebig{font-family:'Baloo 2';font-weight:800;font-size:clamp(3.5rem,16vw,6rem);line-height:1;color:var(--teal-deep)}
-  .scorebig span{font-size:.4em;color:var(--ink-soft)}
-  .stars{font-size:2rem;letter-spacing:6px;margin:6px 0}
-  .verdict{font-family:'Baloo 2';font-weight:700;font-size:1.5rem;margin:8px 0}
-  .review{background:var(--bg);border-radius:14px;padding:16px;text-align:left;margin-top:16px;font-weight:700;color:var(--ink-soft)}
-  .review b{color:var(--coral-deep)}
-  .retry{margin-top:16px;background:#fff;color:var(--teal-deep);border:2px solid var(--teal);font-family:'Baloo 2';font-weight:700;padding:11px 22px;border-radius:999px;cursor:pointer;font-size:1rem}
+/* ===== DEBATE ===== */
+.arg-card{border-left:6px solid var(--fr)}
+.arg-card .say{
+  background:var(--fr-soft);border-radius:10px;padding:.75rem .95rem;margin-top:.6rem;
+  font-style:italic;font-size:.98rem;color:var(--fr-deep);
+}
+.arg-card .say::before{content:'🗣 Say it like this: ';font-style:normal;font-weight:700;font-size:.82rem;
+  display:block;color:var(--fr);letter-spacing:.03em;margin-bottom:.2rem}
+.atk-card{border-left:6px solid var(--gb)}
+.atk-they{
+  background:var(--gb-soft);border-radius:10px;padding:.7rem .9rem;
+  font-weight:700;color:var(--gb-deep);margin-bottom:.6rem;
+}
+.atk-they::before{content:'🇬🇧 They will say:';display:block;font-size:.78rem;
+  letter-spacing:.05em;margin-bottom:.2rem;color:var(--gb)}
+.atk-you{
+  background:var(--fr-soft);border-radius:10px;padding:.7rem .9rem;color:var(--fr-deep);
+}
+.atk-you::before{content:'🇫🇷 You answer:';display:block;font-size:.78rem;font-weight:700;
+  letter-spacing:.05em;margin-bottom:.2rem;color:var(--fr)}
 
-  footer{text-align:center;padding:34px 20px;color:var(--ink-soft);font-weight:600;font-size:.85rem}
+/* story builder */
+.sb-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0 .9rem}
+.sb-chip{
+  background:var(--paper);border:1.5px solid var(--border);border-radius:99px;
+  padding:.45rem .9rem;font-size:.88rem;font-weight:700;transition:all .15s;min-height:42px;
+}
+.sb-chip:hover{border-color:var(--fr)}
+.sb-chip.sel{background:var(--fr);color:#fff;border-color:var(--fr)}
+.sb-out{
+  display:none;background:var(--fr-soft);border-left:4px solid var(--fr);
+  border-radius:0 10px 10px 0;padding:.9rem 1rem;margin-top:.6rem;font-size:.98rem;
+}
+.sb-out.show{display:block;animation:fadeUp .25s ease}
+textarea.speech{
+  width:100%;min-height:140px;background:var(--card);border:1.5px solid var(--border);
+  border-radius:10px;padding:.8rem .9rem;font-family:inherit;font-size:.97rem;
+  line-height:1.6;resize:vertical;color:var(--ink);
+}
 
-  /* tablet */
-  @media(max-width:860px){
-    .grid3,.danger-grid{grid-template-columns:repeat(2,1fr)}
-    .flip{height:215px}
-  }
-  @media(max-width:680px){
-    body{font-size:17px}
-    .grid3,.danger-grid{grid-template-columns:1fr}
-    .organ-inner{grid-template-columns:1fr}
-    .neph-stage{grid-template-columns:1fr}
-    .flip{height:200px}
-    .navlinks{display:none}
-  }
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  }
+/* timer */
+.timer-wrap{text-align:center;padding:1.2rem 0 .4rem}
+.timer-display{
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:3.6rem;line-height:1;
+  padding:.6rem 1.4rem;border-radius:16px;display:inline-block;
+  background:var(--paper);border:2px solid var(--border);transition:all .3s;
+}
+.timer-display.zone-early{border-color:var(--border)}
+.timer-display.zone-good{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.timer-display.zone-over{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.timer-verdict{font-weight:700;margin-top:.7rem;min-height:1.5em}
+.timer-bar{height:10px;background:var(--paper);border:1.5px solid var(--border);
+  border-radius:99px;margin:1rem auto .3rem;max-width:420px;overflow:hidden;position:relative}
+.timer-bar .fill{height:100%;width:0;background:var(--gold);transition:width .2s linear}
+.timer-marks{display:flex;justify-content:space-between;max-width:420px;margin:0 auto;
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-dim)}
+
+/* readiness */
+.ready-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.8rem}
+.ready-cell{background:var(--paper);border:1.5px solid var(--border);border-radius:12px;
+  padding:.8rem;text-align:center}
+.ready-cell .v{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem}
+.ready-cell .l{font-size:.78rem;color:var(--ink-dim);font-weight:700}
+
+/* ===== WORD BANK ===== */
+.wb-search{
+  width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:12px;
+  padding:.75rem 1rem;font-family:inherit;font-size:1rem;margin-bottom:1.1rem;color:var(--ink);
+}
+.wb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.wb-item{
+  background:var(--card);border:1.5px solid var(--border);border-radius:12px;
+  padding:.75rem .95rem;
+}
+.wb-item .en{font-weight:800}
+.wb-item .es{color:var(--gold);font-weight:700;font-size:.95rem}
+.wb-item .def{font-size:.86rem;color:var(--ink-dim);margin-top:.15rem}
+.wb-concept{border-left:5px solid var(--nat)}
+
+/* lesson nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;gap:.7rem;margin-top:1.3rem}
+.fact-box{
+  background:var(--nat-soft);border-left:4px solid var(--nat);border-radius:0 10px 10px 0;
+  padding:.8rem 1rem;margin:.9rem 0;font-size:.95rem;
+}
+.fact-box::before{content:'🌿 Did you know?';display:block;font-weight:800;font-size:.8rem;
+  letter-spacing:.05em;color:var(--nat);margin-bottom:.2rem}
+.vs-table{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:.8rem 0}
+.vs-col{border-radius:var(--radius);padding:1rem 1.05rem;border:2px solid}
+.vs-col.col-gb{background:var(--gb-soft);border-color:var(--gb)}
+.vs-col.col-fr{background:var(--fr-soft);border-color:var(--fr)}
+.vs-col h3{margin-top:0}
+.vs-col ul{padding-left:1.1rem;font-size:.93rem}
+.vs-col li{margin-bottom:.3rem}
+.vs-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;display:block;margin:.6rem 0 .15rem}
+.col-gb .vs-label{color:var(--gb-deep)}
+.col-fr .vs-label{color:var(--fr-deep)}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:860px){
+  .home-grid{grid-template-columns:repeat(2,1fr)}
+  .ready-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:580px){
+  body{font-size:16.5px}
+  .home-grid{grid-template-columns:1fr}
+  .vs-table{grid-template-columns:1fr}
+  .wb-grid{grid-template-columns:1fr}
+  .ready-grid{grid-template-columns:1fr 1fr}
+  .timer-display{font-size:2.7rem}
+  .card{padding:1.05rem .95rem}
+}
 </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="wrap">
-    <span class="brand">🫧 Sistema Excretor</span>
-    <div class="navlinks">
-      <a href="#que-es">Qué es</a>
-      <a href="#componentes">3 componentes</a>
-      <a href="#organos">Órganos</a>
-      <a href="#nefrona">Nefrona</a>
-      <a href="#peligros">Peligros</a>
-      <a href="#prueba">Prueba</a>
-    </div>
+<nav>
+  <div class="nav-ribbon"></div>
+  <div class="nav-inner">
+    <div class="nav-logo">⚜ 1754</div>
+    <button class="nav-tab active" data-page="home" onclick="goPage('home')"><span class="ico">🏠</span>Home</button>
+    <button class="nav-tab" data-page="learn" onclick="goPage('learn')"><span class="ico">📖</span>Learn</button>
+    <button class="nav-tab" data-page="practice" onclick="goPage('practice')"><span class="ico">✏️</span>Practice</button>
+    <button class="nav-tab" data-page="debate" onclick="goPage('debate')"><span class="ico">🎤</span>Debate Prep</button>
+    <button class="nav-tab" data-page="wordbank" onclick="goPage('wordbank')"><span class="ico">📚</span>Word Bank</button>
   </div>
 </nav>
 
-<!-- HERO -->
-<header class="hero">
-  <div class="blob" style="width:300px;height:300px;background:#9fe6d6;top:-40px;left:-60px"></div>
-  <div class="blob" style="width:260px;height:260px;background:#FFD7A1;top:120px;right:-70px"></div>
-  <div class="wrap">
-    <span class="eyebrow">Laboratorio del cuerpo humano · Biología</span>
-    <h1>El <span class="glow">Sistema Excretor</span></h1>
-    <p class="lead">El equipo de limpieza de tu cuerpo. Aquí vas a descubrir cómo tu organismo saca lo que ya no sirve y mantiene todo en equilibrio. Toca, explora… ¡y al final hay una prueba!</p>
-    <svg class="bodyfig" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="60" cy="195" rx="38" ry="6" fill="#9fe6d6" opacity=".5"/>
-      <circle cx="60" cy="28" r="20" fill="#FFD9C2"/>
-      <rect x="40" y="48" width="40" height="70" rx="20" fill="#0FA38B"/>
-      <rect x="22" y="56" width="16" height="52" rx="8" fill="#FFD9C2"/>
-      <rect x="82" y="56" width="16" height="52" rx="8" fill="#FFD9C2"/>
-      <rect x="44" y="112" width="14" height="60" rx="7" fill="#0B7A68"/>
-      <rect x="62" y="112" width="14" height="60" rx="7" fill="#0B7A68"/>
-      <!-- kidneys -->
-      <path d="M48 72 q-9 8 0 24 q9 -3 7 -12 q-2 -9 -7 -12Z" fill="#FF6F5E"/>
-      <path d="M72 72 q9 8 0 24 q-9 -3 -7 -12 q2 -9 7 -12Z" fill="#FF6F5E"/>
-    </svg>
-    <p style="margin-top:18px"><a class="cta" href="#que-es">Empezar a aprender ✨</a></p>
+<!-- ==================== HOME ==================== -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="dates">1754 — 1763</div>
+    <h1>The French and Indian War</h1>
+    <p class="lead">Part of the worldwide <button class="term" data-en="Seven Years' War" data-es="Guerra de los Siete Años" data-def="La 'guerra mundial' del siglo XVIII: se peleó en América, Europa, Asia y los océanos. En América empezó en 1754; en Europa en 1756.">Seven Years' War</button></p>
+    <div class="vs-row">
+      <span class="flag-box flag-gb">🇬🇧 Great Britain</span>
+      <span class="vs">vs</span>
+      <span class="flag-box flag-fr">🇫🇷 France</span>
+    </div>
+    <p class="lead">…and Native American nations fighting on <strong>both</strong> sides.</p>
+    <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+    <div class="es-block">La <strong>Guerra Franco-India</strong> (1754–1763) fue parte de la Guerra de los Siete Años, una guerra mundial. En América del Norte pelearon Gran Bretaña contra Francia… y las naciones nativas americanas lucharon en <strong>ambos</strong> bandos.</div>
   </div>
-</header>
 
-<!-- 1. QUE ES -->
-<section id="que-es">
-  <div class="wrap">
+  <div class="card mission-card">
+    <div class="eyebrow">Your mission · Tu misión</div>
+    <h2>Get ready, López! 🎯</h2>
+    <p>You have <strong>two goals</strong> in this app:</p>
+    <p style="margin-top:.4rem"><strong>1️⃣ Learn the material</strong> — everything from your class notes, explained step by step.</p>
+    <p><strong>2️⃣ Win Round 2 of the debate</strong> — <em>"Who is a true friend to the Native Americans, and who is just using them?"</em></p>
+    <div class="mission-row">
+      <span class="chip chip-fr">🇫🇷 Your role: French soldier / colonist</span>
+      <span class="chip chip-fr">🤝 Your team: De Freitas–Alayón + López–Gregorio</span>
+      <span class="chip chip-gb">⚔️ Opponents: García–Pirela + Blanco–Gherghi</span>
+    </div>
+    <p style="font-size:.92rem;color:var(--ink-dim)">⏱ You will have <strong>1–2 minutes</strong> to speak. You can invent personal stories — but <strong>never change the historical facts</strong>.</p>
+    <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+    <div class="es-block">Tenés <strong>dos objetivos</strong>: <strong>1)</strong> aprender el material de clase, y <strong>2)</strong> ganar el Round 2 del debate: <em>"¿Quién es un verdadero amigo de los nativos americanos, y quién solo los está usando?"</em>. Tu rol es <strong>soldado/colono francés</strong>. Tu equipo: De Freitas–Alayón + López–Gregorio. Rivales: García–Pirela + Blanco–Gherghi. Tendrás <strong>1–2 minutos</strong> para hablar. Podés inventar historias personales, pero <strong>nunca cambiar los hechos históricos</strong>.</div>
+  </div>
+
+  <div class="home-grid">
+    <button class="home-card" onclick="goPage('learn')">
+      <span class="big-ico">📖</span>
+      <h3>Learn</h3>
+      <p>5 short lessons covering all your class notes — with Spanish help everywhere.</p>
+      <p style="color:var(--gold);font-weight:700;margin-top:.4rem">Start here →</p>
+    </button>
+    <button class="home-card" onclick="goPage('practice')">
+      <span class="big-ico">✏️</span>
+      <h3>Practice</h3>
+      <p>5 exercises scored out of 20. Every answer comes with an explanation.</p>
+      <p style="color:var(--gold);font-weight:700;margin-top:.4rem">Test yourself →</p>
+    </button>
+    <button class="home-card" onclick="goPage('debate')">
+      <span class="big-ico">🎤</span>
+      <h3>Debate Prep</h3>
+      <p>Build your arguments, practice your phrases, and time your speech.</p>
+      <p style="color:var(--gold);font-weight:700;margin-top:.4rem">Get ready →</p>
+    </button>
+  </div>
+</div>
+
+<!-- ==================== LEARN ==================== -->
+<div class="page" id="page-learn">
+  <div class="eyebrow">Study material · Material de estudio</div>
+  <h1>Learn</h1>
+  <p class="lead" style="margin-bottom:1rem">Five short lessons. Tap any <button class="term" data-en="underlined word" data-es="palabra subrayada" data-def="Las palabras con puntitos dorados se pueden tocar: muestran la traducción y una explicación simple.">underlined word</button> to see its meaning in Spanish.</p>
+  <div class="pills" id="lessonPills">
+    <button class="pill active" data-l="l1" onclick="goLesson('l1')">1 · The Big Picture<span class="done" id="done-l1"></span></button>
+    <button class="pill" data-l="l2" onclick="goLesson('l2')">2 · Native Americans<span class="done" id="done-l2"></span></button>
+    <button class="pill" data-l="l3" onclick="goLesson('l3')">3 · The Spark 🔥<span class="done" id="done-l3"></span></button>
+    <button class="pill" data-l="l4" onclick="goLesson('l4')">4 · GB vs France<span class="done" id="done-l4"></span></button>
+    <button class="pill" data-l="l5" onclick="goLesson('l5')">5 · The Result<span class="done" id="done-l5"></span></button>
+  </div>
+
+  <!-- LESSON 1 -->
+  <div class="subpage active" id="lesson-l1">
+    <div class="card side-gold">
+      <h2>Lesson 1 · The Big Picture</h2>
+      <p>The <strong>French and Indian War</strong> (1754–1763) was a war in North America between <strong style="color:var(--gb)">Great Britain</strong> and <strong style="color:var(--fr)">France</strong>. The name comes from the British <button class="term" data-en="colonists" data-es="colonos" data-def="Personas que se mudan de su país a otra tierra para vivir allí. Los colonos británicos vivían en las 13 colonias.">colonists</button>' point of view: they were fighting <em>the French and their Indian allies</em>.</p>
+      <p style="margin-top:.5rem">It was part of a much bigger conflict — the <strong>Seven Years' War</strong> — fought all around the world. That's why it has two names!</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">La <strong>Guerra Franco-India</strong> (1754–1763) fue una guerra en América del Norte entre Gran Bretaña y Francia. El nombre viene del punto de vista de los colonos británicos: ellos peleaban contra <em>"los franceses y sus aliados indios"</em>. Fue parte de un conflicto mucho más grande — la <strong>Guerra de los Siete Años</strong> — que se peleó en todo el mundo. ¡Por eso tiene dos nombres!</div>
+    </div>
+
     <div class="card">
-      <span class="sec-num">PARTE 1</span>
-      <h2 class="sec-title">¿Qué es el sistema excretor?</h2>
-      <p class="sec-intro">Imagina que tus células trabajan todo el día y, como cualquier fábrica, dejan basura. El sistema excretor es el encargado de recoger y sacar esa basura. Toca el botón para ver cómo limpia tu cuerpo 👇</p>
-      <div class="def-demo">
-        <div class="tox-field" id="toxField" aria-hidden="true"></div>
-        <button class="cta" id="cleanBtn">🧹 Limpiar el cuerpo</button>
-        <p class="def-text">
-          Es el <b>conjunto de órganos</b> que se encarga de <b>eliminar las sustancias tóxicas</b> del organismo, producidas en las <b>células</b>, y de <b>mantener el equilibrio de agua y sales</b> en el cuerpo.
-        </p>
-        <div class="pill-row">
-          <span class="pill">Saca lo tóxico 🗑️</span>
-          <span class="pill">Cuida el agua 💧</span>
-          <span class="pill">Equilibra las sales 🧂</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 2. COMPONENTES -->
-<section id="componentes">
-  <div class="wrap">
-    <span class="sec-num">PARTE 2</span>
-    <h2 class="sec-title">Sus 3 componentes</h2>
-    <p class="sec-intro">El trabajo de limpiar es tan grande que se reparte entre tres equipos. Toca cada tarjeta para girarla y descubrir qué hace cada uno.</p>
-    <div class="grid3">
-      <button class="flip" aria-label="Aparato urinario">
-        <div class="flip-inner">
-          <div class="flip-face flip-front"><div class="emoji">🚽</div><h3>Aparato urinario</h3><small>Tócame 🔄</small></div>
-          <div class="flip-face flip-back t1"><p>Aquí están los <b>riñones</b>. Filtran la sangre y forman la <b>orina</b> para sacar la urea, el agua y las sales que sobran.</p></div>
-        </div>
-      </button>
-      <button class="flip" aria-label="Piel">
-        <div class="flip-inner">
-          <div class="flip-face flip-front"><div class="emoji">🖐️</div><h3>Piel</h3><small>Tócame 🔄</small></div>
-          <div class="flip-face flip-back t2"><p>Con las <b>glándulas sudoríparas</b> produce <b>sudor</b>: saca agua, sales y un poquito de urea. ¡Y también te enfría!</p></div>
-        </div>
-      </button>
-      <button class="flip" aria-label="Aparato respiratorio">
-        <div class="flip-inner">
-          <div class="flip-face flip-front"><div class="emoji">🫁</div><h3>Aparato respiratorio</h3><small>Tócame 🔄</small></div>
-          <div class="flip-face flip-back t3"><p>Los <b>pulmones</b> expulsan el <b>dióxido de carbono (CO₂)</b> cada vez que exhalas. ¡Excretas sin darte cuenta!</p></div>
-        </div>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- 3. TABLA / ORGANOS -->
-<section id="organos">
-  <div class="wrap">
-    <span class="sec-num">PARTE 3</span>
-    <h2 class="sec-title">La tabla de los órganos</h2>
-    <p class="sec-intro">Cada órgano saca un desecho distinto, en forma de una excreta y con su propio mecanismo. Toca cada órgano para abrirlo.</p>
-
-    <div class="organ o1">
-      <button class="organ-head"><span class="ic">🫘</span><h3>Riñón <small style="font-weight:600;color:var(--ink-soft)">(Nefrona)</small></h3><span class="chev">⌄</span></button>
-      <div class="organ-body"><div class="organ-inner">
-        <div class="fact"><div class="lbl">Desechos</div><div class="val">Urea, agua y sales</div></div>
-        <div class="fact"><div class="lbl">Excreta</div><div class="val">Orina 💛</div></div>
-        <div class="fact"><div class="lbl">Mecanismo</div><div class="val">Micción</div></div>
-      </div></div>
+      <h3>Why did the war happen? 🗺</h3>
+      <p>Two magic words: <strong>land + trade</strong>.</p>
+      <p style="margin-top:.4rem">Britain's <strong>13 colonies</strong> were growing fast and wanted to <button class="term" data-en="expand" data-es="expandirse" data-def="Crecer, hacerse más grande, ocupar más territorio.">expand</button> to the west. But France controlled the land and the <button class="term" data-en="trade routes" data-es="rutas de comercio" data-def="Los caminos y ríos que se usaban para transportar y vender productos, especialmente pieles de animales.">trade routes</button> there. Britain <button class="term" data-en="felt threatened" data-es="se sintió amenazada" data-def="Sintió que estaba en peligro, que Francia podía bloquear su crecimiento.">felt threatened</button> — and that tension exploded into war.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Dos palabras mágicas: <strong>tierra + comercio</strong>. Las <strong>13 colonias</strong> británicas crecían rápido y querían expandirse hacia el oeste. Pero Francia controlaba esa tierra y las rutas de comercio. Gran Bretaña <strong>se sintió amenazada</strong> — y esa tensión explotó en guerra.</div>
     </div>
 
-    <div class="organ o2">
-      <button class="organ-head"><span class="ic">🖐️</span><h3>Piel <small style="font-weight:600;color:var(--ink-soft)">(glándulas sudoríparas)</small></h3><span class="chev">⌄</span></button>
-      <div class="organ-body"><div class="organ-inner">
-        <div class="fact"><div class="lbl">Desechos</div><div class="val">Agua, sales y algo de urea</div></div>
-        <div class="fact"><div class="lbl">Excreta</div><div class="val">Sudor 💧</div></div>
-        <div class="fact"><div class="lbl">Mecanismo</div><div class="val">Sudoración</div></div>
-      </div></div>
-    </div>
-
-    <div class="organ o3">
-      <button class="organ-head"><span class="ic">🫁</span><h3>Pulmones <small style="font-weight:600;color:var(--ink-soft)">(alvéolos)</small></h3><span class="chev">⌄</span></button>
-      <div class="organ-body"><div class="organ-inner">
-        <div class="fact"><div class="lbl">Desechos</div><div class="val">Dióxido de carbono (CO₂)</div></div>
-        <div class="fact"><div class="lbl">Excreta</div><div class="val">Vaho / exhalación 💨</div></div>
-        <div class="fact"><div class="lbl">Mecanismo</div><div class="val">Expiración o exhalación</div></div>
-      </div></div>
-    </div>
-    <p style="text-align:center;color:var(--ink-soft);font-weight:700;font-size:.9rem;margin-top:10px">💡 Truco: <b>Desecho</b> = lo que sobra · <b>Excreta</b> = en qué forma sale · <b>Mecanismo</b> = la acción de sacarlo</p>
-  </div>
-</section>
-
-<!-- 4. NEFRONA -->
-<section id="nefrona">
-  <div class="wrap">
     <div class="card">
-      <span class="sec-num">PARTE 4</span>
-      <h2 class="sec-title">Adentro del riñón: la nefrona</h2>
-      <p class="sec-intro">La <b>nefrona</b> es la <b>unidad estructural y funcional</b> del riñón: el filtro más pequeñito. ¡Cada riñón tiene como un millón! Toca las partes del dibujo o sigue los 3 pasos para ver cómo se forma la orina.</p>
-      <div class="neph-stage">
-        <svg class="neph-svg" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de la nefrona">
-          <!-- arriving substances -->
-          <text x="10" y="92" font-family="Nunito" font-weight="800" font-size="13" fill="#173A3B">urea</text>
-          <text x="10" y="110" font-family="Nunito" font-weight="800" font-size="13" fill="#173A3B">sal</text>
-          <text x="10" y="128" font-family="Nunito" font-weight="800" font-size="13" fill="#173A3B">agua</text>
-          <!-- glomerulus / renal corpuscle -->
-          <g class="hot" data-part="corpusculo" tabindex="0" role="button" aria-label="Corpúsculo renal">
-            <circle cx="120" cy="70" r="30" fill="#FFE2DC" stroke="#FF6F5E" stroke-width="2"/>
-            <path d="M104 70 q8 -14 16 0 q8 14 16 0 M108 60 q12 6 24 12 M108 80 q12 -6 24 -12" fill="none" stroke="#E2503F" stroke-width="2.4" stroke-linecap="round"/>
-          </g>
-          <text x="158" y="55" font-family="Baloo 2" font-weight="700" font-size="14" fill="#0B7A68">Corpúsculo</text>
-          <text x="166" y="72" font-family="Baloo 2" font-weight="700" font-size="14" fill="#0B7A68">renal</text>
-          <text x="84" y="118" font-family="Baloo 2" font-weight="700" font-size="13" fill="#173A3B">Glomérulo</text>
-          <!-- tubule (the U loop) -->
-          <g class="hot" data-part="tubular" tabindex="0" role="button" aria-label="Túbulo">
-            <path d="M120 100 C120 150 150 150 150 175 L150 235 a16 16 0 0 0 32 0 L182 130"
-                  fill="none" stroke="#1B6EC2" stroke-width="7" stroke-linecap="round"/>
-          </g>
-          <text x="40" y="195" font-family="Baloo 2" font-weight="700" font-size="14" fill="#173A3B">Tubular</text>
-          <!-- reabsorption arrows -->
-          <g id="reabArrows" opacity="0">
-            <path d="M138 200 l-26 0 M118 194 l-8 6 8 6" stroke="#FF6F5E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-            <path d="M170 160 l24 -6 M188 148 l8 6 -4 9" stroke="#FF6F5E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- collecting duct -->
-          <g class="hot" data-part="colector" tabindex="0" role="button" aria-label="Tubo colector de orina">
-            <rect x="205" y="120" width="16" height="120" rx="6" fill="#FFD96B" stroke="#E8A21F" stroke-width="2"/>
-            <path d="M188 130 l14 0 M196 124 l8 6 -8 6" stroke="#173A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          </g>
-          <text x="228" y="150" font-family="Baloo 2" font-weight="700" font-size="13" fill="#173A3B">Tubo</text>
-          <text x="228" y="166" font-family="Baloo 2" font-weight="700" font-size="13" fill="#173A3B">colector</text>
-          <text x="228" y="182" font-family="Baloo 2" font-weight="700" font-size="13" fill="#173A3B">de orina</text>
-          <text x="208" y="262" font-family="Baloo 2" font-weight="800" font-size="14" fill="#E8A21F">orina 💛</text>
-          <!-- animated dots -->
-          <circle id="d1" class="dot-blood" cx="40" cy="92" r="5"></circle>
-          <circle id="d2" class="dot-blood" cx="40" cy="110" r="5"></circle>
-          <circle id="d3" class="dot-water" cx="40" cy="128" r="5"></circle>
-        </svg>
-        <div class="neph-info">
-          <h3 id="nephTitle">Toca una parte 👆</h3>
-          <p id="nephText">Cada parte de la nefrona tiene un trabajo. Tócala en el dibujo para leer qué hace, o usa los pasos de abajo para ver cómo se forma la orina paso a paso.</p>
-          <div class="steps">
-            <button class="stepbtn" data-step="1">1 · Filtración</button>
-            <button class="stepbtn" data-step="2">2 · Reabsorción</button>
-            <button class="stepbtn" data-step="3">3 · Excreción</button>
-          </div>
+      <h3>⚠️ Don't mix these up: UK vs US</h3>
+      <p>This confused the class notes, so let's make it crystal clear:</p>
+      <div class="vs-table">
+        <div class="vs-col col-gb">
+          <h3>🇬🇧 The UK</h3>
+          <p style="font-size:.92rem">The United Kingdom (Great Britain) is a country in <strong>Europe</strong> made of:</p>
+          <ul><li>England</li><li>Wales</li><li>Scotland</li><li>Northern Ireland</li></ul>
+        </div>
+        <div class="vs-col col-fr" style="background:var(--gold-soft);border-color:var(--gold)">
+          <h3>⭐ The 13 colonies</h3>
+          <p style="font-size:.92rem">British <button class="term" data-en="settlements" data-es="asentamientos" data-def="Lugares donde un grupo de personas se instala a vivir y construye pueblos.">settlements</button> in <strong>America</strong>. They will become the <strong>US</strong> later — but in 1754 the colonists are still <strong>British!</strong> The USA doesn't exist yet.</p>
         </div>
       </div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">El <strong>Reino Unido (UK)</strong> es un país de Europa formado por Inglaterra, Gales, Escocia e Irlanda del Norte. Las <strong>13 colonias</strong> son asentamientos británicos en América — más adelante se convertirán en Estados Unidos, ¡pero en 1754 los colonos todavía son <strong>británicos</strong>! Estados Unidos aún no existe.</div>
     </div>
-  </div>
-</section>
 
-<!-- 5. PELIGROS -->
-<section id="peligros">
-  <div class="wrap">
-    <span class="sec-num">PARTE 5</span>
-    <h2 class="sec-title">Peligros de los desechos</h2>
-    <p class="sec-intro">¿Y si el cuerpo NO sacara la basura? Cada desecho se vuelve peligroso si se acumula. Por eso el sistema excretor nunca descansa.</p>
-    <div class="danger-grid">
-      <div class="danger d1">
-        <div><h3>Urea</h3><p class="sub">Es <b>tóxica</b> cuando está en altas concentraciones.</p></div>
-        <span class="big">☠️</span>
-      </div>
-      <div class="danger d2">
-        <div><h3>CO₂</h3><p class="sub">Si se acumula, <b>se acidifica la sangre</b>.</p></div>
-        <span class="big">🩸</span>
-      </div>
-      <div class="danger d3">
-        <div><h3>Sales</h3><p class="sub">Al acumularse, <b>se desequilibran los químicos</b> y <b>se altera la temperatura</b>.</p></div>
-        <span class="big">🧂</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6. PRUEBA -->
-<section id="prueba">
-  <div class="wrap">
     <div class="card">
-      <div class="quiz-head">
-        <span class="sec-num">PARTE 6</span>
-        <h2 class="sec-title">¡A poner a prueba lo aprendido! 📝</h2>
-        <p class="sec-intro" style="margin-inline:auto">Responde cada ejercicio. Al final tocas el botón y recibes tu calificación del 1 al 20. No hace falta ser perfecta: ¡lo importante es aprender!</p>
-      </div>
+      <h3>✅ Quick check</h3>
+      <p class="q-text">The French and Indian War has another name. Which one?</p>
+      <button class="opt" onclick="quickCheck(this,false,'Not quite — the Hundred Years\' War was a much older war between England and France (1337–1453). Our war lasted 9 years in America but is named after the 7 years it lasted in Europe.','Casi — la Guerra de los Cien Años fue una guerra mucho más antigua entre Inglaterra y Francia (1337–1453). Nuestra guerra duró 9 años en América, pero se llama así por los 7 años que duró en Europa.')">The Hundred Years' War</button>
+      <button class="opt" onclick="quickCheck(this,true,'Exactly! In Europe the fighting lasted from 1756 to 1763 — seven years. In America it started earlier, in 1754.','¡Exacto! En Europa la pelea duró de 1756 a 1763 — siete años. En América empezó antes, en 1754.')">The Seven Years' War</button>
+      <button class="opt" onclick="quickCheck(this,false,'No — the Cold War was in the 20th century, between the USA and the Soviet Union. Our war is from the 1700s.','No — la Guerra Fría fue en el siglo XX, entre Estados Unidos y la Unión Soviética. Nuestra guerra es del siglo XVIII.')">The Cold War</button>
+      <div class="fb"></div>
+    </div>
+    <div class="lesson-nav">
+      <span></span>
+      <button class="btn" onclick="finishLesson('l1','l2')">Mark as done · Next lesson →</button>
+    </div>
+  </div>
 
-      <!-- VERDADERO O FALSO -->
-      <div class="qblock" id="qbVF">
-        <span class="qkind">✅ Verdadero o Falso</span>
-        <!-- questions injected -->
-      </div>
+  <!-- LESSON 2 -->
+  <div class="subpage" id="lesson-l2">
+    <div class="card side-nat">
+      <h2>Lesson 2 · The Native Americans</h2>
+      <p>Before anything else: Native Americans were <strong>not one single group</strong>. They were many different nations, each with <strong>different structures</strong> — different languages, leaders, and ways of life. Nations made <button class="term" data-en="alliances" data-es="alianzas" data-def="Acuerdos entre grupos para ayudarse y protegerse mutuamente. Un 'ally' (aliado) es un amigo en la guerra.">alliances</button> with each other — the most famous was the <button class="term" data-en="Iroquois Confederacy" data-es="Confederación Iroquesa" data-def="Una unión de 6 naciones nativas (Mohawk, Oneida, Onondaga, Cayuga, Seneca y Tuscarora). Muy poderosa y organizada. Fueron aliados de Gran Bretaña.">Iroquois Confederacy</button>, a union of six nations.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Los nativos americanos <strong>no eran un solo grupo</strong>: eran muchas naciones diferentes, con <strong>estructuras distintas</strong> — diferentes idiomas, líderes y formas de vida. Las naciones hacían <strong>alianzas</strong> entre sí — la más famosa fue la <strong>Confederación Iroquesa</strong>, una unión de seis naciones.</div>
+    </div>
 
-      <!-- OPCION MULTIPLE -->
-      <div class="qblock" id="qbMC">
-        <span class="qkind">🔘 Opción múltiple</span>
-      </div>
+    <div class="card">
+      <h3>Three things that surprised Europeans</h3>
+      <p><strong>⚖️ Gender equality</strong> — In many nations, women had real power. Among the Iroquois, women owned the family home and even <strong>chose the chiefs</strong>. European women had nothing like this!</p>
+      <p style="margin-top:.6rem"><strong>🏞 Property</strong> — Land belonged to the <strong>community</strong>, not to one person. Nobody could "buy" or "sell" the land. This caused huge misunderstandings with Europeans, who put fences everywhere.</p>
+      <p style="margin-top:.6rem"><strong>🦫 Economic activity</strong> — Farming, hunting, fishing… and <strong>trade</strong>! Especially the <button class="term" data-en="fur trade" data-es="comercio de pieles" data-def="Negocio de intercambiar pieles de animales (como castores) por herramientas, telas y armas europeas. Era el gran negocio de la época.">fur trade</button> with Europeans. This is why alliances mattered so much: trade partners were war partners.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>⚖️ Igualdad de género:</strong> en muchas naciones las mujeres tenían poder real. Entre los iroqueses, las mujeres eran dueñas de la casa familiar y hasta <strong>elegían a los jefes</strong>. <strong>🏞 Propiedad:</strong> la tierra era de la <strong>comunidad</strong>, no de una persona. Nadie podía "comprar" o "vender" la tierra — esto causó enormes malentendidos con los europeos. <strong>🦫 Actividad económica:</strong> agricultura, caza, pesca… ¡y <strong>comercio</strong>! Sobre todo el comercio de pieles con los europeos. Por eso las alianzas importaban tanto: los socios de comercio eran socios de guerra.</div>
+    </div>
 
-      <!-- RELACIONA -->
-      <div class="qblock" id="qbMatch">
-        <span class="qkind">🔗 Relaciona las columnas</span>
-        <div class="q">
-          <div class="qtext">Une cada <span class="n">órgano</span> con su <span class="n">excreta</span>. Toca uno de la izquierda y luego su pareja de la derecha.</div>
-          <div class="match-wrap">
-            <div class="match-col" id="matchA"><h4>Órgano</h4></div>
-            <div class="match-col" id="matchB"><h4>Excreta</h4></div>
-          </div>
-          <div class="feedback" id="matchFb"></div>
+    <div class="fact-box">This lesson is <strong>gold for your debate</strong>: if land cannot be sold, what do you call people who take it to build farms? Remember this when you argue against the British side. 😉
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Esta lección es <strong>oro para tu debate</strong>: si la tierra no se puede vender, ¿cómo llamás a la gente que la toma para construir granjas? Recordá esto cuando argumentes contra el bando británico. 😉</div>
+    </div>
+
+    <div class="card">
+      <h3>✅ Quick check</h3>
+      <p class="q-text">Among the Iroquois, who chose the chiefs?</p>
+      <button class="opt" onclick="quickCheck(this,false,'No — there was no king. That was the European system! The Iroquois had a very different structure.','No — no había rey. ¡Ese era el sistema europeo! Los iroqueses tenían una estructura muy diferente.')">The king</button>
+      <button class="opt" onclick="quickCheck(this,false,'Not the warriors — close, but the real answer shows how different their society was from Europe.','No eran los guerreros — cerca, pero la respuesta real muestra lo diferente que era su sociedad de la europea.')">The strongest warriors</button>
+      <button class="opt" onclick="quickCheck(this,true,'Yes! Iroquois women chose (and could remove!) the chiefs. Gender equality was real in many Native nations.','¡Sí! Las mujeres iroquesas elegían (¡y podían sacar!) a los jefes. La igualdad de género era real en muchas naciones nativas.')">The women</button>
+      <div class="fb"></div>
+    </div>
+    <div class="lesson-nav">
+      <button class="btn btn-ghost" onclick="goLesson('l1')">← Back</button>
+      <button class="btn" onclick="finishLesson('l2','l3')">Mark as done · Next lesson →</button>
+    </div>
+  </div>
+
+  <!-- LESSON 3 -->
+  <div class="subpage" id="lesson-l3">
+    <div class="card side-gold">
+      <h2>Lesson 3 · The Spark 🔥</h2>
+      <p>Every war has a place where it begins. This one began in the <strong>Ohio River Valley</strong> — a green, rich land full of <button class="term" data-en="resources" data-es="recursos" data-def="Cosas valiosas de la naturaleza: animales para el comercio de pieles, tierra fértil, madera, ríos.">resources</button> and <strong>trade connections</strong> (rivers were the highways of the 1700s!).</p>
+      <p style="margin-top:.5rem">The problem? It was <strong>Native American land</strong>… and Britain AND France both <button class="term" data-en="claimed" data-es="reclamaban" data-def="Decir 'esto es mío'. Los dos países decían que el valle les pertenecía — sin preguntarle a los nativos que vivían ahí.">claimed</button> it. They <strong>clashed over</strong> the valley.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Toda guerra tiene un lugar donde empieza. Esta empezó en el <strong>valle del río Ohio</strong> — una tierra verde y rica, llena de recursos y <strong>conexiones de comercio</strong> (¡los ríos eran las autopistas del siglo XVIII!). ¿El problema? Era <strong>tierra de los nativos americanos</strong>… y Gran Bretaña Y Francia la reclamaban las dos. <strong>Chocaron</strong> por ese valle.</div>
+    </div>
+
+    <div class="card">
+      <h3>The chain of events ⛓</h3>
+      <p><strong>1. French forts.</strong> France built <button class="term" data-en="forts" data-es="fuertes" data-def="Construcciones militares con muros para defender un territorio. El más famoso aquí fue Fort Duquesne.">forts</button> in the valley to protect its trade routes.</p>
+      <p style="margin-top:.5rem"><strong>2. Enter Washington.</strong> Virginia sent a young officer — <strong>George Washington</strong>, only 21 years old! — to tell the French to leave. (Yes, THAT Washington. In 1754 he fights for Britain.)</p>
+      <p style="margin-top:.5rem"><strong>3. Jumonville is killed.</strong> Washington's group <button class="term" data-en="ambushed" data-es="emboscó" data-def="Atacar por sorpresa, escondiéndose y apareciendo de golpe.">ambushed</button> a small French party. The French officer <strong>Jumonville</strong> was killed by <strong>Half-King</strong>, a Native leader (Tanaghrisson) allied with Washington. This little fight lit the fuse of a world war.</p>
+      <p style="margin-top:.5rem"><strong>4. The written confession.</strong> France struck back hard. Washington had to <button class="term" data-en="surrender" data-es="rendirse" data-def="Aceptar la derrota y dejar de pelear. Washington se rindió en Fort Necessity en 1754.">surrender</button> at <strong>Fort Necessity</strong> — and he signed a document written in French saying Jumonville was <em>"assassinated"</em>. Washington couldn't read French! France used this paper as <button class="term" data-en="propaganda" data-es="propaganda" data-def="Información usada para convencer a la gente de que tu lado tiene razón y el otro es el malo.">propaganda</button>: "Look! The British admit they are murderers!"</p>
+      <p style="margin-top:.5rem"><strong>5. WAR!</strong> 💥 In 1756 the war was officially declared and spread to Europe — the Seven Years' War had begun.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>1. Fuertes franceses.</strong> Francia construyó fuertes en el valle para proteger sus rutas de comercio. <strong>2. Aparece Washington.</strong> Virginia mandó a un oficial joven — ¡George Washington, de solo 21 años! — a decirles a los franceses que se fueran. (Sí, ESE Washington. En 1754 pelea para Gran Bretaña.) <strong>3. Matan a Jumonville.</strong> El grupo de Washington emboscó a una patrulla francesa. El oficial francés <strong>Jumonville</strong> fue asesinado por <strong>Half-King</strong>, un líder nativo (Tanaghrisson) aliado de Washington. Esa pequeña pelea encendió la mecha de una guerra mundial. <strong>4. La confesión escrita.</strong> Francia contraatacó fuerte. Washington tuvo que rendirse en <strong>Fort Necessity</strong> — y firmó un documento escrito en francés que decía que Jumonville fue <em>"asesinado"</em>. ¡Washington no sabía leer francés! Francia usó ese papel como propaganda: "¡Miren! ¡Los británicos admiten que son asesinos!" <strong>5. ¡GUERRA!</strong> 💥 En 1756 la guerra se declaró oficialmente y se extendió a Europa — había empezado la Guerra de los Siete Años.</div>
+    </div>
+
+    <div class="fact-box">Half-King's real name was <strong>Tanaghrisson</strong>, a Seneca leader. Some historians think he killed Jumonville on purpose to push Britain and France into war — Native nations also played politics!
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">El nombre real de Half-King era <strong>Tanaghrisson</strong>, un líder seneca. Algunos historiadores creen que mató a Jumonville a propósito para empujar a Gran Bretaña y Francia a la guerra — ¡las naciones nativas también hacían política!</div>
+    </div>
+
+    <div class="card">
+      <h3>✅ Quick check</h3>
+      <p class="q-text">Why was the "written confession" so important?</p>
+      <button class="opt" onclick="quickCheck(this,false,'No — it wasn\'t a peace treaty. It was a surrender document… with a trap inside.','No — no era un tratado de paz. Era un documento de rendición… con una trampa adentro.')">It ended the war peacefully</button>
+      <button class="opt" onclick="quickCheck(this,true,'Correct! Washington signed (without understanding the French) that Jumonville was “assassinated”. France showed it to the world as proof that Britain started the war. Perfect propaganda.','¡Correcto! Washington firmó (sin entender el francés) que Jumonville fue “asesinado”. Francia se lo mostró al mundo como prueba de que Gran Bretaña empezó la guerra. Propaganda perfecta.')">France used it as propaganda against Britain</button>
+      <button class="opt" onclick="quickCheck(this,false,'No — Washington signed it, but it didn\'t make him king of anything. He had to surrender Fort Necessity and walk home defeated.','No — Washington lo firmó, pero no lo hizo rey de nada. Tuvo que rendir Fort Necessity y volver a casa derrotado.')">It made Washington the king of Virginia</button>
+      <div class="fb"></div>
+    </div>
+    <div class="lesson-nav">
+      <button class="btn btn-ghost" onclick="goLesson('l2')">← Back</button>
+      <button class="btn" onclick="finishLesson('l3','l4')">Mark as done · Next lesson →</button>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="subpage" id="lesson-l4">
+    <div class="card">
+      <h2>Lesson 4 · Great Britain vs France</h2>
+      <p>Time to compare the two rivals — exactly like your class notes, side by side:</p>
+      <div class="vs-table">
+        <div class="vs-col col-gb">
+          <h3>🇬🇧 Great Britain</h3>
+          <span class="vs-label">What did they want?</span>
+          <ul><li><strong>Expand</strong> their territory</li><li>Secure land and trade</li></ul>
+          <span class="vs-label">Allies</span>
+          <ul><li>The <strong>Iroquois</strong> tribes</li><li>Some colonists</li></ul>
+          <span class="vs-label">Advantages</span>
+          <ul><li><strong>Lots of population</strong> + a strong <button class="term" data-en="navy" data-es="marina / armada" data-def="Los barcos de guerra de un país. La marina británica era la más poderosa del mundo.">navy</button></li><li>Sent lots of soldiers and money</li></ul>
+          <span class="vs-label">Cons (weaknesses)</span>
+          <ul><li>Wore bright <strong>red coats</strong> — easy targets! 🎯</li><li>Did <strong>not</strong> know how to fight in a forest</li></ul>
+        </div>
+        <div class="vs-col col-fr">
+          <h3>🇫🇷 France</h3>
+          <span class="vs-label">What did they want?</span>
+          <ul><li><strong>Protect</strong> trade routes</li><li>Link <strong>Canada and Louisiana</strong></li></ul>
+          <span class="vs-label">Allies</span>
+          <ul><li><strong>Many</strong> Native American tribes</li><li>Spain 🇪🇸</li></ul>
+          <span class="vs-label">Advantages</span>
+          <ul><li>Great <strong>forts</strong>, used <strong>surprise attacks</strong></li><li>Knew how to <strong>survive in the woods</strong></li></ul>
+          <span class="vs-label">Cons (weaknesses)</span>
+          <ul><li><strong>Very few people</strong> in America</li></ul>
         </div>
       </div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>🇬🇧 Gran Bretaña — ¿Qué quería?</strong> Expandir su territorio; asegurar tierra y comercio. <strong>Aliados:</strong> las tribus iroquesas y algunos colonos. <strong>Ventajas:</strong> mucha población + una marina fuerte; mandó muchos soldados y dinero. <strong>Contras:</strong> usaban casacas rojas brillantes (¡blancos fáciles!) y NO sabían pelear en el bosque. — <strong>🇫🇷 Francia — ¿Qué quería?</strong> Proteger las rutas de comercio; conectar Canadá con Luisiana. <strong>Aliados:</strong> MUCHAS tribus nativas americanas, y España. <strong>Ventajas:</strong> grandes fuertes, ataques sorpresa, y sabían sobrevivir en el bosque. <strong>Contras:</strong> muy poca gente en América.</div>
+    </div>
 
-      <!-- COMPLETA -->
-      <div class="qblock" id="qbFill">
-        <span class="qkind">✍️ Completa el texto</span>
-        <div class="q">
-          <div class="qtext">Toca una palabra del banco y luego el espacio donde va. (Para quitarla, toca el espacio.)</div>
-          <div class="bank" id="wordBank"></div>
-          <p class="fillpar">
-            El sistema excretor elimina las sustancias
-            <span class="slot empty" data-answer="tóxicas">______</span>
-            producidas en las
-            <span class="slot empty" data-answer="células">______</span>,
-            y mantiene el
-            <span class="slot empty" data-answer="equilibrio">______</span>
-            de agua y sales. Su unidad más pequeña en el riñón es la
-            <span class="slot empty" data-answer="nefrona">______</span>.
-          </p>
-          <div class="feedback" id="fillFb"></div>
-        </div>
+    <div class="card side-fr">
+      <h3>🔑 Why did so many tribes prefer France?</h3>
+      <p>This is the heart of YOUR debate. France had <strong>very few people</strong> in America — and that was actually a reason to trust them: French <button class="term" data-en="traders" data-es="comerciantes" data-def="Personas que viven de comprar y vender. Los comerciantes franceses intercambiaban herramientas y telas por pieles.">traders</button> didn't come to take land and build farms. They came to <strong>trade as partners</strong>. Many learned Native languages, lived in Native villages, and even married into Native families.</p>
+      <p style="margin-top:.5rem">Meanwhile, the British colonies kept <strong>growing west</strong>, pushing into Native land. The big exception: the <strong>Iroquois</strong>, who chose Britain — partly because their old rivals (like the Huron) traded with France.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Este es el corazón de TU debate. Francia tenía <strong>muy poca gente</strong> en América — y justamente por eso era confiable: los comerciantes franceses no venían a quitar tierra y construir granjas, venían a <strong>comerciar como socios</strong>. Muchos aprendieron idiomas nativos, vivieron en aldeas nativas y hasta se casaron con familias nativas. Mientras tanto, las colonias británicas crecían hacia el oeste, metiéndose en tierra nativa. La gran excepción: los <strong>iroqueses</strong>, que eligieron a Gran Bretaña — en parte porque sus viejos rivales (como los hurones) comerciaban con Francia.</div>
+    </div>
+
+    <div class="card">
+      <h3>✅ Quick check</h3>
+      <p class="q-text">What was France's biggest weakness?</p>
+      <button class="opt" onclick="quickCheck(this,false,'No — that was BRITAIN\'s weakness! The redcoats were easy to see between the trees.','No — ¡esa era la debilidad de GRAN BRETAÑA! Las casacas rojas eran fáciles de ver entre los árboles.')">Bright red coats</button>
+      <button class="opt" onclick="quickCheck(this,false,'The opposite! Knowing the woods was France\'s ADVANTAGE — their Native allies taught them.','¡Al revés! Conocer el bosque era la VENTAJA de Francia — sus aliados nativos les enseñaron.')">They didn't know the forest</button>
+      <button class="opt" onclick="quickCheck(this,true,'Right! Very few French people lived in America. Strong forts and many allies… but a tiny population compared to the 13 colonies.','¡Correcto! Muy pocos franceses vivían en América. Fuertes poderosos y muchos aliados… pero una población diminuta comparada con las 13 colonias.')">Very few people in America</button>
+      <div class="fb"></div>
+    </div>
+    <div class="lesson-nav">
+      <button class="btn btn-ghost" onclick="goLesson('l3')">← Back</button>
+      <button class="btn" onclick="finishLesson('l4','l5')">Mark as done · Next lesson →</button>
+    </div>
+  </div>
+
+  <!-- LESSON 5 -->
+  <div class="subpage" id="lesson-l5">
+    <div class="card side-gold">
+      <h2>Lesson 5 · The Result 🏆</h2>
+      <p><strong style="color:var(--gb)">Great Britain won.</strong> The war officially ended with a <button class="term" data-en="treaty" data-es="tratado" data-def="Acuerdo oficial firmado entre países para terminar una guerra y repartir territorios. Este fue el Tratado de París (1763).">treaty</button> — the <strong>Treaty of Paris (1763)</strong> — and the map of North America was completely redrawn:</p>
+      <div style="margin-top:.8rem">
+        <p><span class="chip chip-gb">🇬🇧 Great Britain</span> took the territory they won: <strong>Canada</strong> (from France) and <strong>Florida</strong> (from Spain), plus the Atlantic coast. Britain now controls the east of (what will be) the USA.</p>
+        <p style="margin-top:.55rem"><span class="chip chip-gold">🇪🇸 Spain</span> won <strong>Louisiana</strong>, which France gave to them as a thank-you for being allies. (Louisiana in 1763 = a HUGE territory in the middle of the continent, much bigger than today's state!)</p>
+        <p style="margin-top:.55rem"><span class="chip chip-fr">🇫🇷 France</span> was <strong>kicked out of North America</strong>. They only kept a few small islands.</p>
       </div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>Ganó Gran Bretaña.</strong> La guerra terminó oficialmente con un tratado — el <strong>Tratado de París (1763)</strong> — y el mapa de América del Norte se redibujó por completo: <strong>🇬🇧 Gran Bretaña</strong> se quedó con el territorio que ganó: <strong>Canadá</strong> (de Francia) y <strong>Florida</strong> (de España), más la costa atlántica — ahora controla el este de (lo que será) Estados Unidos. <strong>🇪🇸 España</strong> ganó <strong>Luisiana</strong>, que Francia le regaló como agradecimiento por ser aliada. (¡Luisiana en 1763 era un territorio ENORME en el medio del continente, mucho más grande que el estado actual!) <strong>🇫🇷 Francia</strong> fue <strong>expulsada de América del Norte</strong> — solo conservó unas pequeñas islas.</div>
+    </div>
 
-      <button class="gradebtn" id="gradeBtn">📊 Ver mi calificación</button>
+    <div class="card side-nat">
+      <h3>And the Native Americans? 💔</h3>
+      <p>They were the <strong>biggest losers</strong> of the war — even the ones who fought WITH the winners. With France gone, there was no one to balance British power. British <button class="term" data-en="settlers" data-es="colonos (que se instalan)" data-def="Colonos que llegan para quedarse a vivir: construyen granjas, casas y cercas en la tierra.">settlers</button> flooded west into Native land. Many Native people <strong>died</strong> — from war, disease, and losing their land. France's old allies were left <strong>alone and fearful</strong>.</p>
+      <p style="margin-top:.5rem">Britain tried to calm things down by <strong>drawing a line</strong> (the Proclamation Line of 1763) that colonists could not cross… but the colonists ignored it — and got angry at Britain. Seeds of the American Revolution! 🌱</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Fueron los <strong>grandes perdedores</strong> de la guerra — incluso los que pelearon CON los ganadores. Sin Francia, no quedaba nadie para equilibrar el poder británico. Los colonos británicos inundaron el oeste, metiéndose en tierra nativa. Muchos nativos <strong>murieron</strong> — por la guerra, las enfermedades y la pérdida de su tierra. Los viejos aliados de Francia quedaron <strong>solos y con miedo</strong>. Gran Bretaña intentó calmar las cosas <strong>dibujando una línea</strong> (la Línea de Proclamación de 1763) que los colonos no podían cruzar… pero los colonos la ignoraron — y se enojaron con Gran Bretaña. ¡Semillas de la Revolución Americana! 🌱</div>
+    </div>
 
-      <!-- RESULT -->
-      <div class="result" id="result">
-        <div class="scorebig" id="scoreNum">0<span>/20</span></div>
-        <div class="stars" id="stars"></div>
-        <div class="verdict" id="verdict"></div>
-        <div class="review" id="review"></div>
-        <button class="retry" id="retryBtn">🔄 Intentar de nuevo</button>
+    <div class="fact-box">For your debate: <em>"even Britain's own Native allies lost their land after the victory"</em> is one of the most powerful arguments you can use. Who is the true friend now?
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Para tu debate: <em>"hasta los propios aliados nativos de Gran Bretaña perdieron su tierra después de la victoria"</em> es uno de los argumentos más poderosos que podés usar. ¿Quién es el verdadero amigo ahora?</div>
+    </div>
+
+    <div class="card">
+      <h3>✅ Quick check</h3>
+      <p class="q-text">Who received Louisiana in the Treaty?</p>
+      <button class="opt" onclick="quickCheck(this,false,'No — Britain took Canada, Florida and the Atlantic coast. Louisiana went to someone else.','No — Gran Bretaña se quedó con Canadá, Florida y la costa atlántica. Luisiana fue para otro.')">Great Britain</button>
+      <button class="opt" onclick="quickCheck(this,true,'Yes! France gave Louisiana to Spain as a thank-you gift for being their ally in the war.','¡Sí! Francia le regaló Luisiana a España como agradecimiento por haber sido su aliada en la guerra.')">Spain</button>
+      <button class="opt" onclick="quickCheck(this,false,'Sadly no — the Native Americans, who actually lived there, received nothing. They were the biggest losers of the treaty.','Tristemente no — los nativos americanos, que de hecho vivían ahí, no recibieron nada. Fueron los grandes perdedores del tratado.')">The Native Americans</button>
+      <div class="fb"></div>
+    </div>
+    <div class="lesson-nav">
+      <button class="btn btn-ghost" onclick="goLesson('l4')">← Back</button>
+      <button class="btn btn-gold" onclick="finishLesson('l5',null);goPage('practice')">Done! Go practice →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PRACTICE ==================== -->
+<div class="page" id="page-practice">
+  <div class="eyebrow">Exercises · Ejercicios</div>
+  <h1>Practice</h1>
+  <p class="lead">Five exercises, each scored out of <strong>20</strong>. Wrong answers always come with an explanation — that's how you learn! 💪</p>
+  <div class="prog-row" id="practiceProg"></div>
+  <div class="pills">
+    <button class="pill active" data-l="e1" onclick="goEx('e1')">⛓ Timeline</button>
+    <button class="pill" data-l="e2" onclick="goEx('e2')">🎽 Team Sorter</button>
+    <button class="pill" data-l="e3" onclick="goEx('e3')">✅ True / False</button>
+    <button class="pill" data-l="e4" onclick="goEx('e4')">🔘 Multiple Choice</button>
+    <button class="pill" data-l="e5" onclick="goEx('e5')">✍️ Fill the Gap</button>
+  </div>
+
+  <!-- E1 TIMELINE -->
+  <div class="subpage active" id="ex-e1">
+    <div class="card">
+      <h2>⛓ Build the Timeline</h2>
+      <p>Tap the events <strong>in the order they happened</strong>. If you tap the wrong one, you'll get a hint — and lose a few points, so think first!</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Tocá los eventos <strong>en el orden en que ocurrieron</strong>. Si tocás el equivocado, vas a recibir una pista — y perdés algunos puntos, ¡así que pensá primero!</div>
+    </div>
+    <ol class="tl-built" id="tlBuilt"></ol>
+    <div class="tl-hint" id="tlHint"></div>
+    <div class="tl-pool" id="tlPool"></div>
+    <div class="score-panel" id="tlScore"></div>
+  </div>
+
+  <!-- E2 TEAM SORTER -->
+  <div class="subpage" id="ex-e2">
+    <div class="card">
+      <h2>🎽 Team Sorter</h2>
+      <p>Whose fact is this — <strong style="color:var(--gb)">Great Britain</strong> or <strong style="color:var(--fr)">France</strong>? Tap the right team for each card.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">¿De quién es este dato — <strong>Gran Bretaña</strong> o <strong>Francia</strong>? Tocá el equipo correcto en cada tarjeta.</div>
+    </div>
+    <div id="sorterList"></div>
+    <div class="score-panel" id="sorterScore"></div>
+  </div>
+
+  <!-- E3 TRUE/FALSE -->
+  <div class="subpage" id="ex-e3">
+    <div class="card">
+      <h2>✅ True or False</h2>
+      <p>Ten statements. Every answer — right or wrong — comes with the full explanation.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Diez afirmaciones. Cada respuesta — correcta o incorrecta — viene con la explicación completa.</div>
+    </div>
+    <div id="tfList"></div>
+    <div class="score-panel" id="tfScore"></div>
+  </div>
+
+  <!-- E4 MULTIPLE CHOICE -->
+  <div class="subpage" id="ex-e4">
+    <div class="card">
+      <h2>🔘 Multiple Choice</h2>
+      <p>Ten questions covering everything. Tap 🇪🇸 on any question if you need the Spanish version.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Diez preguntas que cubren todo el material. Tocá 🇪🇸 en cualquier pregunta si necesitás la versión en español.</div>
+    </div>
+    <div id="mcList"></div>
+    <div class="score-panel" id="mcScore"></div>
+  </div>
+
+  <!-- E5 GAP FILL -->
+  <div class="subpage" id="ex-e5">
+    <div class="card">
+      <h2>✍️ Fill the Gap</h2>
+      <p>Complete each sentence by tapping the correct word.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Completá cada oración tocando la palabra correcta.</div>
+    </div>
+    <div id="gapList"></div>
+    <div class="score-panel" id="gapScore"></div>
+  </div>
+</div>
+
+<!-- ==================== DEBATE ==================== -->
+<div class="page" id="page-debate">
+  <div class="eyebrow">Round 2 · Debate preparation</div>
+  <h1>Debate Prep 🎤</h1>
+  <p class="lead">Six steps to be unbeatable. Work through them in order.</p>
+  <div class="pills">
+    <button class="pill active" data-l="d1" onclick="goDeb('d1')">1 · Mission</button>
+    <button class="pill" data-l="d2" onclick="goDeb('d2')">2 · Your Case 🛡</button>
+    <button class="pill" data-l="d3" onclick="goDeb('d3')">3 · Their Case ⚔️</button>
+    <button class="pill" data-l="d4" onclick="goDeb('d4')">4 · Phrase Trainer</button>
+    <button class="pill" data-l="d5" onclick="goDeb('d5')">5 · Story & Speech</button>
+    <button class="pill" data-l="d6" onclick="goDeb('d6')">6 · Simulator 🥊</button>
+  </div>
+
+  <!-- D1 MISSION -->
+  <div class="subpage active" id="deb-d1">
+    <div class="card mission-card">
+      <h2>Step 1 · Know your mission</h2>
+      <p><strong>The question of Round 2:</strong> <em>"Who is a true friend to the Native Americans — and who is just using them?"</em></p>
+      <p style="margin-top:.6rem">You are a <span class="chip chip-fr">🇫🇷 French soldier / colonist</span> and your partner Gregorio plays your <span class="chip chip-nat">🪶 Native American ally</span>. Together with De Freitas–Alayón, you must prove that <strong>France is the true friend</strong> — and that Britain is just using the Natives.</p>
+      <h3>The rules</h3>
+      <p>⏱ <strong>1 to 2 minutes</strong> to speak in your round.<br>
+      📖 You may <strong>invent personal stories</strong> ("I was there in the forest when…") — but <strong>never change the historical facts</strong>.<br>
+      🗣 Use the phrases your teacher gave you (you'll practice them in Step 4).</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>La pregunta del Round 2:</strong> <em>"¿Quién es un verdadero amigo de los nativos americanos — y quién solo los está usando?"</em> Vos sos una <strong>soldado/colona francesa</strong> y tu compañero Gregorio interpreta a su <strong>aliado nativo americano</strong>. Junto con De Freitas–Alayón, deben demostrar que <strong>Francia es la verdadera amiga</strong> — y que Gran Bretaña solo usa a los nativos. <strong>Las reglas:</strong> 1 a 2 minutos para hablar; podés inventar historias personales pero nunca cambiar los hechos históricos; usá las frases que dio la profesora (las practicás en el Paso 4).</div>
+    </div>
+    <div class="card side-gold">
+      <h3>🧠 The winning strategy</h3>
+      <p>Debates are won with <strong>facts + emotion</strong>. Your plan:</p>
+      <p style="margin-top:.4rem"><strong>1.</strong> Open with who you are (your character).<br>
+      <strong>2.</strong> Hit them with your strongest fact (Step 2).<br>
+      <strong>3.</strong> Attack their weakest point (Step 3).<br>
+      <strong>4.</strong> Close with emotion — what happened to the Natives after Britain won.</p>
+      <p style="margin-top:.5rem">And remember: speak <strong>with</strong> your partner, not over him. You are the soldier; Gregorio is the living proof that Natives chose France. Let him confirm what you say! 🤝</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Los debates se ganan con <strong>hechos + emoción</strong>. Tu plan: <strong>1)</strong> Abrí presentando tu personaje. <strong>2)</strong> Golpeá con tu dato más fuerte (Paso 2). <strong>3)</strong> Atacá su punto más débil (Paso 3). <strong>4)</strong> Cerrá con emoción — lo que les pasó a los nativos después de que ganó Gran Bretaña. Y recordá: hablá <strong>con</strong> tu compañero, no por encima de él. Vos sos la soldado; Gregorio es la prueba viviente de que los nativos eligieron a Francia. ¡Dejalo confirmar lo que decís! 🤝</div>
+    </div>
+    <div class="lesson-nav"><span></span><button class="btn" onclick="goDeb('d2')">Build your case →</button></div>
+  </div>
+
+  <!-- D2 YOUR CASE -->
+  <div class="subpage" id="deb-d2">
+    <div class="card">
+      <h2>Step 2 · Build your case 🛡</h2>
+      <p>Your five strongest arguments. Learn them — each one comes with the evidence AND a ready-to-say sentence.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Tus cinco argumentos más fuertes. Aprendelos — cada uno viene con la evidencia Y una frase lista para decir.</div>
+    </div>
+
+    <div class="card arg-card">
+      <h3>1 · Partners, not invaders 🤝</h3>
+      <p><strong>The fact:</strong> France came for the <strong>fur trade</strong>, not for land. French traders needed Native nations strong and free — dead or poor partners can't trade!</p>
+      <div class="say">"We French came to trade WITH the Natives, as partners and equals — not to take their land."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>El hecho:</strong> Francia vino por el <strong>comercio de pieles</strong>, no por la tierra. Los comerciantes franceses necesitaban naciones nativas fuertes y libres — ¡los socios muertos o pobres no pueden comerciar! <strong>Decilo así:</strong> "Nosotros los franceses vinimos a comerciar CON los nativos, como socios e iguales — no a quitarles su tierra."</div>
+    </div>
+
+    <div class="card arg-card">
+      <h3>2 · Few people = no land stealing 🏞</h3>
+      <p><strong>The fact:</strong> France had <strong>very few people in America</strong> (it's in your notes — as a "con"!). Turn that weakness into your weapon: few French = no waves of settlers taking Native hunting grounds. Britain's 13 colonies kept growing west into Native land.</p>
+      <div class="say">"Look at the map: thousands of British settlers pushing west with fences and farms. And us? A few traders living IN the Native villages."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>El hecho:</strong> Francia tenía <strong>muy poca gente en América</strong> (¡está en tus notas — como una "contra"!). Convertí esa debilidad en tu arma: pocos franceses = nada de olas de colonos quitando los territorios de caza nativos. Las 13 colonias británicas crecían sin parar hacia el oeste, metiéndose en tierra nativa. <strong>Decilo así:</strong> "Miren el mapa: miles de colonos británicos avanzando al oeste con cercas y granjas. ¿Y nosotros? Unos pocos comerciantes viviendo EN las aldeas nativas."</div>
+    </div>
+
+    <div class="card arg-card">
+      <h3>3 · We lived together 🏡</h3>
+      <p><strong>The fact:</strong> French traders learned Native <strong>languages</strong>, lived in Native villages, followed Native customs, and many <strong>married into Native families</strong>. That's why the French "knew how to survive in the woods" — their Native friends taught them!</p>
+      <div class="say">"As a French soldier, I know that our Native allies taught us how to survive in the woods. We lived together — the British live behind walls."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>El hecho:</strong> Los comerciantes franceses aprendieron los <strong>idiomas</strong> nativos, vivieron en aldeas nativas, siguieron costumbres nativas y muchos <strong>se casaron con familias nativas</strong>. ¡Por eso los franceses "sabían sobrevivir en el bosque" — sus amigos nativos les enseñaron! <strong>Decilo así:</strong> "Como soldado francesa, sé que nuestros aliados nativos nos enseñaron a sobrevivir en el bosque. Vivíamos juntos — los británicos viven detrás de muros."</div>
+    </div>
+
+    <div class="card arg-card">
+      <h3>4 · The Natives chose US 🪶</h3>
+      <p><strong>The fact:</strong> Straight from your notes — France's allies: <strong>MANY Native American tribes</strong> (plus Spain). Britain's allies: the Iroquois and <em>some</em> colonists. If Britain was such a good friend… why did most tribes choose France? The Natives voted with their alliances.</p>
+      <div class="say">"We can prove that many tribes chose France as their ally. Actions speak louder than words — and the Natives' actions chose us."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>El hecho:</strong> Directo de tus notas — aliados de Francia: <strong>MUCHAS tribus nativas americanas</strong> (más España). Aliados de Gran Bretaña: los iroqueses y <em>algunos</em> colonos. Si Gran Bretaña era tan buena amiga… ¿por qué la mayoría de las tribus eligió a Francia? Los nativos votaron con sus alianzas. <strong>Decilo así:</strong> "Podemos demostrar que muchas tribus eligieron a Francia como su aliada. Los hechos hablan más que las palabras — y los hechos de los nativos nos eligieron a nosotros."</div>
+    </div>
+
+    <div class="card arg-card">
+      <h3>5 · Look what happened when Britain won 💔</h3>
+      <p><strong>The fact:</strong> Your strongest, most emotional argument — from your own notes: after Britain's victory, Native Americans <strong>died</strong> and lost their land… <strong>even the tribes that fought WITH Britain</strong>. Settlers flooded west the moment France was gone. A "true friend" doesn't do that to its allies.</p>
+      <div class="say">"You want proof? Look at what happened after your victory: even YOUR Iroquois allies lost their land. That is not friendship — that is using people."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>El hecho:</strong> Tu argumento más fuerte y emocional — de tus propias notas: después de la victoria británica, los nativos americanos <strong>murieron</strong> y perdieron su tierra… <strong>incluso las tribus que pelearon CON Gran Bretaña</strong>. Los colonos inundaron el oeste apenas Francia desapareció. Un "verdadero amigo" no le hace eso a sus aliados. <strong>Decilo así:</strong> "¿Quieren pruebas? Miren lo que pasó después de su victoria: hasta SUS aliados iroqueses perdieron su tierra. Eso no es amistad — eso es usar a la gente."</div>
+    </div>
+    <div class="lesson-nav"><button class="btn btn-ghost" onclick="goDeb('d1')">← Back</button><button class="btn" onclick="goDeb('d3')">Attack their case →</button></div>
+  </div>
+
+  <!-- D3 THEIR CASE -->
+  <div class="subpage" id="deb-d3">
+    <div class="card">
+      <h2>Step 3 · Attack their case ⚔️</h2>
+      <p>García–Pirela and Blanco–Gherghi will defend Britain. Here's what they will probably say — and exactly how you answer. A debate is won by whoever is <strong>ready for the other side's arguments</strong>.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">García–Pirela y Blanco–Gherghi van a defender a Gran Bretaña. Esto es lo que probablemente digan — y exactamente cómo responder. Un debate lo gana quien está <strong>preparado para los argumentos del otro lado</strong>.</div>
+    </div>
+
+    <div class="card atk-card">
+      <div class="atk-they">"The Iroquois Confederacy — the strongest Native alliance — chose US, not you!"</div>
+      <div class="atk-you">"ONE confederacy chose you. MANY tribes chose France. And ask the Iroquois what they got after your victory: settlers on their land. Some friend!"</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>Dirán:</strong> "¡La Confederación Iroquesa — la alianza nativa más fuerte — nos eligió a NOSOTROS, no a ustedes!" <strong>Respondés:</strong> "UNA confederación los eligió. MUCHAS tribus eligieron a Francia. Y pregúntenles a los iroqueses qué recibieron después de su victoria: colonos en su tierra. ¡Vaya amigo!"</div>
+    </div>
+
+    <div class="card atk-card">
+      <div class="atk-they">"We gave the Natives better and cheaper trade goods!"</div>
+      <div class="atk-you">"Trade is not friendship. You traded to take their land afterwards; we traded to live together. We learned their languages and married into their families. Did your colonists do that?"</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>Dirán:</strong> "¡Nosotros les dimos a los nativos productos mejores y más baratos!" <strong>Respondés:</strong> "Comerciar no es amistad. Ustedes comerciaban para después quedarse con su tierra; nosotros comerciábamos para vivir juntos. Aprendimos sus idiomas y nos casamos con sus familias. ¿Sus colonos hicieron eso?"</div>
+    </div>
+
+    <div class="card atk-card">
+      <div class="atk-they">"France just USED the Natives as soldiers in YOUR war!"</div>
+      <div class="atk-you">"They fought beside us because the Ohio Valley is THEIR land too. We protected the trade routes we shared — your colonists wanted the land itself, to fence it and farm it."</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>Dirán:</strong> "¡Francia solo USÓ a los nativos como soldados en SU guerra!" <strong>Respondés:</strong> "Pelearon a nuestro lado porque el valle del Ohio también es SU tierra. Nosotros protegíamos las rutas de comercio que compartíamos — sus colonos querían la tierra misma, para cercarla y cultivarla."</div>
+    </div>
+
+    <div class="card atk-card">
+      <div class="atk-they">"At the end France abandoned the Natives — you even gave Louisiana away!"</div>
+      <div class="atk-you">"We lost a war, and the treaty took our lands — we had no choice. But while we were in America, we never pushed tribes off their territory. Your settlers crossed the mountains the moment we left. Who abandoned whom?"</div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>Dirán:</strong> "¡Al final Francia abandonó a los nativos — hasta regalaron Luisiana!" <strong>Respondés:</strong> "Perdimos una guerra, y el tratado nos quitó las tierras — no tuvimos opción. Pero mientras estuvimos en América, nunca expulsamos a las tribus de su territorio. Sus colonos cruzaron las montañas apenas nos fuimos. ¿Quién abandonó a quién?"</div>
+    </div>
+    <div class="lesson-nav"><button class="btn btn-ghost" onclick="goDeb('d2')">← Back</button><button class="btn" onclick="goDeb('d4')">Train your phrases →</button></div>
+  </div>
+
+  <!-- D4 PHRASE TRAINER -->
+  <div class="subpage" id="deb-d4">
+    <div class="card">
+      <h2>Step 4 · Phrase Trainer 🗣</h2>
+      <p>Your teacher gave you debate phrases. For each one, choose the <strong>best way to complete it</strong> — a strong argument uses facts, not insults or jokes. Scored out of 20.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">La profesora les dio frases para el debate. Para cada una, elegí la <strong>mejor forma de completarla</strong> — un argumento fuerte usa hechos, no insultos ni chistes. Puntaje sobre 20.</div>
+    </div>
+    <div id="phraseList"></div>
+    <div class="score-panel" id="phraseScore"></div>
+  </div>
+
+  <!-- D5 STORY & SPEECH -->
+  <div class="subpage" id="deb-d5">
+    <div class="card">
+      <h2>Step 5 · Story Builder 📖</h2>
+      <p>The rules say you can invent a personal story ("I was there in the forest when…"). A good story makes your character REAL. Pick one option from each row and I'll build you a starter:</p>
+      <h3>Where were you?</h3>
+      <div class="sb-row" data-g="where">
+        <button class="sb-chip" onclick="sbPick(this,'where','in a Huron village near the Great Lakes')">A Huron village 🛖</button>
+        <button class="sb-chip" onclick="sbPick(this,'where','at Fort Duquesne, in the Ohio River Valley')">Fort Duquesne 🏰</button>
+        <button class="sb-chip" onclick="sbPick(this,'where','deep in the forest, on a fur-trading route')">A trading route 🌲</button>
+      </div>
+      <h3>What happened?</h3>
+      <div class="sb-row" data-g="what">
+        <button class="sb-chip" onclick="sbPick(this,'what','our Native allies shared their food with us during the hardest winter')">They shared food in winter 🍲</button>
+        <button class="sb-chip" onclick="sbPick(this,'what','a Native elder taught me to move through the woods without a sound')">An elder taught me the woods 🦉</button>
+        <button class="sb-chip" onclick="sbPick(this,'what','I saw a French trader marry into a Native family, with both peoples celebrating')">A wedding of two peoples 💍</button>
+      </div>
+      <h3>What did you learn?</h3>
+      <div class="sb-row" data-g="learn">
+        <button class="sb-chip" onclick="sbPick(this,'learn','that we were not visitors — we were family')">We were family</button>
+        <button class="sb-chip" onclick="sbPick(this,'learn','that true friends share what they have, even in war')">Friends share everything</button>
+        <button class="sb-chip" onclick="sbPick(this,'learn','that respect cannot be bought with trade goods')">Respect can't be bought</button>
+      </div>
+      <div class="sb-out" id="sbOut"></div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Las reglas dicen que podés inventar una historia personal ("Yo estaba en el bosque cuando…"). Una buena historia hace REAL a tu personaje. Elegí una opción de cada fila y te armo el comienzo. Después podés adaptarla con tus palabras — lo importante: la historia puede ser inventada, ¡pero los hechos históricos de fondo deben ser reales!</div>
+    </div>
+
+    <div class="card">
+      <h2>Your speech ✍️</h2>
+      <p>Build your 1–2 minute speech with this structure. Here's a complete example you can adapt:</p>
+      <div class="say" style="background:var(--fr-soft);border-radius:10px;padding:.9rem 1rem;margin:.6rem 0;font-size:.95rem">
+        <strong>1. Who I am:</strong> "As a French soldier, I have lived ten years among the Native nations…"<br><br>
+        <strong>2. My story:</strong> "I was there in the forest when our allies shared their food with us during the hardest winter."<br><br>
+        <strong>3. Strongest fact:</strong> "We can prove that MANY tribes chose France — while only the Iroquois chose Britain. The Natives voted with their alliances."<br><br>
+        <strong>4. Attack:</strong> "The British say they are friends — but their colonists keep pushing west, taking Native land for farms. Trade is not friendship!"<br><br>
+        <strong>5. Closing:</strong> "A true friend lives WITH you, learns your language, shares your winter. That is France. Thank you."
+      </div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block"><strong>1. Quién soy:</strong> "Como soldado francesa, viví diez años entre las naciones nativas…" <strong>2. Mi historia:</strong> "Yo estaba en el bosque cuando nuestros aliados compartieron su comida con nosotros en el invierno más duro." <strong>3. Dato más fuerte:</strong> "Podemos demostrar que MUCHAS tribus eligieron a Francia — mientras que solo los iroqueses eligieron a Gran Bretaña. Los nativos votaron con sus alianzas." <strong>4. Ataque:</strong> "Los británicos dicen ser amigos — pero sus colonos siguen avanzando al oeste, quitando tierra nativa para sus granjas. ¡Comerciar no es amistad!" <strong>5. Cierre:</strong> "Un verdadero amigo vive CON vos, aprende tu idioma, comparte tu invierno. Esa es Francia. Gracias."</div>
+      <h3>Write yours here:</h3>
+      <textarea class="speech" id="speechBox" placeholder="As a French soldier, I..."></textarea>
+      <p style="font-size:.85rem;color:var(--ink-dim);margin-top:.3rem">💾 Your speech saves automatically on this device.</p>
+    </div>
+
+    <div class="card">
+      <h2>⏱ Time your speech</h2>
+      <p>Read your speech <strong>out loud</strong> and press Start. Your goal: finish inside the <strong style="color:var(--ok)">green zone (1:00–2:00)</strong>.</p>
+      <div class="timer-wrap">
+        <div class="timer-display zone-early" id="timerDisplay">0:00</div>
+        <div class="timer-bar"><div class="fill" id="timerFill"></div></div>
+        <div class="timer-marks"><span>0:00</span><span style="color:var(--ok);font-weight:700">1:00 ✓</span><span style="color:var(--bad);font-weight:700">2:00 ✗</span><span>2:30</span></div>
+        <div class="timer-verdict" id="timerVerdict"></div>
+        <button class="btn btn-gold" id="timerBtn" onclick="timerToggle()">▶ Start</button>
+        <button class="btn btn-ghost" onclick="timerReset()">↺ Reset</button>
+      </div>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">Leé tu discurso <strong>en voz alta</strong> y apretá Start. Tu objetivo: terminar dentro de la <strong>zona verde (1:00–2:00)</strong>. Practicalo varias veces hasta que te salga natural — ¡no hace falta memorizarlo palabra por palabra, solo las ideas!</div>
+    </div>
+    <div class="lesson-nav"><button class="btn btn-ghost" onclick="goDeb('d4')">← Back</button><button class="btn" onclick="goDeb('d6')">Final test: Simulator →</button></div>
+  </div>
+
+  <!-- D6 SIMULATOR -->
+  <div class="subpage" id="deb-d6">
+    <div class="card">
+      <h2>Step 6 · Debate Simulator 🥊</h2>
+      <p>The British team attacks — you choose the best comeback. Watch out: some answers <em>sound</em> strong but are weak (insults, lies, or no facts). Scored out of 20.</p>
+      <button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>
+      <div class="es-block">El equipo británico ataca — vos elegís la mejor respuesta. Ojo: algunas respuestas <em>suenan</em> fuertes pero son débiles (insultos, mentiras, o sin hechos). Puntaje sobre 20.</div>
+    </div>
+    <div id="simList"></div>
+    <div class="score-panel" id="simScore"></div>
+    <div class="card side-gold" style="margin-top:1.2rem">
+      <h3>🏅 Debate Readiness</h3>
+      <p style="font-size:.92rem;color:var(--ink-dim)">Your combined score from all exercises:</p>
+      <div class="ready-grid" id="readyGrid"></div>
+      <div style="text-align:center;margin-top:1rem">
+        <div class="score-big" id="readyBig">— <small>/ 20</small></div>
+        <div class="score-msg" id="readyMsg"></div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<footer>
-  Hecho con 💚 para repasar el <b>Sistema Excretor</b> · Biología · Basado en tus apuntes
-</footer>
+<!-- ==================== WORD BANK ==================== -->
+<div class="page" id="page-wordbank">
+  <div class="eyebrow">Vocabulary & key concepts · Vocabulario y conceptos</div>
+  <h1>Word Bank 📚</h1>
+  <p class="lead" style="margin-bottom:1rem">Everything you might need to look up — already here. Search in English or Spanish.</p>
+  <input class="wb-search" id="wbSearch" type="text" placeholder="🔍 Search… (e.g. treaty / tratado)" oninput="wbFilter()">
+  <h2>Words · Palabras</h2>
+  <div class="wb-grid" id="wbWords"></div>
+  <h2 style="margin-top:1.6rem">People & Places · Personas y lugares</h2>
+  <div class="wb-grid" id="wbConcepts"></div>
+</div>
+
+<!-- term bottom sheet -->
+<div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <button class="sheet-close" onclick="closeSheet()" aria-label="Cerrar">✕</button>
+  <div class="sheet-word" id="sheetWord"></div>
+  <div class="sheet-es" id="sheetEs"></div>
+  <div class="sheet-def" id="sheetDef"></div>
+</div>
 
 <script>
-/* =========================================================
-   1. Limpieza interactiva (definición)
-   ========================================================= */
-const toxField = document.getElementById('toxField');
-const cleanBtn = document.getElementById('cleanBtn');
-const toxLabels = ['☠','💩','🧂','💧','☠','🧂','💩','💧'];
-function buildTox(){
-  toxField.innerHTML='';
-  toxLabels.forEach((t,i)=>{
-    const d=document.createElement('div');
-    d.className='tox';
-    d.textContent=t;
-    d.style.left=(8+ (i%4)*24 + Math.random()*6)+'%';
-    d.style.top=(15+Math.floor(i/4)*42 + Math.random()*8)+'%';
-    d.style.background=['#FF6F5E','#7C6CE0','#FFC23C','#3FA9F5'][i%4];
-    toxField.appendChild(d);
-  });
+/* ================= STATE & STORAGE ================= */
+const S = { scores:{}, lessons:{}, speech:'' };
+function save(){ try{ localStorage.setItem('fiw_state', JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem('fiw_state'); if(r) Object.assign(S, JSON.parse(r)); }catch(e){} }
+load();
+
+/* ================= NAV ================= */
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.page===p));
+  window.scrollTo({top:0});
+  if(p==='practice') renderProg();
+  if(p==='debate') renderReady();
 }
-buildTox();
-cleanBtn.addEventListener('click',()=>{
-  const toxs=[...toxField.querySelectorAll('.tox')];
-  toxs.forEach((t,i)=>setTimeout(()=>t.classList.add('gone'), i*90));
-  cleanBtn.textContent='✨ ¡Cuerpo limpio!';
-  setTimeout(()=>{buildTox();cleanBtn.textContent='🧹 Limpiar de nuevo';},2200);
-});
-
-/* =========================================================
-   2. Flip cards
-   ========================================================= */
-document.querySelectorAll('.flip').forEach(c=>{
-  c.addEventListener('click',()=>c.classList.toggle('is-flipped'));
-});
-
-/* =========================================================
-   3. Acordeón de órganos
-   ========================================================= */
-document.querySelectorAll('.organ-head').forEach(h=>{
-  h.addEventListener('click',()=>{
-    const o=h.parentElement, body=h.nextElementSibling;
-    const open=o.classList.toggle('open');
-    body.style.maxHeight = open ? body.scrollHeight+'px' : 0;
-  });
-});
-
-/* =========================================================
-   4. Nefrona interactiva
-   ========================================================= */
-const nephInfo={
-  corpusculo:{t:'Corpúsculo renal (Glomérulo) 🔴',x:'Es donde empieza todo. La sangre llega cargada de urea, sal y agua, y aquí se FILTRA: lo que sobra pasa hacia el túbulo.'},
-  tubular:{t:'Túbulo (parte tubular) 🔵',x:'Aquí ocurre la magia del ahorro: el cuerpo REABSORBE el agua y las sales que todavía necesita y las devuelve a la sangre. Lo que no sirve sigue de largo.'},
-  colector:{t:'Tubo colector de orina 💛',x:'Recoge el líquido final con los desechos. Eso ya es ORINA, lista para salir del cuerpo.'}
-};
-const nephTitle=document.getElementById('nephTitle');
-const nephText=document.getElementById('nephText');
-document.querySelectorAll('.hot').forEach(h=>{
-  const act=()=>{const k=h.dataset.part;nephTitle.textContent=nephInfo[k].t;nephText.textContent=nephInfo[k].x;};
-  h.addEventListener('click',act);
-  h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
-});
-// step player
-const reab=document.getElementById('reabArrows');
-const d1=document.getElementById('d1'),d2=document.getElementById('d2'),d3=document.getElementById('d3');
-const stepData={
-  1:{t:'Paso 1 · Filtración',x:'En el corpúsculo renal, la sangre se filtra. La urea, el agua y las sales salen de la sangre y entran a la nefrona.'},
-  2:{t:'Paso 2 · Reabsorción',x:'En el túbulo, el cuerpo recupera el agua y las sales que SÍ necesita (flechas rojas) y las regresa a la sangre.'},
-  3:{t:'Paso 3 · Excreción',x:'Lo que quedó (urea + agua sobrante) baja por el tubo colector y se convierte en ORINA.'}
-};
-function resetDots(){
-  d1.setAttribute('cx',40);d1.setAttribute('cy',92);
-  d2.setAttribute('cx',40);d2.setAttribute('cy',110);
-  d3.setAttribute('cx',40);d3.setAttribute('cy',128);
-  d1.style.opacity=d2.style.opacity=d3.style.opacity=1;
-  reab.style.opacity=0;
+function subNav(prefix, id, pillsSelector){
+  document.querySelectorAll('[id^="'+prefix+'"]').forEach(x=>x.classList.remove('active'));
+  document.getElementById(prefix+id).classList.add('active');
+  document.querySelectorAll(pillsSelector+' .pill').forEach(t=>t.classList.toggle('active', t.dataset.l===id));
+  window.scrollTo({top:0});
 }
-function moveDot(el,x,y,op){el.style.transition='all .9s ease';el.setAttribute('cx',x);el.setAttribute('cy',y);if(op!=null)el.style.opacity=op;}
-document.querySelectorAll('.stepbtn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.stepbtn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    const s=b.dataset.step;
-    nephTitle.textContent=stepData[s].t;nephText.textContent=stepData[s].x;
-    resetDots();
-    if(s==='1'){ // into glomerulus
-      setTimeout(()=>{moveDot(d1,120,70);moveDot(d2,124,76);moveDot(d3,116,76);},50);
-    }
-    if(s==='2'){ // into tubule + reabsorption
-      moveDot(d1,120,70);moveDot(d2,124,76);moveDot(d3,116,76);
-      setTimeout(()=>{moveDot(d1,150,200);moveDot(d2,160,180);moveDot(d3,150,150);},80);
-      setTimeout(()=>{reab.style.transition='opacity .4s';reab.style.opacity=1;moveDot(d3,100,200,0);},900); // water reabsorbed
-    }
-    if(s==='3'){ // out as urine
-      moveDot(d1,150,200);moveDot(d2,160,180);d3.style.opacity=0;
-      setTimeout(()=>{moveDot(d1,213,235);moveDot(d2,213,220);},80);
-    }
-  });
-});
+function goLesson(id){ subNav('lesson-', id, '#page-learn'); }
+function goEx(id){ subNav('ex-', id, '#page-practice'); }
+function goDeb(id){ subNav('deb-', id, '#page-debate'); if(id==='d6') renderReady(); }
 
-/* =========================================================
-   5. QUIZ DATA
-   ========================================================= */
-const vfData=[
-  {q:'El sistema excretor mantiene el equilibrio de agua y sales en el cuerpo.',a:true,
-   why:'Verdadero: además de sacar lo tóxico, su otra gran tarea es controlar cuánta agua y sales hay en el cuerpo.'},
-  {q:'La piel NO participa en la excreción de desechos.',a:false,
-   why:'Falso: la piel SÍ excreta. Con las glándulas sudoríparas elimina agua, sales y algo de urea por el sudor.'},
-  {q:'La urea se vuelve tóxica cuando está en altas concentraciones.',a:true,
-   why:'Verdadero: en poca cantidad se elimina sin problema, pero acumulada en alta concentración se vuelve tóxica.'},
-  {q:'El CO₂ acumulado hace que la sangre se vuelva más básica (alcalina).',a:false,
-   why:'Falso: es justo lo contrario. Si el CO₂ se acumula, ACIDIFICA la sangre (la vuelve más ácida).'},
-  {q:'La nefrona es la unidad estructural y funcional del riñón.',a:true,
-   why:'Verdadero: la nefrona es el filtro más pequeño del riñón; cada riñón tiene cerca de un millón.'}
-];
-const mcData=[
-  {q:'¿Cuál es la excreta del riñón?',o:['Sudor','Orina','Vaho','Lágrimas'],a:1,
-   why:'El riñón forma la orina y la elimina por micción. El sudor es de la piel y el vaho de los pulmones.'},
-  {q:'¿Con qué mecanismo la piel elimina desechos?',o:['Micción','Expiración','Sudoración','Filtración'],a:2,
-   why:'La piel suda: usa la sudoración. La micción es del riñón y la expiración es de los pulmones.'},
-  {q:'¿Qué desecho expulsan los pulmones?',o:['Urea','Sales','Dióxido de carbono (CO₂)','Agua'],a:2,
-   why:'Al exhalar, los pulmones expulsan el CO₂. La urea y las sales salen por el riñón y la piel.'},
-  {q:'¿Cuántos componentes tiene el sistema excretor?',o:['2','3','4','5'],a:1,
-   why:'Son 3: aparato urinario (riñón), piel y aparato respiratorio (pulmones).'},
-  {q:'¿Qué puede pasar si se acumulan las sales?',o:['Se desequilibran los químicos y se altera la temperatura','Mejora la digestión','Crece el pelo más rápido','Nada, son inofensivas'],a:0,
-   why:'Las sales en exceso desequilibran los químicos del cuerpo y alteran la temperatura; por eso hay que eliminarlas.'}
-];
-const matchPairs=[
-  {organo:'Riñón',excreta:'Orina',why:'El riñón filtra la sangre con sus nefronas y forma orina (urea + agua + sales), que sale por micción.'},
-  {organo:'Piel',excreta:'Sudor',why:'La piel, con las glándulas sudoríparas, produce sudor (agua, sales y algo de urea) por sudoración.'},
-  {organo:'Pulmones',excreta:'Vaho / exhalación',why:'Los pulmones expulsan el CO₂ al exhalar; ese aire húmedo es el vaho.'}
-];
-const fillWords=[
-  {w:'tóxicas',why:'"tóxicas" porque el sistema excretor saca las sustancias dañinas que el cuerpo no quiere acumular.'},
-  {w:'células',why:'"células" porque esos desechos se producen dentro de las células al hacer su trabajo.'},
-  {w:'equilibrio',why:'"equilibrio" porque su otra gran función es mantener la cantidad justa de agua y sales.'},
-  {w:'nefrona',why:'"nefrona" porque es la unidad estructural y funcional del riñón: su filtro más pequeño.'}
-];
-const fillAnswers=fillWords.map(o=>o.w);
-
-/* ---- render VF ---- */
-const qbVF=document.getElementById('qbVF');
-vfData.forEach((item,i)=>{
-  const q=document.createElement('div');q.className='q';q.dataset.idx=i;
-  q.innerHTML=`<div class="qtext"><span class="n">${i+1}.</span> ${item.q}</div>
-   <div class="vf opts">
-     <button class="opt" data-v="true"><span class="mk">V</span>Verdadero</button>
-     <button class="opt" data-v="false"><span class="mk">F</span>Falso</button>
-   </div>
-   <div class="feedback"></div>`;
-  qbVF.appendChild(q);
-});
-/* ---- render MC ---- */
-const qbMC=document.getElementById('qbMC');
-mcData.forEach((item,i)=>{
-  const q=document.createElement('div');q.className='q';q.dataset.idx=i;
-  const letters=['A','B','C','D'];
-  q.innerHTML=`<div class="qtext"><span class="n">${i+1}.</span> ${item.q}</div>
-    <div class="opts">${item.o.map((op,j)=>`<button class="opt" data-v="${j}"><span class="mk">${letters[j]}</span>${op}</button>`).join('')}</div>
-    <div class="feedback"></div>`;
-  qbMC.appendChild(q);
-});
-/* generic single-select handler for VF + MC */
-function wireSelect(block){
-  block.querySelectorAll('.q').forEach(q=>{
-    q.querySelectorAll('.opt').forEach(opt=>{
-      opt.addEventListener('click',()=>{
-        q.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
-        opt.classList.add('sel');
-      });
-    });
-  });
+function finishLesson(id, next){
+  S.lessons[id]=true; save();
+  document.getElementById('done-'+id).textContent='✓';
+  if(next) goLesson(next);
 }
-wireSelect(qbVF);wireSelect(qbMC);
+Object.keys(S.lessons).forEach(id=>{ const el=document.getElementById('done-'+id); if(el) el.textContent='✓'; });
 
-/* ---- render MATCH ---- */
-const matchA=document.getElementById('matchA'),matchB=document.getElementById('matchB');
-const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
-let pickedA=null;
-const matchState={}; // organo -> chosen excreta
-shuffle(matchPairs).forEach(p=>{
-  const t=document.createElement('button');t.className='mtoken';t.textContent=p.organo;t.dataset.organo=p.organo;
-  matchA.appendChild(t);
+/* ================= SPANISH TOGGLES ================= */
+function toggleES(btn){
+  const block = btn.nextElementSibling;
+  const show = !block.classList.contains('show');
+  block.classList.toggle('show', show);
+  btn.innerHTML = show ? '✕ Ocultar español' : '🇪🇸 Ver en español';
+}
+
+/* ================= TERM SHEET ================= */
+document.addEventListener('click', e=>{
+  const t = e.target.closest('.term');
+  if(!t) return;
+  document.getElementById('sheetWord').textContent = t.dataset.en || t.textContent;
+  document.getElementById('sheetEs').textContent = '🇪🇸 ' + t.dataset.es;
+  document.getElementById('sheetDef').textContent = t.dataset.def;
+  document.getElementById('sheetBackdrop').classList.add('show');
+  document.getElementById('sheet').classList.add('show');
 });
-shuffle(matchPairs).forEach(p=>{
-  const t=document.createElement('button');t.className='mtoken';t.textContent=p.excreta;t.dataset.excreta=p.excreta;
-  matchB.appendChild(t);
-});
-matchA.querySelectorAll('.mtoken').forEach(t=>{
-  t.addEventListener('click',()=>{
-    if(t.classList.contains('done'))return;
-    matchA.querySelectorAll('.mtoken').forEach(x=>x.classList.remove('pickA'));
-    pickedA=t;t.classList.add('pickA');
-  });
-});
-matchB.querySelectorAll('.mtoken').forEach(t=>{
-  t.addEventListener('click',()=>{
-    if(!pickedA||t.classList.contains('done'))return;
-    matchState[pickedA.dataset.organo]=t.dataset.excreta;
-    pickedA.classList.remove('pickA');pickedA.classList.add('done');
-    t.classList.add('done');
-    pickedA.textContent=pickedA.dataset.organo+' → '+t.dataset.excreta;
-    pickedA=null;
-  });
-});
+function closeSheet(){
+  document.getElementById('sheetBackdrop').classList.remove('show');
+  document.getElementById('sheet').classList.remove('show');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSheet(); });
 
-/* ---- render FILL ---- */
-const wordBank=document.getElementById('wordBank');
-let pickedWord=null;
-shuffle(fillWords).forEach(o=>{
-  const b=document.createElement('button');b.className='word';b.textContent=o.w;b.dataset.w=o.w;
-  b.addEventListener('click',()=>{
-    if(b.classList.contains('used'))return;
-    wordBank.querySelectorAll('.word').forEach(x=>x.style.outline='');
-    pickedWord=b;b.style.outline='3px solid #173A3B';
-  });
-  wordBank.appendChild(b);
-});
-document.querySelectorAll('.slot').forEach(slot=>{
-  slot.addEventListener('click',()=>{
-    // if slot already filled -> return word to bank
-    if(slot.dataset.filled){
-      const back=[...wordBank.querySelectorAll('.word')].find(w=>w.dataset.w===slot.dataset.filled);
-      if(back)back.classList.remove('used');
-      slot.dataset.filled='';slot.textContent='______';slot.classList.add('empty');slot.classList.remove('ok','no');
-      return;
-    }
-    if(!pickedWord)return;
-    slot.textContent=pickedWord.dataset.w;slot.classList.remove('empty');
-    slot.dataset.filled=pickedWord.dataset.w;
-    pickedWord.classList.add('used');pickedWord.style.outline='';pickedWord=null;
-  });
-});
-
-/* =========================================================
-   6. CALIFICAR
-   ========================================================= */
-const gradeBtn=document.getElementById('gradeBtn');
-const result=document.getElementById('result');
-gradeBtn.addEventListener('click',()=>{
-  let correct=0;const total=vfData.length+mcData.length+matchPairs.length+fillWords.length;
-  const wrongTopics=[];
-
-  // VF
-  qbVF.querySelectorAll('.q').forEach(q=>{
-    const i=+q.dataset.idx, sel=q.querySelector('.opt.sel');
-    const fb=q.querySelector('.feedback');fb.className='feedback show';
-    const right=String(vfData[i].a);
-    q.querySelectorAll('.opt').forEach(o=>{
-      if(o.dataset.v===right)o.classList.add('correct');
-      if(o.classList.contains('sel')&&o.dataset.v!==right)o.classList.add('wrong');
-    });
-    if(sel&&sel.dataset.v===right){correct++;fb.classList.add('ok');fb.textContent='✔ ¡Correcto! '+vfData[i].why;}
-    else{fb.classList.add('no');fb.textContent='✘ '+(sel?'No es correcto. ':'Te faltó responder. ')+vfData[i].why;if(!wrongTopics.includes('Verdadero/Falso'))wrongTopics.push('Verdadero/Falso');}
-  });
-
-  // MC
-  qbMC.querySelectorAll('.q').forEach(q=>{
-    const i=+q.dataset.idx, sel=q.querySelector('.opt.sel');
-    const fb=q.querySelector('.feedback');fb.className='feedback show';
-    const right=String(mcData[i].a);
-    q.querySelectorAll('.opt').forEach(o=>{
-      if(o.dataset.v===right)o.classList.add('correct');
-      if(o.classList.contains('sel')&&o.dataset.v!==right)o.classList.add('wrong');
-    });
-    if(sel&&sel.dataset.v===right){correct++;fb.classList.add('ok');fb.textContent='✔ ¡Bien! '+mcData[i].why;}
-    else{fb.classList.add('no');fb.textContent='✘ '+(sel?'No es correcto. ':'Te faltó responder. ')+'La respuesta es "'+mcData[i].o[mcData[i].a]+'". '+mcData[i].why;if(!wrongTopics.includes('Opción múltiple'))wrongTopics.push('Opción múltiple');}
-  });
-
-  // MATCH
-  let matchOk=0; const matchRows=[];
-  matchA.querySelectorAll('.mtoken').forEach(t=>{
-    const org=t.dataset.organo;const chosen=matchState[org];
-    const pair=matchPairs.find(p=>p.organo===org); const right=pair.excreta;
-    if(chosen){t.classList.add('done');t.classList.toggle('ok',chosen===right);t.classList.toggle('no',chosen!==right);}
-    const ok=chosen===right; if(ok)matchOk++;
-    const mark = ok?'✔':'✘';
-    const head = ok ? `${org} → ${right}` : (chosen ? `${org}: pusiste "${chosen}", pero va con "${right}"` : `${org}: sin responder, va con "${right}"`);
-    matchRows.push(`<div class="exline ${ok?'ok':'no'}"><b>${mark} ${head}.</b> ${pair.why}</div>`);
-  });
-  correct+=matchOk;
-  const matchFb=document.getElementById('matchFb');matchFb.className='feedback show '+(matchOk===matchPairs.length?'ok':'no');
-  matchFb.innerHTML=(matchOk===matchPairs.length?'✔ ¡Todas las parejas correctas!':`Acertaste ${matchOk} de ${matchPairs.length}.`)+'<div class="exlist">'+matchRows.join('')+'</div>';
-  if(matchOk<matchPairs.length)wrongTopics.push('Relacionar órganos');
-
-  // FILL
-  let fillOk=0; const fillRows=[];
-  document.querySelectorAll('.slot').forEach((slot,k)=>{
-    const right=slot.dataset.answer, got=slot.dataset.filled;
-    const meta=fillWords.find(o=>o.w===right);
-    const ok=got===right;
-    if(ok){fillOk++;slot.classList.add('ok');}
-    else{slot.classList.add('no');if(!got){slot.textContent=right;}}
-    const mark = ok?'✔':'✘';
-    const head = ok ? `Espacio ${k+1}: ${right}` : (got ? `Espacio ${k+1}: pusiste "${got}", iba "${right}"` : `Espacio ${k+1}: vacío, iba "${right}"`);
-    fillRows.push(`<div class="exline ${ok?'ok':'no'}"><b>${mark} ${head}.</b> ${meta.why}</div>`);
-  });
-  correct+=fillOk;
-  const fillFb=document.getElementById('fillFb');fillFb.className='feedback show '+(fillOk===fillWords.length?'ok':'no');
-  fillFb.innerHTML=(fillOk===fillWords.length?'✔ ¡Texto completo y correcto!':`Acertaste ${fillOk} de ${fillWords.length} espacios.`)+'<div class="exlist">'+fillRows.join('')+'</div>';
-  if(fillOk<fillWords.length)wrongTopics.push('Completar la definición');
-
-  // SCORE /20
-  const score=Math.round(correct/total*20);
-  document.getElementById('scoreNum').innerHTML=score+'<span>/20</span>';
-  const filled=Math.round(score/4);
-  document.getElementById('stars').textContent='⭐'.repeat(filled)+'☆'.repeat(5-filled);
-  const verdict=document.getElementById('verdict');
-  let msg;
-  if(score>=18)msg='🏆 ¡Excelente! Dominas el sistema excretor.';
-  else if(score>=14)msg='💪 ¡Muy bien! Casi perfecto.';
-  else if(score>=10)msg='🙂 ¡Vas bien! Un repasito y lo logras.';
-  else msg='📚 ¡Ánimo! Repasa y vuelve a intentarlo, tú puedes.';
-  verdict.textContent=msg;
-
-  const review=document.getElementById('review');
-  if(wrongTopics.length===0){
-    review.innerHTML='🎉 ¡Respondiste todo correctamente! No tienes nada que repasar. ¡Increíble!';
-  }else{
-    review.innerHTML='📌 <b>Para repasar:</b> '+wrongTopics.join(', ')+'.<br>Vuelve a las partes de arriba para reforzar esos temas.';
+/* ================= QUICK CHECK (lessons, not scored) ================= */
+function quickCheck(btn, ok, expEn, expEs){
+  const card = btn.closest('.card');
+  card.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; if(o!==btn) o.classList.add('faded'); });
+  btn.classList.add(ok?'correct':'wrong');
+  const fb = card.querySelector('.fb');
+  fb.className = 'fb show ' + (ok?'good':'bad');
+  fb.innerHTML = (ok?'✅ ':'❌ ') + expEn + '<span class="fb-es">🇪🇸 ' + expEs + '</span>';
+  if(!ok){
+    card.querySelectorAll('.opt').forEach(o=>{ o.disabled=false; o.classList.remove('faded'); });
+    btn.disabled = true; btn.classList.add('faded');
   }
+}
 
-  result.classList.add('show');
-  result.scrollIntoView({behavior:'smooth',block:'center'});
-});
+/* ================= SCORING HELPERS ================= */
+function score20(correct, total){ return Math.round(correct/total*20); }
+function scoreMsg(s){
+  if(s>=18) return ['🏆 Outstanding! You are more than ready.','¡Sobresaliente! Estás más que lista.'];
+  if(s>=14) return ['💪 Great job! Review your mistakes and you\'ll be perfect.','¡Muy bien! Repasá tus errores y vas a estar perfecta.'];
+  if(s>=10) return ['📖 Good start — read the explanations and try again.','Buen comienzo — leé las explicaciones y volvé a intentar.'];
+  return ['🌱 Don\'t worry! Go back to the lessons and come back stronger.','¡No te preocupes! Volvé a las lecciones y regresá más fuerte.'];
+}
+function showScore(panelId, key, correct, total, resetFn){
+  const s = score20(correct, total);
+  S.scores[key]=s; save();
+  const m = scoreMsg(s);
+  const p = document.getElementById(panelId);
+  p.innerHTML = '<div class="score-big">'+s+' <small>/ 20</small></div>'
+    + '<div class="score-msg">'+m[0]+'</div><div class="score-msg-es">🇪🇸 '+m[1]+'</div>'
+    + '<button class="btn btn-ghost" onclick="'+resetFn+'()">↺ Try again · Reintentar</button>';
+  p.classList.add('show');
+  renderProg(); renderReady();
+}
+const EX_LABELS = {timeline:'Timeline',sorter:'Team Sorter',tf:'True/False',mc:'Multiple Choice',gap:'Fill the Gap',phrase:'Phrases',sim:'Simulator'};
+function renderProg(){
+  const row = document.getElementById('practiceProg');
+  if(!row) return;
+  row.innerHTML = ['timeline','sorter','tf','mc','gap'].map(k=>{
+    const v = S.scores[k];
+    return '<span class="prog-chip'+(v!=null?' scored':'')+'">'+EX_LABELS[k]+': '+(v!=null? v+'/20':'—')+'</span>';
+  }).join('');
+}
 
-/* RETRY */
-document.getElementById('retryBtn').addEventListener('click',()=>location.reload());
+/* ================= E1 TIMELINE ================= */
+const TL = [
+  {t:'Britain and France both claim the Ohio River Valley', w:'The starting tension: a rich valley full of land, resources and trade connections — on Native land.',
+   h:'Think about the very beginning: before any forts or fights, two countries wanted the same valley.', hes:'Pensá en el comienzo: antes de fuertes o peleas, dos países querían el mismo valle.'},
+  {t:'France builds forts in the valley', w:'France protects its trade routes and the link between Canada and Louisiana.',
+   h:'After claiming the valley, France made its move: building something to defend it.', hes:'Después de reclamar el valle, Francia hizo su jugada: construir algo para defenderlo.'},
+  {t:'Jumonville is killed by Half-King during Washington\'s ambush', w:'The spark! A small fight in the forest that lit a world war.',
+   h:'Next comes the famous "spark" — Washington\'s ambush in the forest.', hes:'Ahora viene la famosa "chispa" — la emboscada de Washington en el bosque.'},
+  {t:'Washington surrenders at Fort Necessity and signs the "written confession"', w:'France strikes back; Washington signs a paper in French (which he can\'t read!) admitting Jumonville was "assassinated". Perfect propaganda for France.',
+   h:'After the ambush, France struck back — and Washington had to give up at a fort and sign something…', hes:'Después de la emboscada, Francia contraatacó — y Washington tuvo que rendirse en un fuerte y firmar algo…'},
+  {t:'War is officially declared — the Seven Years\' War begins in Europe', w:'In 1756 the conflict became official and spread around the world.',
+   h:'With the spark lit and the confession signed, the conflict becomes official and goes global.', hes:'Con la chispa encendida y la confesión firmada, el conflicto se vuelve oficial y se hace mundial.'},
+  {t:'Britain wins — the Treaty of Paris ends the war (1763)', w:'The map is redrawn: Britain takes Canada and Florida, Spain gets Louisiana, France is kicked out of North America.',
+   h:'Last step: how does it all end?', hes:'Último paso: ¿cómo termina todo?'}
+];
+let tlNext=0, tlFirstTryOK=0, tlTriedThisStep=false;
+function tlInit(){
+  tlNext=0; tlFirstTryOK=0; tlTriedThisStep=false;
+  document.getElementById('tlBuilt').innerHTML='';
+  document.getElementById('tlHint').classList.remove('show');
+  document.getElementById('tlScore').classList.remove('show');
+  const pool=document.getElementById('tlPool');
+  const order=[...TL.keys()].sort(()=>Math.random()-.5);
+  pool.innerHTML = order.map(i=>'<button class="tl-event" data-i="'+i+'" onclick="tlTap(this)">'+TL[i].t+'</button>').join('');
+}
+function tlTap(btn){
+  const i=+btn.dataset.i;
+  const hint=document.getElementById('tlHint');
+  if(i===tlNext){
+    if(!tlTriedThisStep) tlFirstTryOK++;
+    btn.classList.add('placed');
+    hint.classList.remove('show');
+    const li=document.createElement('li');
+    li.innerHTML='<span class="n">'+(tlNext+1)+'</span><span><strong>'+TL[i].t+'</strong><span class="why">'+TL[i].w+'</span></span>';
+    document.getElementById('tlBuilt').appendChild(li);
+    tlNext++; tlTriedThisStep=false;
+    if(tlNext===TL.length) showScore('tlScore','timeline',tlFirstTryOK,TL.length,'tlInit');
+  }else{
+    tlTriedThisStep=true;
+    btn.classList.add('shake');
+    setTimeout(()=>btn.classList.remove('shake'),400);
+    hint.innerHTML='🤔 Not yet! <strong>Hint:</strong> '+TL[tlNext].h+'<span class="fb-es" style="display:block;margin-top:.4rem;font-style:italic">🇪🇸 '+TL[tlNext].hes+'</span>';
+    hint.classList.add('show');
+  }
+}
+
+/* ================= E2 TEAM SORTER ================= */
+const SORT = [
+  {t:'Lots of population and a strong navy', a:'gb', w:'Britain\'s 13 colonies had MANY more people, and the British navy ruled the seas.', wes:'Las 13 colonias británicas tenían MUCHA más gente, y la marina británica dominaba los mares.'},
+  {t:'Knew how to survive in the woods', a:'fr', w:'The French learned forest skills from their Native allies — they lived together.', wes:'Los franceses aprendieron a manejarse en el bosque gracias a sus aliados nativos — vivían juntos.'},
+  {t:'Wore bright red coats — easy targets in a forest', a:'gb', w:'The famous "redcoats"! Great for European battlefields, terrible for forest fighting.', wes:'¡Las famosas "casacas rojas"! Geniales para batallas europeas, terribles para pelear en el bosque.'},
+  {t:'Very few people in America', a:'fr', w:'France\'s big weakness — but also why Natives trusted them: few French meant no waves of settlers.', wes:'La gran debilidad de Francia — pero también la razón por la que los nativos confiaban: pocos franceses = nada de olas de colonos.'},
+  {t:'Allied with the Iroquois tribes and some colonists', a:'gb', w:'Britain\'s main Native ally was the powerful Iroquois Confederacy.', wes:'El principal aliado nativo de Gran Bretaña fue la poderosa Confederación Iroquesa.'},
+  {t:'Allied with MANY Native American tribes and Spain', a:'fr', w:'Most tribes chose France — plus Spain joined the French side.', wes:'La mayoría de las tribus eligió a Francia — y además España se unió al bando francés.'},
+  {t:'Wanted to expand territory and secure land and trade', a:'gb', w:'The 13 colonies were growing and hungry for western land.', wes:'Las 13 colonias estaban creciendo y querían más tierra hacia el oeste.'},
+  {t:'Wanted to link Canada and Louisiana', a:'fr', w:'France\'s dream: connect its two big territories through the rivers — including the Ohio.', wes:'El sueño de Francia: conectar sus dos grandes territorios a través de los ríos — incluido el Ohio.'},
+  {t:'Sent lots of soldiers and money', a:'gb', w:'Britain invested heavily in the war — a key advantage.', wes:'Gran Bretaña invirtió muchísimo en la guerra — una ventaja clave.'},
+  {t:'Built great forts and used surprise attacks', a:'fr', w:'Strong forts (like Fort Duquesne) plus Native-style surprise attacks.', wes:'Fuertes poderosos (como Fort Duquesne) más ataques sorpresa al estilo nativo.'},
+  {t:'Did not know how to fight in a forest', a:'gb', w:'British soldiers were trained for open European battlefields, not American woods.', wes:'Los soldados británicos estaban entrenados para campos de batalla europeos abiertos, no para los bosques americanos.'},
+  {t:'Wanted to protect trade routes', a:'fr', w:'Trade — especially the fur trade — was the heart of New France.', wes:'El comercio — sobre todo el de pieles — era el corazón de Nueva Francia.'}
+];
+let sortOK=0, sortDone=0;
+function sorterInit(){
+  sortOK=0; sortDone=0;
+  document.getElementById('sorterScore').classList.remove('show');
+  document.getElementById('sorterList').innerHTML = SORT.map((c,i)=>
+    '<div class="sort-card" id="sc'+i+'"><div class="st">'+c.t+'</div>'
+    +'<div class="sort-btns">'
+    +'<button class="opt" onclick="sortPick('+i+',\'gb\',this)">🇬🇧 Great Britain</button>'
+    +'<button class="opt" onclick="sortPick('+i+',\'fr\',this)">🇫🇷 France</button>'
+    +'</div><div class="fb"></div></div>'
+  ).join('');
+}
+function sortPick(i, pick, btn){
+  const c=SORT[i], card=document.getElementById('sc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = pick===c.a;
+  if(ok) sortOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt').forEach(o=>{ if(o!==btn) o.classList.add('correct'); });
+  card.classList.add(c.a==='gb'?'got-gb':'got-fr');
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=(ok?'✅ ':'❌ It was '+(c.a==='gb'?'Great Britain':'France')+'! ')+c.w+'<span class="fb-es">🇪🇸 '+c.wes+'</span>';
+  sortDone++;
+  if(sortDone===SORT.length) showScore('sorterScore','sorter',sortOK,SORT.length,'sorterInit');
+}
+
+/* ================= E3 TRUE/FALSE ================= */
+const TF = [
+  {t:'The French and Indian War is also called the Seven Years\' War.', a:true,
+   w:'It was a worldwide war. In America it started in 1754; in Europe in 1756 — and those 7 European years give it the name.', wes:'Fue una guerra mundial. En América empezó en 1754; en Europa en 1756 — y esos 7 años europeos le dan el nombre.'},
+  {t:'The war began over the Mississippi River Valley.', a:false,
+   w:'It was the OHIO River Valley — rich in resources and trade connections, and claimed by both Britain and France.', wes:'Fue el valle del río OHIO — rico en recursos y conexiones comerciales, y reclamado por Gran Bretaña y Francia a la vez.'},
+  {t:'George Washington fought in this war on the British side.', a:true,
+   w:'Yes! He was a 21-year-old officer from Virginia. In 1754 the USA doesn\'t exist yet — the colonists are British.', wes:'¡Sí! Era un oficial de Virginia de 21 años. En 1754 Estados Unidos todavía no existe — los colonos son británicos.'},
+  {t:'Washington never surrendered in his entire life.', a:false,
+   w:'He surrendered at Fort Necessity (1754) and signed the famous "written confession" — in French, which he couldn\'t read!', wes:'Se rindió en Fort Necessity (1754) y firmó la famosa "confesión escrita" — ¡en francés, que no sabía leer!'},
+  {t:'The UK is made of England, Wales, Scotland and Northern Ireland.', a:true,
+   w:'Exactly — and don\'t confuse it with the 13 colonies, which are in America and will later become the US.', wes:'Exacto — y no lo confundas con las 13 colonias, que están en América y más adelante se convertirán en Estados Unidos.'},
+  {t:'France had more colonists in America than Britain.', a:false,
+   w:'The opposite! "Very few people in America" was France\'s great weakness. Britain had lots of population.', wes:'¡Al revés! "Muy poca gente en América" era la gran debilidad de Francia. Gran Bretaña tenía mucha población.'},
+  {t:'All Native American tribes fought on the same side.', a:false,
+   w:'Native nations were many and different. The Iroquois sided with Britain; many other tribes sided with France.', wes:'Las naciones nativas eran muchas y diferentes. Los iroqueses se aliaron con Gran Bretaña; muchas otras tribus con Francia.'},
+  {t:'In many Native nations, women had real power.', a:true,
+   w:'Gender equality was real — Iroquois women owned the family home and chose (and could remove) the chiefs.', wes:'La igualdad de género era real — las mujeres iroquesas eran dueñas de la casa familiar y elegían (y podían sacar) a los jefes.'},
+  {t:'After the war, France kept Canada.', a:false,
+   w:'France LOST Canada to Britain and was kicked out of North America — it only kept a few small islands.', wes:'Francia PERDIÓ Canadá ante Gran Bretaña y fue expulsada de América del Norte — solo conservó unas pequeñas islas.'},
+  {t:'Native Americans lost land even though some fought WITH the winners.', a:true,
+   w:'The saddest truth of the war: even Britain\'s Iroquois allies lost their land when settlers flooded west. Remember this for your debate!', wes:'La verdad más triste de la guerra: hasta los aliados iroqueses de Gran Bretaña perdieron su tierra cuando los colonos inundaron el oeste. ¡Recordalo para tu debate!'}
+];
+let tfOK=0, tfDone=0;
+function tfInit(){
+  tfOK=0; tfDone=0;
+  document.getElementById('tfScore').classList.remove('show');
+  document.getElementById('tfList').innerHTML = TF.map((q,i)=>
+    '<div class="q-card" id="tfc'+i+'"><div class="q-num">STATEMENT '+(i+1)+' / '+TF.length+'</div>'
+    +'<div class="q-text">'+q.t+'</div>'
+    +'<div class="tf-row">'
+    +'<button class="opt" onclick="tfPick('+i+',true,this)">✓ True</button>'
+    +'<button class="opt" onclick="tfPick('+i+',false,this)">✗ False</button>'
+    +'</div><div class="fb"></div></div>'
+  ).join('');
+}
+function tfPick(i, pick, btn){
+  const q=TF[i], card=document.getElementById('tfc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = pick===q.a;
+  if(ok) tfOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt').forEach(o=>{ if(o!==btn) o.classList.add('correct'); });
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=(ok?'✅ Correct — ':'❌ It\'s '+(q.a?'TRUE':'FALSE')+' — ')+q.w+'<span class="fb-es">🇪🇸 '+q.wes+'</span>';
+  tfDone++;
+  if(tfDone===TF.length) showScore('tfScore','tf',tfOK,TF.length,'tfInit');
+}
+
+/* ================= E4 MULTIPLE CHOICE ================= */
+const MC = [
+  {q:'When did the French and Indian War take place?', qes:'¿Cuándo ocurrió la Guerra Franco-India?',
+   o:['1754–1763','1776–1783','1812–1815'], oes:['1754–1763','1776–1783','1812–1815'], a:0,
+   w:'1754–1763. (1776–1783 is the American Revolution; 1812–1815 is the War of 1812.)', wes:'1754–1763. (1776–1783 es la Revolución Americana; 1812–1815 es la Guerra de 1812.)'},
+  {q:'What is the OTHER name of this war?', qes:'¿Cuál es el OTRO nombre de esta guerra?',
+   o:['The Hundred Years\' War','The Seven Years\' War','The Cold War'], oes:['La Guerra de los Cien Años','La Guerra de los Siete Años','La Guerra Fría'], a:1,
+   w:'The Seven Years\' War — in Europe the fighting lasted from 1756 to 1763.', wes:'La Guerra de los Siete Años — en Europa la pelea duró de 1756 a 1763.'},
+  {q:'Where did the war begin?', qes:'¿Dónde empezó la guerra?',
+   o:['The Mississippi Delta','The Hudson Valley','The Ohio River Valley'], oes:['El delta del Misisipi','El valle del Hudson','El valle del río Ohio'], a:2,
+   w:'The Ohio River Valley — rich land with trade connections, claimed by Britain AND France… and home to Native nations.', wes:'El valle del río Ohio — tierra rica con conexiones comerciales, reclamada por Gran Bretaña Y Francia… y hogar de naciones nativas.'},
+  {q:'Who killed the French officer Jumonville?', qes:'¿Quién mató al oficial francés Jumonville?',
+   o:['George Washington himself','Half-King (Tanaghrisson)','A British general'], oes:['El propio George Washington','Half-King (Tanaghrisson)','Un general británico'], a:1,
+   w:'Half-King, the Native leader allied with Washington, killed Jumonville during the ambush. That moment was the spark of the war.', wes:'Half-King, el líder nativo aliado de Washington, mató a Jumonville durante la emboscada. Ese momento fue la chispa de la guerra.'},
+  {q:'What was the "written confession"?', qes:'¿Qué fue la "confesión escrita"?',
+   o:['A document Washington signed admitting Jumonville was "assassinated"','A peace treaty between the two kings','Washington\'s personal diary'], oes:['Un documento que Washington firmó admitiendo que Jumonville fue "asesinado"','Un tratado de paz entre los dos reyes','El diario personal de Washington'], a:0,
+   w:'When he surrendered at Fort Necessity, Washington signed a paper in French — which he couldn\'t read — admitting an "assassination". France used it as propaganda.', wes:'Al rendirse en Fort Necessity, Washington firmó un papel en francés — que no sabía leer — admitiendo un "asesinato". Francia lo usó como propaganda.'},
+  {q:'Why did Britain feel threatened before the war?', qes:'¿Por qué Gran Bretaña se sentía amenazada antes de la guerra?',
+   o:['France was about to invade London','French land and forts blocked the 13 colonies from expanding west','The Natives had declared war on Britain'], oes:['Francia estaba por invadir Londres','La tierra y los fuertes franceses bloqueaban la expansión de las 13 colonias hacia el oeste','Los nativos le habían declarado la guerra a Gran Bretaña'], a:1,
+   w:'The 13 colonies wanted land and trade to the west — but France controlled it. That tension started everything.', wes:'Las 13 colonias querían tierra y comercio hacia el oeste — pero Francia lo controlaba. Esa tensión empezó todo.'},
+  {q:'What was France\'s main goal?', qes:'¿Cuál era el objetivo principal de Francia?',
+   o:['Conquer the 13 colonies','Find gold in the mountains','Protect trade routes and link Canada with Louisiana'], oes:['Conquistar las 13 colonias','Encontrar oro en las montañas','Proteger las rutas de comercio y conectar Canadá con Luisiana'], a:2,
+   w:'France wanted to protect its fur-trade routes and connect its two big territories: Canada and Louisiana.', wes:'Francia quería proteger sus rutas del comercio de pieles y conectar sus dos grandes territorios: Canadá y Luisiana.'},
+  {q:'Which was a BRITISH weakness?', qes:'¿Cuál era una debilidad BRITÁNICA?',
+   o:['Bright red coats + no idea how to fight in a forest','Very few people in America','Weak navy'], oes:['Casacas rojas brillantes + no saber pelear en el bosque','Muy poca gente en América','Una marina débil'], a:0,
+   w:'The redcoats were easy targets between the trees, and British soldiers were trained for open battlefields. (Few people = France\'s weakness; the British navy was STRONG.)', wes:'Las casacas rojas eran blancos fáciles entre los árboles, y los soldados británicos estaban entrenados para campos abiertos. (Poca gente = debilidad de Francia; la marina británica era FUERTE.)'},
+  {q:'In the Treaty of Paris (1763), Spain received…', qes:'En el Tratado de París (1763), España recibió…',
+   o:['Canada','Louisiana','Florida'], oes:['Canadá','Luisiana','Florida'], a:1,
+   w:'Spain got Louisiana from France as a thank-you for being allies. (Canada went to Britain — and Spain actually LOST Florida to Britain!)', wes:'España recibió Luisiana de Francia como agradecimiento por ser aliadas. (Canadá fue para Gran Bretaña — ¡y España de hecho PERDIÓ Florida ante Gran Bretaña!)'},
+  {q:'Who were the biggest losers of the war?', qes:'¿Quiénes fueron los grandes perdedores de la guerra?',
+   o:['The Spanish kings','The British colonists','The Native Americans'], oes:['Los reyes españoles','Los colonos británicos','Los nativos americanos'], a:2,
+   w:'The Native Americans — they died and lost land, EVEN the tribes that fought with the winning side. Your strongest debate argument!', wes:'Los nativos americanos — murieron y perdieron tierra, INCLUSO las tribus que pelearon con el bando ganador. ¡Tu argumento más fuerte para el debate!'}
+];
+let mcOK=0, mcDone=0;
+function mcInit(){
+  mcOK=0; mcDone=0;
+  document.getElementById('mcScore').classList.remove('show');
+  document.getElementById('mcList').innerHTML = MC.map((q,i)=>
+    '<div class="q-card" id="mcc'+i+'"><div class="q-num">QUESTION '+(i+1)+' / '+MC.length+'</div>'
+    +'<div class="q-text">'+q.q+'</div>'
+    +q.o.map((o,j)=>'<button class="opt" onclick="mcPick('+i+','+j+',this)">'+o+'</button>').join('')
+    +'<button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>'
+    +'<div class="es-block"><strong>'+q.qes+'</strong><br>'+q.oes.map((o,j)=>String.fromCharCode(97+j)+') '+o).join('<br>')+'</div>'
+    +'<div class="fb"></div></div>'
+  ).join('');
+}
+function mcPick(i, j, btn){
+  const q=MC[i], card=document.getElementById('mcc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = j===q.a;
+  if(ok) mcOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt')[q.a].classList.add('correct');
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=(ok?'✅ ':'❌ ')+q.w+'<span class="fb-es">🇪🇸 '+q.wes+'</span>';
+  mcDone++;
+  if(mcDone===MC.length) showScore('mcScore','mc',mcOK,MC.length,'mcInit');
+}
+
+/* ================= E5 FILL THE GAP ================= */
+const GAP = [
+  {pre:'Jumonville was killed by ', post:'.', opts:['Half-King','Washington','a redcoat'], a:0,
+   w:'Half-King (Tanaghrisson), the Native leader, killed Jumonville during Washington\'s ambush.', wes:'Half-King (Tanaghrisson), el líder nativo, mató a Jumonville durante la emboscada de Washington.'},
+  {pre:'Washington surrendered at Fort ', post:'.', opts:['Duquesne','Necessity','London'], a:1,
+   w:'Fort Necessity — where he signed the "written confession". (Fort Duquesne was a FRENCH fort!)', wes:'Fort Necessity — donde firmó la "confesión escrita". (¡Fort Duquesne era un fuerte FRANCÉS!)'},
+  {pre:'France wanted to link Canada and ', post:'.', opts:['Florida','Mexico','Louisiana'], a:2,
+   w:'Louisiana — connecting its two territories through the rivers was France\'s big plan.', wes:'Luisiana — conectar sus dos territorios a través de los ríos era el gran plan de Francia.'},
+  {pre:'British soldiers wore bright ', post:' coats.', opts:['red','blue','green'], a:0,
+   w:'Red — the famous "redcoats". Easy to spot between the trees!', wes:'Rojas — las famosas "casacas rojas" (redcoats). ¡Fáciles de ver entre los árboles!'},
+  {pre:'In the Treaty, Spain received ', post:' from France.', opts:['Canada','Louisiana','Florida'], a:1,
+   w:'Louisiana — a thank-you gift for being France\'s ally. Canada went to Britain; Florida went FROM Spain TO Britain.', wes:'Luisiana — un regalo de agradecimiento por ser aliada de Francia. Canadá fue para Gran Bretaña; Florida pasó DE España A Gran Bretaña.'},
+  {pre:'Britain\'s main Native allies were the ', post:'.', opts:['Huron','Cherokee','Iroquois'], a:2,
+   w:'The Iroquois Confederacy — the big exception among Native nations, most of which chose France.', wes:'La Confederación Iroquesa — la gran excepción entre las naciones nativas, que en su mayoría eligieron a Francia.'}
+];
+let gapOK=0, gapDone=0;
+function gapInit(){
+  gapOK=0; gapDone=0;
+  document.getElementById('gapScore').classList.remove('show');
+  document.getElementById('gapList').innerHTML = GAP.map((g,i)=>
+    '<div class="q-card" id="gpc'+i+'"><div class="q-num">SENTENCE '+(i+1)+' / '+GAP.length+'</div>'
+    +'<div class="gap-sentence">'+g.pre+'<span class="gap-slot" id="gslot'+i+'">______</span>'+g.post+'</div>'
+    +'<div class="gap-chips">'+g.opts.map((o,j)=>'<button class="opt" onclick="gapPick('+i+','+j+',this)">'+o+'</button>').join('')+'</div>'
+    +'<div class="fb"></div></div>'
+  ).join('');
+}
+function gapPick(i, j, btn){
+  const g=GAP[i], card=document.getElementById('gpc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = j===g.a;
+  if(ok) gapOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt')[g.a].classList.add('correct');
+  const slot=document.getElementById('gslot'+i);
+  slot.textContent=g.opts[g.a];
+  slot.classList.add('filled-ok');
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=(ok?'✅ ':'❌ ')+g.w+'<span class="fb-es">🇪🇸 '+g.wes+'</span>';
+  gapDone++;
+  if(gapDone===GAP.length) showScore('gapScore','gap',gapOK,GAP.length,'gapInit');
+}
+
+/* ================= D4 PHRASE TRAINER ================= */
+const PHRASES = [
+  {q:'"I disagree with my opponent because…"', qes:'"No estoy de acuerdo con mi oponente porque…"',
+   o:['…they are ugly and their team is bad.','…the British colonists kept taking Native land for farms, while we French came to trade as partners.','…I simply don\'t like the colour red.'], a:1,
+   why:['❌ An insult is not an argument — judges (and teachers!) take points away for that.','✅ Perfect: it answers with a FACT that attacks Britain and defends France at the same time.','❌ Funny, but it gives zero facts. In a debate, every sentence must carry evidence.'],
+   whyes:['Un insulto no es un argumento — los jueces (¡y las profes!) restan puntos por eso.','Perfecto: responde con un HECHO que ataca a Gran Bretaña y defiende a Francia al mismo tiempo.','Gracioso, pero no aporta ningún hecho. En un debate, cada oración debe llevar evidencia.']},
+  {q:'"As a French soldier, I know that…"', qes:'"Como soldado francesa, sé que…"',
+   o:['…France always wins every war it fights.','…the forest is full of many trees.','…our Native allies taught us to survive in the woods — we lived together, not apart.'], a:2,
+   why:['❌ That\'s FALSE — and you cannot change historical facts. France actually lost this war!','❌ True… but useless. It proves nothing about friendship.','✅ Excellent: a real fact from your notes, told from your character\'s point of view.'],
+   whyes:['Eso es FALSO — y no podés cambiar los hechos históricos. ¡Francia de hecho perdió esta guerra!','Cierto… pero inútil. No demuestra nada sobre la amistad.','Excelente: un hecho real de tus notas, contado desde el punto de vista de tu personaje.']},
+  {q:'"The British strategy is a disaster because…"', qes:'"La estrategia británica es un desastre porque…"',
+   o:['…their soldiers wear bright red coats and don\'t know how to fight in a forest.','…they drink too much tea to think clearly.','…everybody in the world hates them.'], a:0,
+   why:['✅ Straight from your class notes — a real military weakness. Unanswerable!','❌ A stereotype, not evidence. It sounds like a joke and weakens your team.','❌ An exaggeration with no proof. "Everybody" claims are easy to knock down.'],
+   whyes:['Directo de tus notas de clase — una debilidad militar real. ¡Incontestable!','Un estereotipo, no evidencia. Suena a chiste y debilita a tu equipo.','Una exageración sin pruebas. Las frases con "todo el mundo" son fáciles de derribar.']},
+  {q:'"We can prove that…"', qes:'"Podemos demostrar que…"',
+   o:['…the British are liars about absolutely everything.','…many tribes chose France as their ally — the Iroquois were almost alone on the British side.','…French food is the best in Europe.'], a:1,
+   why:['❌ "About absolutely everything" is an exaggeration you cannot prove. Never promise proof you don\'t have!','✅ Yes! After "we can prove", you need a checkable fact — and this one is in your notes.','❌ Maybe true 😄 but completely off topic. The debate is about friendship with the Natives.'],
+   whyes:['"Absolutamente todo" es una exageración que no podés probar. ¡Nunca prometas pruebas que no tenés!','¡Sí! Después de "podemos demostrar", necesitás un hecho verificable — y este está en tus notas.','Quizás cierto 😄 pero totalmente fuera de tema. El debate es sobre la amistad con los nativos.']},
+  {q:'"A true friend of the Native Americans…"', qes:'"Un verdadero amigo de los nativos americanos…"',
+   o:['…gives them nice presents once a year.','…builds farms on their hunting grounds to share the land.','…trades with them as equals, learns their language and respects their land — like France.'], a:2,
+   why:['❌ Presents are not respect. Britain gave trade goods too — that\'s exactly their argument, don\'t help them!','❌ Careful — that\'s what BRITAIN did, and it destroyed Native hunting grounds. The opposite of friendship.','✅ The perfect closing line: it defines friendship in a way only France can match.'],
+   whyes:['Los regalos no son respeto. Gran Bretaña también daba productos — ese es justamente su argumento, ¡no los ayudes!','Cuidado — eso es lo que hizo GRAN BRETAÑA, y destruyó los territorios de caza nativos. Lo contrario de la amistad.','La frase de cierre perfecta: define la amistad de una forma que solo Francia puede cumplir.']}
+];
+let phOK=0, phDone=0;
+function phraseInit(){
+  phOK=0; phDone=0;
+  document.getElementById('phraseScore').classList.remove('show');
+  document.getElementById('phraseList').innerHTML = PHRASES.map((p,i)=>
+    '<div class="q-card" id="phc'+i+'"><div class="q-num">PHRASE '+(i+1)+' / '+PHRASES.length+'</div>'
+    +'<div class="q-text">'+p.q+'</div>'
+    +p.o.map((o,j)=>'<button class="opt" onclick="phPick('+i+','+j+',this)">'+o+'</button>').join('')
+    +'<button class="es-btn" onclick="toggleES(this)">🇪🇸 Ver en español</button>'
+    +'<div class="es-block"><strong>'+p.qes+'</strong></div>'
+    +'<div class="fb"></div></div>'
+  ).join('');
+}
+function phPick(i, j, btn){
+  const p=PHRASES[i], card=document.getElementById('phc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = j===p.a;
+  if(ok) phOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt')[p.a].classList.add('correct');
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=p.why[j]+'<span class="fb-es">🇪🇸 '+p.whyes[j]+'</span>';
+  phDone++;
+  if(phDone===PHRASES.length) showScore('phraseScore','phrase',phOK,PHRASES.length,'phraseInit');
+}
+
+/* ================= D5 STORY BUILDER ================= */
+const SB = {where:null, what:null, learn:null};
+function sbPick(btn, group, text){
+  SB[group]=text;
+  btn.parentElement.querySelectorAll('.sb-chip').forEach(c=>c.classList.remove('sel'));
+  btn.classList.add('sel');
+  if(SB.where && SB.what && SB.learn){
+    const out=document.getElementById('sbOut');
+    out.innerHTML='<strong>📖 Your story starter:</strong><br>"I was there, '+SB.where+', when '+SB.what+'. That day I learned '+SB.learn+'."'
+      +'<br><br><em style="font-size:.88rem;color:var(--ink-dim)">Copy it into your speech below and make it yours! · Copiala en tu discurso de abajo y hacela tuya.</em>';
+    out.classList.add('show');
+  }
+}
+
+/* ================= D5 SPEECH AUTOSAVE ================= */
+const speechBox=document.getElementById('speechBox');
+speechBox.value = S.speech || '';
+speechBox.addEventListener('input', ()=>{ S.speech=speechBox.value; save(); });
+
+/* ================= D5 TIMER ================= */
+let tInt=null, tSec=0;
+function timerToggle(){
+  const btn=document.getElementById('timerBtn');
+  if(tInt){
+    clearInterval(tInt); tInt=null;
+    btn.textContent='▶ Start';
+    const v=document.getElementById('timerVerdict');
+    const m=Math.floor(tSec/60), s=tSec%60, str=m+':'+String(s).padStart(2,'0');
+    if(tSec<60) v.innerHTML='⏱ '+str+' — too short! Add your story or one more argument. <em>· Muy corto: agregá tu historia o un argumento más.</em>';
+    else if(tSec<=120) v.innerHTML='🏆 '+str+' — PERFECT! Right inside the 1–2 minute window. <em>· ¡Perfecto, dentro de la ventana de 1–2 minutos!</em>';
+    else v.innerHTML='✂️ '+str+' — too long! Cut your weakest argument. <em>· Muy largo: recortá tu argumento más débil.</em>';
+  }else{
+    tInt=setInterval(tick,1000);
+    btn.textContent='⏸ Stop';
+    document.getElementById('timerVerdict').textContent='';
+  }
+}
+function tick(){
+  tSec++;
+  const m=Math.floor(tSec/60), s=tSec%60;
+  const d=document.getElementById('timerDisplay');
+  d.textContent=m+':'+String(s).padStart(2,'0');
+  d.className='timer-display '+(tSec<60?'zone-early':tSec<=120?'zone-good':'zone-over');
+  document.getElementById('timerFill').style.width=Math.min(tSec/150*100,100)+'%';
+  document.getElementById('timerFill').style.background = tSec<60?'var(--gold)':tSec<=120?'var(--ok)':'var(--bad)';
+}
+function timerReset(){
+  clearInterval(tInt); tInt=null; tSec=0;
+  document.getElementById('timerBtn').textContent='▶ Start';
+  const d=document.getElementById('timerDisplay');
+  d.textContent='0:00'; d.className='timer-display zone-early';
+  document.getElementById('timerFill').style.width='0';
+  document.getElementById('timerVerdict').textContent='';
+}
+
+/* ================= D6 SIMULATOR ================= */
+const SIM = [
+  {atk:'"The Iroquois Confederacy — the strongest Native alliance — chose US, not you!"',
+   o:['"That is a lie and you know it!"','"ONE confederacy chose you. MANY tribes chose France. And ask the Iroquois what they got after your victory: settlers on their land."','"The Iroquois don\'t matter anyway."'], a:1,
+   why:['❌ Calling them liars with no evidence makes YOU look desperate. The Iroquois alliance is true — admit it and turn it around.','✅ Champion answer: accept the true fact, then crush it with a bigger fact (many tribes vs one) and the ending nobody can answer.','❌ Disrespecting a Native nation in a debate about respecting Natives?! Instant self-destruction.'],
+   whyes:['Llamarlos mentirosos sin evidencia te hace ver desesperada a VOS. La alianza iroquesa es verdad — admitila y dala vuelta.','Respuesta de campeona: aceptás el hecho verdadero, y lo aplastás con un hecho más grande (muchas tribus vs una) y un final que nadie puede responder.','¿¡Faltarle el respeto a una nación nativa en un debate sobre respetar a los nativos!? Autodestrucción instantánea.']},
+  {atk:'"We gave the Natives better and cheaper trade goods than France ever did!"',
+   o:['"Trade is not friendship. You traded to take their land; we traded to live together — we even married into their families."','"Your goods were rubbish and everyone knows it."','"Money isn\'t everything in life, you know."'], a:0,
+   why:['✅ Perfect: you don\'t deny their fact — you show it proves nothing about FRIENDSHIP, then add your unbeatable fact (living together).','❌ Insulting their goods is a detail fight you can\'t win — and it accepts their frame that goods = friendship.','❌ Too vague. It sounds nice but carries no historical fact. Every answer needs evidence!'],
+   whyes:['Perfecto: no negás su hecho — mostrás que no prueba nada sobre la AMISTAD, y sumás tu hecho imbatible (vivir juntos).','Insultar sus productos es una pelea de detalles que no podés ganar — y acepta su idea de que productos = amistad.','Demasiado vago. Suena lindo pero no lleva ningún hecho histórico. ¡Cada respuesta necesita evidencia!']},
+  {atk:'"France just USED the Natives as soldiers in YOUR war!"',
+   o:['"No, YOU used them! You are the users! Users!"','"Our Native allies loved fighting, it was fun for them."','"They fought beside us because the Ohio Valley is THEIR land too. We protected shared trade routes — your colonists wanted the land itself."'], a:2,
+   why:['❌ Just shouting the accusation back ("no, you!") with no facts is the weakest move in any debate.','❌ Terrible — it disrespects your allies AND changes facts. War was not "fun"; Natives fought for their land and interests.','✅ Exactly: you explain WHY they fought (their own land, shared interests) — turning "used" into "partners with a common cause".'],
+   whyes:['Devolver el grito ("¡no, ustedes!") sin hechos es la jugada más débil de cualquier debate.','Terrible — falta el respeto a tus aliados Y cambia los hechos. La guerra no era "divertida"; los nativos pelearon por su tierra y sus intereses.','Exacto: explicás POR QUÉ pelearon (su propia tierra, intereses compartidos) — convirtiendo "usados" en "socios con una causa común".']},
+  {atk:'"At the end, France abandoned the Natives — you even gave Louisiana away to Spain!"',
+   o:['"That never happened. France never gave Louisiana to anyone."','"We lost the war and the treaty took our lands — we had no choice. But while we were here, we never pushed tribes off their land. Your settlers crossed the mountains the moment we left."','"Spain forced us with magic and threats."'], a:1,
+   why:['❌ You CANNOT deny it — it\'s a historical fact (Treaty of Paris, 1763). Denying true facts loses the debate instantly.','✅ The honest comeback: admit the loss, explain you had no choice, then flip it — what happened AFTER France left proves France was the protection.','❌ "Magic"? Inventing fake history breaks the golden rule: stories can be invented, facts cannot.'],
+   whyes:['NO podés negarlo — es un hecho histórico (Tratado de París, 1763). Negar hechos verdaderos pierde el debate al instante.','La respuesta honesta: admitís la derrota, explicás que no hubo opción, y lo das vuelta — lo que pasó DESPUÉS de que Francia se fue prueba que Francia era la protección.','¿"Magia"? Inventar historia falsa rompe la regla de oro: las historias se pueden inventar, los hechos no.']},
+  {atk:'"Our colonists and the Natives can live together in peace — there is room for everyone!"',
+   o:['"History says no: your 13 colonies kept growing west into Native land. That is exactly WHY this war started — in the Ohio River Valley."','"Peace is impossible because British people are naturally violent."','"Maybe you\'re right, I hadn\'t thought of that."'], a:0,
+   why:['✅ Brilliant: you use the CAUSE of the war itself as proof. If there was "room for everyone", why did they clash over the Ohio Valley?','❌ "Naturally violent" is a prejudice about a whole people — not a fact. Judges punish prejudice hard.','❌ Never surrender an argument in the middle of a debate! If you\'re unsure, return to a fact you DO know.'],
+   whyes:['Brillante: usás la CAUSA misma de la guerra como prueba. Si había "lugar para todos", ¿por qué chocaron por el valle del Ohio?','"Naturalmente violentos" es un prejuicio sobre un pueblo entero — no un hecho. Los jueces castigan fuerte el prejuicio.','¡Nunca entregues un argumento en medio de un debate! Si dudás, volvé a un hecho que SÍ sabés.']},
+  {atk:'"Without British goods, the Native nations would be poor and helpless!"',
+   o:['"They were never poor — they were rich in spirit, which is what really counts."','"The fur trade made BOTH sides rich — and French traders learned Native languages and customs. Partnership, not charity."','"Poor? They should thank you for existing, then?"'], a:1,
+   why:['❌ Sweet but weak — "rich in spirit" dodges the economic point instead of answering it with the real economy: the fur trade.','✅ Strong: you correct their economics (trade benefits both sides) and add the respect angle that Britain can\'t match.','❌ Sarcasm without facts. It might get a laugh, but laughs don\'t win debates — evidence does.'],
+   whyes:['Dulce pero débil — "ricos en espíritu" esquiva el punto económico en vez de responderlo con la economía real: el comercio de pieles.','Fuerte: corregís su economía (el comercio beneficia a ambos lados) y sumás el ángulo del respeto que Gran Bretaña no puede igualar.','Sarcasmo sin hechos. Quizás saque una risa, pero las risas no ganan debates — la evidencia sí.']}
+];
+let simOK=0, simDone=0;
+function simInit(){
+  simOK=0; simDone=0;
+  document.getElementById('simScore').classList.remove('show');
+  document.getElementById('simList').innerHTML = SIM.map((s,i)=>
+    '<div class="q-card atk-card" id="simc'+i+'"><div class="q-num">ATTACK '+(i+1)+' / '+SIM.length+'</div>'
+    +'<div class="atk-they">'+s.atk+'</div>'
+    +'<p style="font-weight:700;font-size:.9rem;margin-bottom:.5rem">Choose your comeback:</p>'
+    +s.o.map((o,j)=>'<button class="opt" onclick="simPick('+i+','+j+',this)">'+o+'</button>').join('')
+    +'<div class="fb"></div></div>'
+  ).join('');
+}
+function simPick(i, j, btn){
+  const s=SIM[i], card=document.getElementById('simc'+i);
+  card.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const ok = j===s.a;
+  if(ok) simOK++;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) card.querySelectorAll('.opt')[s.a].classList.add('correct');
+  const fb=card.querySelector('.fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=s.why[j]+'<span class="fb-es">🇪🇸 '+s.whyes[j]+'</span>';
+  simDone++;
+  if(simDone===SIM.length) showScore('simScore','sim',simOK,SIM.length,'simInit');
+}
+
+/* ================= READINESS ================= */
+function renderReady(){
+  const grid=document.getElementById('readyGrid');
+  if(!grid) return;
+  const keys=['timeline','sorter','tf','mc','gap','phrase','sim'];
+  grid.innerHTML = keys.map(k=>{
+    const v=S.scores[k];
+    return '<div class="ready-cell"><div class="v">'+(v!=null?v:'—')+'</div><div class="l">'+EX_LABELS[k]+'</div></div>';
+  }).join('');
+  const done=keys.filter(k=>S.scores[k]!=null);
+  const big=document.getElementById('readyBig'), msg=document.getElementById('readyMsg');
+  if(done.length===0){
+    big.innerHTML='— <small>/ 20</small>';
+    msg.innerHTML='Complete the exercises to see your readiness! <em style="font-size:.85rem;display:block;color:var(--ink-dim)">🇪🇸 Completá los ejercicios para ver qué tan lista estás.</em>';
+    return;
+  }
+  const avg=Math.round(done.reduce((a,k)=>a+S.scores[k],0)/done.length);
+  big.innerHTML=avg+' <small>/ 20</small>';
+  const m=scoreMsg(avg);
+  msg.innerHTML=m[0]+(done.length<7?' <em style="font-size:.85rem;display:block;color:var(--ink-dim)">('+done.length+'/7 exercises done — finish them all for your true score!)</em>':'')
+    +'<em style="font-size:.85rem;display:block;color:#8a661a">🇪🇸 '+m[1]+'</em>';
+}
+
+/* ================= WORD BANK ================= */
+const WB_WORDS = [
+  ['ally / allies','aliado / aliados','Un amigo en la guerra: país o grupo que pelea de tu lado.'],
+  ['ambush','emboscada','Ataque sorpresa: esconderse y atacar de golpe.'],
+  ['argue','argumentar / discutir','Defender una idea con razones (lo que hacés en el debate).'],
+  ['claim','reclamar','Decir "esto es mío" sobre un territorio.'],
+  ['clash (over)','chocar / enfrentarse (por)','Pelearse por algo que dos quieren a la vez.'],
+  ['colonist','colono','Persona que se muda a una colonia para vivir allí.'],
+  ['confession','confesión','Admitir algo, a menudo por escrito ("la confesión escrita").'],
+  ['disaster','desastre','Algo que sale terriblemente mal ("their strategy is a disaster").'],
+  ['expand','expandir(se)','Crecer y ocupar más territorio.'],
+  ['fearful','temeroso / con miedo','Lleno de miedo ("alone and fearful").'],
+  ['fort','fuerte','Construcción militar con muros para defender un lugar.'],
+  ['fur trade','comercio de pieles','El gran negocio de la época: cambiar pieles de castor por herramientas, telas y armas.'],
+  ['gender equality','igualdad de género','Cuando mujeres y hombres tienen el mismo poder y derechos.'],
+  ['navy','marina / armada','Los barcos de guerra de un país.'],
+  ['opponent','oponente / rival','La persona o equipo contra el que debatís.'],
+  ['promise','promesa / prometer','Decir que vas a hacer algo sí o sí ("we promise to…").'],
+  ['property','propiedad','Lo que pertenece a alguien. Para los nativos, la tierra era de la comunidad.'],
+  ['prove','demostrar / probar','Mostrar con hechos que algo es verdad ("we can prove that…").'],
+  ['resources','recursos','Cosas valiosas de la naturaleza: animales, madera, tierra fértil, ríos.'],
+  ['settler','colono (que se instala)','Colono que llega para quedarse: construye granjas, casas y cercas.'],
+  ['strategy','estrategia','El plan para ganar una guerra (o un debate).'],
+  ['surrender','rendirse','Aceptar la derrota y dejar de pelear.'],
+  ['territory','territorio','Una zona de tierra que pertenece o es controlada por alguien.'],
+  ['threatened','amenazado','En peligro, o sintiendo que algo malo se acerca.'],
+  ['trade routes','rutas de comercio','Caminos y ríos usados para transportar y vender productos.'],
+  ['treaty','tratado','Acuerdo oficial entre países para terminar una guerra.'],
+  ['tribe','tribu','Grupo o nación de personas con cultura y líderes propios.'],
+  ['victory','victoria','Ganar. Lo contrario de "defeat" (derrota).']
+];
+const WB_CONCEPTS = [
+  ['Half-King (Tanaghrisson)','El líder seneca aliado de Washington que mató al oficial francés Jumonville. Esa muerte fue la chispa de la guerra.'],
+  ['Jumonville','Oficial francés muerto en la emboscada de Washington (1754). Su muerte — y la "confesión escrita" — encendieron la guerra.'],
+  ['George Washington (en 1754)','Oficial de Virginia de 21 años, peleando para GRAN BRETAÑA. Mucho antes de ser el primer presidente de EE.UU.'],
+  ['Ohio River Valley','El valle del río Ohio: tierra rica en recursos y rutas de comercio donde empezó la guerra. Era tierra nativa, reclamada por GB y Francia.'],
+  ['Iroquois Confederacy','Confederación de 6 naciones nativas, muy poderosa y organizada. Fueron los principales aliados nativos de GRAN BRETAÑA.'],
+  ['Fort Necessity','El fuerte (improvisado y débil) donde Washington se rindió en 1754 y firmó la "confesión escrita".'],
+  ['Fort Duquesne','El gran fuerte FRANCÉS del valle del Ohio (donde hoy está Pittsburgh). Símbolo del poder francés en la zona.'],
+  ['The written confession','Documento en francés que Washington firmó al rendirse, admitiendo (¡sin saberlo!) que Jumonville fue "asesinado". Francia lo usó como propaganda.'],
+  ['The 13 colonies','Los asentamientos británicos en la costa este de América. Más adelante se convertirán en Estados Unidos — pero en 1754 son británicos.'],
+  ['New France','El imperio francés en América: Canadá + Luisiana + las rutas de comercio entre ambos. Pocos habitantes, mucho territorio.'],
+  ['Louisiana (en 1763)','Territorio francés ENORME en el centro del continente — mucho más grande que el estado actual de Luisiana. Francia se lo regaló a España.'],
+  ['Treaty of Paris (1763)','El tratado que terminó la guerra: GB se queda con Canadá y Florida; España recibe Luisiana; Francia es expulsada de América del Norte.'],
+  ['Seven Years\' War','El nombre mundial de la guerra (1756–1763 en Europa). La Guerra Franco-India fue su capítulo americano.'],
+  ['Proclamation Line (1763)','La línea que GB dibujó tras la guerra: los colonos no podían cruzar al oeste. La ignoraron — y se enojaron con GB. Semilla de la Revolución Americana.'],
+  ['Redcoats','Apodo de los soldados británicos por sus casacas rojas brillantes — fáciles de ver entre los árboles.']
+];
+function wbRender(){
+  document.getElementById('wbWords').innerHTML = WB_WORDS.map(w=>
+    '<div class="wb-item" data-s="'+(w[0]+' '+w[1]+' '+w[2]).toLowerCase()+'"><span class="en">'+w[0]+'</span> · <span class="es">'+w[1]+'</span><div class="def">'+w[2]+'</div></div>'
+  ).join('');
+  document.getElementById('wbConcepts').innerHTML = WB_CONCEPTS.map(c=>
+    '<div class="wb-item wb-concept" data-s="'+(c[0]+' '+c[1]).toLowerCase()+'"><span class="en">'+c[0]+'</span><div class="def">'+c[1]+'</div></div>'
+  ).join('');
+}
+function wbFilter(){
+  const q=document.getElementById('wbSearch').value.toLowerCase().trim();
+  document.querySelectorAll('.wb-item').forEach(it=>{
+    it.style.display = !q || it.dataset.s.includes(q) ? '' : 'none';
+  });
+}
+
+/* ================= INIT ================= */
+tlInit(); sorterInit(); tfInit(); mcInit(); gapInit(); phraseInit(); simInit(); wbRender();
+renderProg(); renderReady();
 </script>
 </body>
 </html>

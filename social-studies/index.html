@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Studies — The Public Sphere & The French and Indian War</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf9f4;
+    --ink:#2b2823;
+    --soft:#6b6356;
+    --line:#e0d6c4;
+    --grid:#efe7d6;
+    --violet:#8b5fbf;
+    --violet-soft:#f0e7f8;
+    --violet-deep:#5e3d87;
+    --ink-blue:#3a52a0;        /* tinta azul de los apuntes */
+    --ink-blue-soft:#e6ebf7;
+    --amber:#c2741b;           /* acento historia */
+    --amber-soft:#f8ecd9;
+    --green:#3f9b6d;
+    --green-soft:#e3f3ea;
+    --red:#cf5a52;
+    --red-soft:#fbe7e5;
+    --card:#ffffff;
+    --shadow:0 2px 0 rgba(0,0,0,.04), 0 8px 24px rgba(70,55,30,.09);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Nunito',system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      var(--paper);
+    background-size:100% 30px, auto;
+    line-height:1.65;
+    font-size:18px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 90px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{text-align:center;padding:58px 18px 26px;max-width:900px;margin:0 auto;}
+  .hero .eyebrow{font-family:'Caveat',cursive;color:var(--amber);font-size:1.6rem;transform:rotate(-2deg);display:inline-block;}
+  .hero h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(2rem,5.5vw,3.2rem);line-height:1.08;margin:.1em 0 .3em;letter-spacing:-.5px;}
+  .hero h1 .hl{background:linear-gradient(transparent 55%, var(--amber-soft) 55%);padding:0 .1em;}
+  .hero p{color:var(--soft);max-width:600px;margin:0 auto;font-size:1.05rem;}
+
+  /* global translate toggle */
+  .global-bar{display:flex;justify-content:center;gap:10px;margin:18px 0 0;flex-wrap:wrap;}
+  .gbtn{font-family:'Nunito';font-weight:800;font-size:.92rem;border:1.5px solid var(--violet);background:#fff;color:var(--violet);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.15s;}
+  .gbtn:hover{background:var(--violet-soft);}
+  .gbtn.on{background:var(--violet);color:#fff;}
+
+  /* ---------- NAV TABS ---------- */
+  nav.tabs{position:sticky;top:0;z-index:50;background:rgba(251,249,244,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:28px;}
+  .tabs-inner{max-width:900px;margin:0 auto;padding:0 12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+  .tab-btn{font-family:'Nunito';font-weight:800;font-size:.92rem;border:1.5px solid var(--line);background:var(--card);color:var(--soft);padding:9px 16px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap;}
+  .tab-btn:hover{border-color:var(--amber);color:var(--amber);}
+  .tab-btn.active{background:var(--amber);border-color:var(--amber);color:#fff;}
+
+  /* ---------- PANELS ---------- */
+  .panel{display:none;animation:fade .35s ease;}
+  .panel.show{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .sec-head{display:flex;align-items:center;gap:14px;margin:10px 0 8px;}
+  .sec-num{font-family:'Fraunces',serif;font-weight:700;background:var(--amber);color:#fff;min-width:46px;height:46px;flex:0 0 46px;border-radius:13px;display:grid;place-items:center;font-size:1.35rem;box-shadow:var(--shadow);}
+  .sec-head h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.65rem;margin:0;line-height:1.1;}
+
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;margin:1.7em 0 .3em;color:var(--violet-deep);}
+  .lead{font-size:1.06rem;color:var(--soft);}
+
+  /* ---------- TEXT BLOCK w/ TRANSLATION ---------- */
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px 14px;margin:16px 0;box-shadow:var(--shadow);}
+  .block > .en{margin:0;}
+  .block h4{font-family:'Nunito';font-weight:800;font-size:1.08rem;margin:0 0 .4em;color:var(--ink);}
+  .block .en p{margin:.4em 0;}
+  .block ul{margin:.4em 0;padding-left:22px;}
+  .block ul li{padding:2px 0;}
+
+  .tr-toggle{margin-top:12px;font-family:'Nunito';font-weight:800;font-size:.86rem;color:var(--violet);background:var(--violet-soft);border:none;border-radius:9px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s;}
+  .tr-toggle:hover{background:#e6d6f5;}
+  .tr-toggle .ic{font-size:.95rem;}
+  .tr{display:none;margin-top:12px;border-top:1.5px dashed var(--violet);padding-top:12px;color:var(--violet-deep);}
+  .tr.show{display:block;animation:fade .3s;}
+  .tr .es-label{font-family:'Caveat',cursive;font-size:1.25rem;color:var(--violet);display:block;margin-bottom:2px;}
+  .tr p{margin:.4em 0;}
+  .tr ul{margin:.4em 0;padding-left:22px;}
+
+  /* glossary chip inside text */
+  .term{border-bottom:2px dotted var(--amber);cursor:help;font-weight:700;color:#9a5a12;}
+
+  /* compare table (GB vs France) */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .vs .col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;box-shadow:var(--shadow);}
+  .vs .col .top{padding:11px 16px;font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;color:#fff;text-align:center;}
+  .vs .gb .top{background:var(--ink-blue);}
+  .vs .fr .top{background:var(--amber);}
+  .vs .col .body{padding:12px 16px;}
+  .vs .col h5{margin:.7em 0 .1em;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);}
+  .vs .col h5:first-child{margin-top:0;}
+  .vs .col ul{margin:.1em 0;padding-left:18px;font-size:.97rem;}
+  @media(max-width:620px){.vs{grid-template-columns:1fr;}}
+
+  /* timeline */
+  .timeline{border-left:3px solid var(--amber);margin:16px 0;padding-left:0;}
+  .tevent{position:relative;padding:4px 0 16px 26px;}
+  .tevent::before{content:"";position:absolute;left:-8px;top:9px;width:13px;height:13px;border-radius:50%;background:var(--amber);border:3px solid var(--paper);}
+  .tevent b{color:var(--violet-deep);font-family:'Fraunces',serif;}
+
+  .callout{border-left:5px solid var(--amber);background:var(--amber-soft);border-radius:10px;padding:13px 16px;margin:14px 0;}
+  .callout.blue{border-color:var(--ink-blue);background:var(--ink-blue-soft);}
+  .callout.violet{border-color:var(--violet);background:var(--violet-soft);}
+  .label{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:6px;margin-bottom:4px;color:#fff;}
+  .label.a{background:var(--amber);} .label.b{background:var(--ink-blue);} .label.v{background:var(--violet);}
+
+  /* ---------- GLOSSARY / BANK ---------- */
+  .bank-controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px;}
+  .bank-controls input{flex:1;min-width:200px;font-family:'Nunito';font-size:1rem;padding:11px 15px;border:1.5px solid var(--line);border-radius:11px;background:#fff;}
+  .bank-controls input:focus{outline:none;border-color:var(--violet);}
+  .gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+  .gcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:var(--shadow);}
+  .gcard .pair{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .gcard .en-t{font-family:'Fraunces',serif;font-weight:700;font-size:1.12rem;color:var(--ink);}
+  .gcard .arrow{color:var(--amber);font-weight:800;}
+  .gcard .es-t{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--violet-deep);}
+  .gcard .mean{margin-top:6px;font-size:.95rem;color:var(--soft);}
+  .gcard .mean b{color:var(--ink);}
+  .no-results{color:var(--soft);font-style:italic;padding:10px;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .progress{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0 22px;}
+  .progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--amber),#9a5a12);transition:width .4s;}
+  .q{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:15px 0;box-shadow:var(--shadow);}
+  .q .qn{font-family:'Caveat',cursive;color:var(--amber);font-size:1.3rem;}
+  .q .qtext{font-weight:700;margin:.2em 0 .7em;font-size:1.06rem;}
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{text-align:left;border:1.5px solid var(--line);background:#fdfcfa;padding:12px 16px;border-radius:11px;cursor:pointer;font-size:1rem;font-family:'Nunito';font-weight:600;color:var(--ink);transition:.13s;}
+  .opt:hover:not(:disabled){border-color:var(--amber);background:var(--amber-soft);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--green);background:var(--green-soft);color:#256647;font-weight:800;}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft);color:#a33;font-weight:800;}
+  .feedback{margin-top:12px;border-radius:11px;padding:12px 15px;font-size:.97rem;display:none;}
+  .feedback.show{display:block;animation:fade .3s;}
+  .feedback.ok{background:var(--green-soft);border-left:4px solid var(--green);}
+  .feedback.no{background:var(--red-soft);border-left:4px solid var(--red);}
+  .feedback b{display:block;margin-bottom:2px;}
+  .feedback .es-mini{display:block;margin-top:6px;font-size:.88rem;color:var(--violet-deep);border-top:1px dashed var(--violet);padding-top:5px;}
+  .btn{font-family:'Nunito';font-weight:800;font-size:.96rem;border:none;cursor:pointer;background:var(--amber);color:#fff;padding:11px 22px;border-radius:11px;transition:.15s;}
+  .btn:hover{background:#9a5a12;}
+  .btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--soft);}
+  .btn.ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .result-card{display:none;text-align:center;background:#fff;border:2px solid var(--amber);border-radius:var(--radius);padding:26px;margin:22px 0;box-shadow:var(--shadow);}
+  .result-card.show{display:block;animation:fade .4s;}
+  .result-card .grade{font-family:'Fraunces',serif;font-size:3.3rem;color:#9a5a12;line-height:1;}
+  .result-card .stars{font-size:1.7rem;letter-spacing:4px;margin:6px 0;color:var(--amber);}
+  .result-card .msg{color:var(--soft);max-width:460px;margin:6px auto;}
+
+  /* tablet tuning */
+  @media(min-width:700px) and (max-width:1100px){
+    body{font-size:19px;}
+    .wrap{padding:0 32px 90px;}
+  }
+  @media(max-width:560px){
+    body{font-size:17px;}
+    .sec-head h2{font-size:1.35rem;}
+    .vs{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">Social Studies · History</span>
+  <h1>The Public Sphere &amp; <span class="hl">The French and Indian War</span></h1>
+  <p>Everything explained from scratch, in English — with a Spanish translation under every text box, a glossary of key terms, and a quiz to test yourself.</p>
+  <div class="global-bar">
+    <button class="gbtn" id="toggle-all">🌐 Show all translations · Mostrar todo en español</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" data-tab="t1">1 · The Public Sphere</button>
+    <button class="tab-btn" data-tab="t2">2 · French &amp; Indian War</button>
+    <button class="tab-btn" data-tab="t3">3 · Translation Bank</button>
+    <button class="tab-btn" data-tab="t4">4 · Quiz ✏️</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================ SECTION 1 ============================================ -->
+<section class="panel show" id="t1">
+  <div class="sec-head"><div class="sec-num">1</div><h2>The Rise of the Public Sphere</h2></div>
+  <p class="lead">This topic is about how ordinary people went from having <i>no voice</i> in their society to being able to share ideas and change their government. Tap “Ver en español” under any box to read it in Spanish.</p>
+
+  <!-- Block 1.1 -->
+  <div class="block">
+    <div class="en">
+      <h4>How did society work back then?</h4>
+      <p>A long time ago, society was split into two separate worlds:</p>
+      <ul>
+        <li>The <span class="term" data-term="private sphere">private sphere</span> — your own world: your home, your family, your daily life.</li>
+        <li>The <span class="term" data-term="sphere of authority">sphere of authority</span> — the country and its rulers, the people who made the laws.</li>
+      </ul>
+      <p>These two worlds were separated. An ordinary person lived in the private sphere only, which meant one hard truth: <b>you did not have a voice in the state.</b> You could not take part in decisions about your own country.</p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-1-1"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-1-1">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">¿Cómo funcionaba la sociedad en aquella época?</h4>
+      <p>Hace mucho tiempo, la sociedad estaba dividida en dos mundos separados:</p>
+      <ul>
+        <li>La <b>esfera privada</b>: tu propio mundo — tu casa, tu familia, tu vida diaria.</li>
+        <li>La <b>esfera de autoridad</b>: el país y sus gobernantes, las personas que hacían las leyes.</li>
+      </ul>
+      <p>Estos dos mundos estaban separados. Una persona común vivía solo en la esfera privada, lo que significaba una verdad dura: <b>no tenías voz en el Estado.</b> No podías participar en las decisiones sobre tu propio país.</p>
+    </div>
+  </div>
+
+  <!-- Block 1.2 -->
+  <div class="block">
+    <div class="en">
+      <h4>Until the arrival of… the public sphere</h4>
+      <p>Things changed when a new space appeared: the <span class="term" data-term="public sphere">public sphere</span>. It grew in places like <span class="term" data-term="coffeehouse">coffeehouses</span> and <span class="term" data-term="salon">salons</span>, where people met to talk, argue, and share ideas freely.</p>
+      <p>This is where <span class="term" data-term="public opinion">public opinion</span> was born. For the first time, the people's shared voice had real power — the power to <b>change the government.</b></p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-1-2"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-1-2">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">Hasta la llegada de… la esfera pública</h4>
+      <p>Las cosas cambiaron cuando apareció un espacio nuevo: la <b>esfera pública</b>. Creció en lugares como los <b>cafés</b> (coffeehouses) y los <b>salones</b>, donde la gente se reunía para conversar, discutir y compartir ideas libremente.</p>
+      <p>Ahí nació la <b>opinión pública</b>. Por primera vez, la voz compartida del pueblo tenía poder real: el poder de <b>cambiar al gobierno.</b></p>
+    </div>
+  </div>
+
+  <!-- Block 1.3 -->
+  <div class="block">
+    <div class="en">
+      <h4>How did ideas go viral?</h4>
+      <p>Think of it like social media today, but 300 years ago. The <span class="term" data-term="philosopher">philosophers</span> were the <b>influencers</b> of their time — their ideas spread fast and shaped what people believed.</p>
+      <p>Because criticizing the king was dangerous, people used <span class="term" data-term="subversion">subversion</span> (secretly working against those in power). They spread ideas through:</p>
+      <ul>
+        <li><span class="term" data-term="pseudonym">Pseudonyms</span> — fake names, so writers could stay <span class="term" data-term="anonymous">anonymous</span> and safe.</li>
+        <li>Fictional stories that secretly carried political messages.</li>
+        <li><span class="term" data-term="underground newspaper">Underground newspapers</span> — illegal papers printed in secret.</li>
+        <li>Word of mouth — people simply telling each other.</li>
+      </ul>
+    </div>
+    <button class="tr-toggle" data-tr="tr-1-3"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-1-3">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">¿Cómo se volvían virales las ideas?</h4>
+      <p>Pensalo como las redes sociales de hoy, pero hace 300 años. Los <b>filósofos</b> eran los <b>influencers</b> de su época: sus ideas se difundían rápido y moldeaban lo que la gente creía.</p>
+      <p>Como criticar al rey era peligroso, la gente usaba la <b>subversión</b> (trabajar en secreto contra los que tienen el poder). Difundían ideas mediante:</p>
+      <ul>
+        <li><b>Seudónimos</b>: nombres falsos, para que los escritores se mantuvieran <b>anónimos</b> y a salvo.</li>
+        <li>Historias de ficción que en secreto llevaban mensajes políticos.</li>
+        <li><b>Periódicos clandestinos</b>: diarios ilegales impresos en secreto.</li>
+        <li>El boca a boca: la gente simplemente contándose entre sí.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Block 1.4 -->
+  <div class="block">
+    <div class="en">
+      <h4>Conclusions</h4>
+      <p>The big realization was this: <b>the affairs of the state are a common interest.</b> What the government does affects everyone, so everyone should be able to talk about it.</p>
+      <p>Two more powerful ideas appeared:</p>
+      <ul>
+        <li><b>Monarch ≠ God.</b> A king is just a person, not a divine being. This led to the dangerous question: <i>“Should the king rule at all?”</i></li>
+        <li>Society went from <b>silent to noisy</b> — from people who were afraid to speak, to people sharing their opinions out loud. (That noise = “the rise” of the public sphere.)</li>
+      </ul>
+    </div>
+    <button class="tr-toggle" data-tr="tr-1-4"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-1-4">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">Conclusiones</h4>
+      <p>La gran toma de conciencia fue esta: <b>los asuntos del Estado son de interés común.</b> Lo que hace el gobierno afecta a todos, así que todos deberían poder hablar de ello.</p>
+      <p>Aparecieron dos ideas más, muy poderosas:</p>
+      <ul>
+        <li><b>Monarca ≠ Dios.</b> Un rey es solo una persona, no un ser divino. Esto llevó a la pregunta peligrosa: <i>“¿Debería el rey gobernar siquiera?”</i></li>
+        <li>La sociedad pasó de <b>silenciosa a ruidosa</b>: de gente que tenía miedo de hablar, a gente que compartía sus opiniones en voz alta. (Ese “ruido” es “el ascenso” de la esfera pública.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Block 1.5 -->
+  <div class="block">
+    <div class="en">
+      <h4>What do people learn from all this?</h4>
+      <ul>
+        <li>There is always a way to be heard.</li>
+        <li>Don't be afraid to speak up.</li>
+        <li>You are not alone — others share your ideas.</li>
+        <li>A monarch is not a god (Monarch ≠ God).</li>
+        <li>Stay cautious: speaking out could be dangerous, so people took precautions.</li>
+      </ul>
+      <p>All of these are the opposite of <b>silence</b> — the lesson is that breaking the silence is what creates change.</p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-1-5"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-1-5">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">¿Qué aprende la gente de todo esto?</h4>
+      <ul>
+        <li>Siempre hay una manera de hacerse oír.</li>
+        <li>No tengas miedo de alzar la voz.</li>
+        <li>No estás solo: otros comparten tus ideas.</li>
+        <li>Un monarca no es un dios (Monarca ≠ Dios).</li>
+        <li>Mantené la cautela: alzar la voz podía ser peligroso, así que la gente tomaba precauciones.</li>
+      </ul>
+      <p>Todo esto es lo contrario del <b>silencio</b>: la lección es que romper el silencio es lo que crea el cambio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ SECTION 2 ============================================ -->
+<section class="panel" id="t2">
+  <div class="sec-head"><div class="sec-num">2</div><h2>The French and Indian War (1754–1763)</h2></div>
+  <p class="lead">A war fought in North America between Great Britain and France — with Native American nations as allies on both sides. It is also called part of the “Seven Years' War.”</p>
+
+  <!-- Block 2.1 -->
+  <div class="block">
+    <div class="en">
+      <h4>Quick name check: GB vs UK</h4>
+      <p>People mix these up, so here it is clearly:</p>
+      <ul>
+        <li><b>Great Britain (GB):</b> England + Wales + Scotland.</li>
+        <li><b>United Kingdom (UK):</b> Great Britain <i>plus</i> Northern Ireland.</li>
+        <li>And the <b>13 colonies</b> in America were ruled by Great Britain at this time. (They later became the US.)</li>
+      </ul>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-1"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-1">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">Aclaración rápida de nombres: GB vs UK</h4>
+      <p>La gente los confunde, así que acá está claro:</p>
+      <ul>
+        <li><b>Gran Bretaña (GB):</b> Inglaterra + Gales + Escocia.</li>
+        <li><b>Reino Unido (UK):</b> Gran Bretaña <i>más</i> Irlanda del Norte.</li>
+        <li>Y las <b>13 colonias</b> en América estaban gobernadas por Gran Bretaña en esa época. (Más tarde se convirtieron en EE. UU.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Block 2.2 -->
+  <div class="block">
+    <div class="en">
+      <h4>The context: what started it?</h4>
+      <p>Great Britain had its 13 colonies, and it wanted more <b>land</b> and more <b>trade</b>. The clash happened over the <span class="term" data-term="Ohio River Valley">Ohio River Valley</span> — a region that both sides wanted for its trade connections and resources.</p>
+      <p>France felt <b>threatened</b> by Britain's growth. So the sides lined up: <b>France and many Native American nations</b> on one side, against <b>Great Britain</b> (with the Iroquois and some colonists) on the other.</p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-2"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-2">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">El contexto: ¿qué lo originó?</h4>
+      <p>Gran Bretaña tenía sus 13 colonias, y quería más <b>tierra</b> y más <b>comercio</b>. El choque se dio por el <b>valle del río Ohio</b>: una región que ambos bandos querían por sus conexiones comerciales y recursos.</p>
+      <p>Francia se sintió <b>amenazada</b> por el crecimiento británico. Así que los bandos se formaron: <b>Francia y muchas naciones nativas americanas</b> de un lado, contra <b>Gran Bretaña</b> (con los iroqueses y algunos colonos) del otro.</p>
+    </div>
+  </div>
+
+  <!-- Block 2.3: Native Americans -->
+  <div class="block">
+    <div class="en">
+      <h4>The Native Americans</h4>
+      <p>The Native American nations were not all the same. They had:</p>
+      <ul>
+        <li><b>Different structures and alliances</b> — different nations chose different sides.</li>
+        <li><b>Gender equality</b> — many had more equal roles for men and women than the Europeans did.</li>
+        <li>A different idea of <b>property</b> and <b>economic activity</b> — they did not see land as something one person could “own” the way Europeans did.</li>
+      </ul>
+      <p>Their land and trade routes (like the Ohio River) were exactly what France and Britain were fighting over.</p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-3"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-3">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">Los nativos americanos</h4>
+      <p>Las naciones nativas americanas no eran todas iguales. Tenían:</p>
+      <ul>
+        <li><b>Estructuras y alianzas diferentes</b>: distintas naciones eligieron distintos bandos.</li>
+        <li><b>Igualdad de género</b>: muchas tenían roles más igualitarios entre hombres y mujeres que los europeos.</li>
+        <li>Una idea distinta de la <b>propiedad</b> y la <b>actividad económica</b>: no veían la tierra como algo que una persona pudiera “poseer” al modo europeo.</li>
+      </ul>
+      <p>Su tierra y sus rutas comerciales (como el río Ohio) eran justamente lo que Francia y Gran Bretaña se disputaban.</p>
+    </div>
+  </div>
+
+  <!-- Block 2.4: GB vs France compare -->
+  <div class="block">
+    <div class="en">
+      <h4>The two sides: Great Britain vs France</h4>
+      <div class="vs">
+        <div class="col gb">
+          <div class="top">🇬🇧 Great Britain</div>
+          <div class="body">
+            <h5>What they wanted</h5>
+            <ul><li>Expand their territory</li><li>Secure land and trade</li></ul>
+            <h5>Allies</h5>
+            <ul><li>Iroquois tribes</li><li>Some colonists</li></ul>
+            <h5>Advantages</h5>
+            <ul><li>Large population</li><li>Strong navy</li><li>Sent many soldiers and money</li></ul>
+            <h5>Weaknesses (cons)</h5>
+            <ul><li>Wore bright red coats (easy to see)</li><li>Did not know how to fight in a forest</li></ul>
+          </div>
+        </div>
+        <div class="col fr">
+          <div class="top">🇫🇷 France</div>
+          <div class="body">
+            <h5>What they wanted</h5>
+            <ul><li>Protect their trade routes</li><li>Link Canada and Louisiana</li></ul>
+            <h5>Allies</h5>
+            <ul><li>Many Native American tribes</li><li>Spain</li></ul>
+            <h5>Advantages</h5>
+            <ul><li>Great forts</li><li>Used surprise attacks</li><li>Knew how to survive in the woods</li></ul>
+            <h5>Weaknesses (cons)</h5>
+            <ul><li>Very few people in America</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-4"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-4">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">Los dos bandos: Gran Bretaña vs Francia</h4>
+      <p><b>🇬🇧 Gran Bretaña.</b> <i>Qué quería:</i> expandir su territorio, asegurar tierra y comercio. <i>Aliados:</i> tribus iroquesas y algunos colonos. <i>Ventajas:</i> mucha población, una armada (navy) fuerte, envió muchos soldados y dinero. <i>Debilidades:</i> usaban casacas rojas brillantes (fáciles de ver) y no sabían pelear en el bosque.</p>
+      <p><b>🇫🇷 Francia.</b> <i>Qué quería:</i> proteger sus rutas comerciales y unir Canadá con Luisiana. <i>Aliados:</i> muchas tribus nativas americanas y España. <i>Ventajas:</i> grandes fuertes, usaban ataques sorpresa, sabían sobrevivir en el bosque. <i>Debilidades:</i> muy poca gente en América.</p>
+    </div>
+  </div>
+
+  <!-- Block 2.5: spark / timeline -->
+  <div class="block">
+    <div class="en">
+      <h4>The spark: how the fighting began</h4>
+      <div class="timeline">
+        <div class="tevent"><b>Ohio River Valley.</b> Both sides clashed over this land.</div>
+        <div class="tevent"><b>French forts + Washington.</b> A young George Washington was sent to challenge the French forts.</div>
+        <div class="tevent"><b>Jumonville killed.</b> A French officer named Jumonville was killed by the “Half-King” (a Native American leader allied with Britain).</div>
+        <div class="tevent"><b>Britain forced to surrender.</b> The British were defeated at a fort and had to sign a written confession.</div>
+        <div class="tevent"><b>WAR!</b> This event set off the full war.</div>
+      </div>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-5"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-5">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">La chispa: cómo empezaron los combates</h4>
+      <ul>
+        <li><b>Valle del río Ohio.</b> Ambos bandos chocaron por esta tierra.</li>
+        <li><b>Fuertes franceses + Washington.</b> Un joven George Washington fue enviado a desafiar los fuertes franceses.</li>
+        <li><b>Muerte de Jumonville.</b> Un oficial francés llamado Jumonville fue asesinado por el “Half-King” (Medio Rey), un líder nativo aliado de Gran Bretaña.</li>
+        <li><b>Gran Bretaña obligada a rendirse.</b> Los británicos fueron derrotados en un fuerte y tuvieron que firmar una confesión escrita.</li>
+        <li><b>¡GUERRA!</b> Este hecho desató la guerra completa.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Block 2.6: result -->
+  <div class="block">
+    <div class="en">
+      <h4>The result: Great Britain won</h4>
+      <p>The war ended with a <span class="term" data-term="treaty">treaty</span> (a formal peace agreement). Here is who got what:</p>
+      <ul>
+        <li><b>Great Britain</b> took the most territory: it gained <b>Florida</b> (from Spain), <b>Canada</b> (from France), and control of the Atlantic Coast.</li>
+        <li><b>Spain</b> received <b>Louisiana</b> from France.</li>
+        <li><b>France</b> gave Louisiana to Spain, kept only a few islands, and was basically <b>kicked out of North America.</b></li>
+      </ul>
+      <p>And the saddest result: the <b>Native Americans lost the most.</b> Many died, lost their land, and ended up alone and fearful — even the ones who had fought on Britain's winning side.</p>
+    </div>
+    <button class="tr-toggle" data-tr="tr-2-6"><span class="ic">🌐</span> Ver en español</button>
+    <div class="tr" id="tr-2-6">
+      <span class="es-label">En español</span>
+      <h4 style="color:var(--violet-deep)">El resultado: Gran Bretaña ganó</h4>
+      <p>La guerra terminó con un <b>tratado</b> (un acuerdo formal de paz). Esto es quién obtuvo qué:</p>
+      <ul>
+        <li><b>Gran Bretaña</b> se quedó con la mayor parte del territorio: ganó <b>Florida</b> (de España), <b>Canadá</b> (de Francia) y el control de la costa atlántica.</li>
+        <li><b>España</b> recibió <b>Luisiana</b> de manos de Francia.</li>
+        <li><b>Francia</b> le dio Luisiana a España, conservó solo unas pocas islas y quedó prácticamente <b>expulsada de Norteamérica.</b></li>
+      </ul>
+      <p>Y el resultado más triste: los <b>nativos americanos fueron los que más perdieron.</b> Muchos murieron, perdieron sus tierras y quedaron solos y temerosos, incluso los que habían peleado del lado ganador de Gran Bretaña.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ SECTION 3: BANK ============================================ -->
+<section class="panel" id="t3">
+  <div class="sec-head"><div class="sec-num">3</div><h2>Translation Bank · Banco de traducciones</h2></div>
+  <p class="lead">Key terms in English with their Spanish translation <b>and</b> what they really mean (not just a dictionary word). Type in the box to search. Escribí en el cuadro para buscar.</p>
+  <div class="bank-controls">
+    <input type="text" id="gloss-search" placeholder="🔎 Search a term in English or Spanish…">
+  </div>
+  <div class="gloss" id="gloss"></div>
+  <p class="no-results" id="no-results" style="display:none;">No terms match your search. · Ningún término coincide con tu búsqueda.</p>
+</section>
+
+<!-- ============================================ SECTION 4: QUIZ ============================================ -->
+<section class="panel" id="t4">
+  <div class="sec-head"><div class="sec-num">4</div><h2>Test yourself · Quiz</h2></div>
+  <p class="lead">15 questions covering both topics. Each answer explains the why — in English, with a short Spanish note. You get a grade out of 20 at the end.</p>
+  <div class="quiz-head">
+    <span style="font-weight:800;color:#9a5a12;">Your progress</span>
+    <span id="progress-text" style="color:var(--soft);font-weight:700;">0 / 15 answered</span>
+  </div>
+  <div class="progress"><div id="progress-bar"></div></div>
+  <div id="quiz"></div>
+  <div style="text-align:center;margin:24px 0;">
+    <button class="btn" id="grade-btn">See my grade</button>
+    <button class="btn ghost" id="reset-btn">Reset</button>
+  </div>
+  <div class="result-card" id="result">
+    <div class="grade" id="grade-num">--</div>
+    <div class="stars" id="grade-stars"></div>
+    <p class="msg" id="grade-msg"></p>
+    <p class="msg" id="grade-review" style="font-size:.95rem;"></p>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* -------- TABS -------- */
+const tabBtns=document.querySelectorAll('.tab-btn');
+const panels=document.querySelectorAll('.panel');
+tabBtns.forEach(b=>b.addEventListener('click',()=>{
+  tabBtns.forEach(x=>x.classList.remove('active'));
+  panels.forEach(x=>x.classList.remove('show'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* -------- PER-BLOCK TRANSLATION TOGGLE -------- */
+document.querySelectorAll('.tr-toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tr=document.getElementById(btn.dataset.tr);
+    const open=tr.classList.toggle('show');
+    btn.innerHTML=open ? '<span class="ic">🇬🇧</span> Hide Spanish · Ocultar' : '<span class="ic">🌐</span> Ver en español';
+  });
+});
+
+/* -------- GLOBAL TOGGLE -------- */
+let allOn=false;
+document.getElementById('toggle-all').addEventListener('click',()=>{
+  allOn=!allOn;
+  const gb=document.getElementById('toggle-all');
+  gb.classList.toggle('on',allOn);
+  gb.textContent = allOn ? '🇬🇧 Hide all translations · Ocultar todo' : '🌐 Show all translations · Mostrar todo en español';
+  document.querySelectorAll('.tr-toggle').forEach(btn=>{
+    const tr=document.getElementById(btn.dataset.tr);
+    tr.classList.toggle('show',allOn);
+    btn.innerHTML=allOn ? '<span class="ic">🇬🇧</span> Hide Spanish · Ocultar' : '<span class="ic">🌐</span> Ver en español';
+  });
+});
+
+/* -------- GLOSSARY DATA -------- */
+const GLOSSARY=[
+  {en:"Public sphere",es:"Esfera pública",mean:"El espacio social donde la gente común se reúne para hablar de ideas y de política. Es donde nace la opinión pública. Surgió en cafés y salones."},
+  {en:"Private sphere",es:"Esfera privada",mean:"El mundo personal de cada uno: la casa, la familia, la vida diaria. Estaba separado del poder político."},
+  {en:"Sphere of authority",es:"Esfera de autoridad",mean:"El mundo del poder: el país, el rey y quienes hacían las leyes. La gente común no participaba en él."},
+  {en:"Public opinion",es:"Opinión pública",mean:"La voz compartida del pueblo. Cuando muchas personas piensan algo y lo expresan, gana poder para presionar o cambiar al gobierno."},
+  {en:"Coffeehouse",es:"Café (casa de café)",mean:"Local donde la gente se juntaba a tomar café y, sobre todo, a discutir ideas y noticias. Fue uno de los lugares clave donde creció la esfera pública."},
+  {en:"Salon",es:"Salón",mean:"Reunión en una casa privada donde intelectuales y artistas conversaban sobre ideas, filosofía y política."},
+  {en:"Philosopher",es:"Filósofo",mean:"Pensador que estudiaba grandes preguntas sobre la sociedad, el poder y la justicia. En esa época funcionaban como los 'influencers': sus ideas se difundían y cambiaban mentes."},
+  {en:"Subversion",es:"Subversión",mean:"Trabajar en secreto para debilitar o desafiar a los que tienen el poder. No es una traducción 'difícil', pero el concepto es clave: oponerse al rey de forma oculta."},
+  {en:"Pseudonym",es:"Seudónimo",mean:"Nombre falso que usa un escritor para ocultar su identidad real. Servía para criticar al poder sin ser castigado."},
+  {en:"Anonymous",es:"Anónimo",mean:"Sin nombre conocido. Publicar de forma anónima protegía a quien escribía ideas peligrosas."},
+  {en:"Underground newspaper",es:"Periódico clandestino",mean:"Diario ilegal, impreso y repartido en secreto, para difundir ideas que el gobierno prohibía. 'Underground' aquí significa 'clandestino', no 'subterráneo'."},
+  {en:"Word of mouth",es:"Boca a boca",mean:"Difundir información hablando, de persona a persona, sin escribirla. Una forma sencilla pero poderosa de viralizar ideas."},
+  {en:"Monarch",es:"Monarca",mean:"El rey o la reina. La idea revolucionaria fue 'Monarch ≠ God': el monarca es solo una persona, no un ser divino."},
+  {en:"The affairs of the state",es:"Los asuntos del Estado",mean:"Las cuestiones que tienen que ver con el gobierno y el país. La conclusión clave: son de 'interés común', es decir, le importan a todos."},
+  {en:"French and Indian War",es:"Guerra Franco-India",mean:"Guerra (1754–1763) en Norteamérica entre Gran Bretaña y Francia, con naciones nativas aliadas en ambos bandos. Parte de la 'Guerra de los Siete Años'."},
+  {en:"Seven Years' War",es:"Guerra de los Siete Años",mean:"El conflicto más grande y mundial del que la Guerra Franco-India fue la parte que ocurrió en América."},
+  {en:"Great Britain (GB)",es:"Gran Bretaña",mean:"Inglaterra + Gales + Escocia. Ojo: no es lo mismo que el Reino Unido."},
+  {en:"United Kingdom (UK)",es:"Reino Unido",mean:"Gran Bretaña + Irlanda del Norte. Es el nombre del país completo."},
+  {en:"The 13 colonies",es:"Las 13 colonias",mean:"Los trece territorios de Gran Bretaña en la costa este de América que más tarde se convirtieron en Estados Unidos."},
+  {en:"Ohio River Valley",es:"Valle del río Ohio",mean:"Región de Norteamérica que Francia y Gran Bretaña se disputaban por sus rutas de comercio y recursos. Fue el detonante de la guerra."},
+  {en:"Trade",es:"Comercio",mean:"Comprar y vender bienes. Controlar el comercio significaba riqueza y poder, por eso ambos bandos peleaban por él."},
+  {en:"Allies",es:"Aliados",mean:"Grupos o países que pelean del mismo lado. Francia tenía a muchas tribus nativas y a España; Gran Bretaña tenía a los iroqueses y a algunos colonos."},
+  {en:"Navy",es:"Armada / marina de guerra",mean:"La flota de barcos de guerra de un país. La armada fuerte fue una gran ventaja de Gran Bretaña."},
+  {en:"Fort",es:"Fuerte",mean:"Construcción militar defensiva. Francia tenía grandes fuertes bien ubicados, una de sus ventajas."},
+  {en:"Surprise attack",es:"Ataque sorpresa",mean:"Atacar cuando el enemigo no lo espera. Era una táctica que Francia y sus aliados usaban bien en el bosque."},
+  {en:"Threatened",es:"Amenazado",mean:"Sentir que algo pone en peligro tu seguridad o poder. Francia se sintió amenazada por el crecimiento de Gran Bretaña."},
+  {en:"Treaty",es:"Tratado",mean:"Acuerdo formal y escrito entre países, normalmente para terminar una guerra y repartir tierras."},
+  {en:"Surrender",es:"Rendirse",mean:"Dejar de pelear y aceptar la derrota. Gran Bretaña tuvo que rendirse en un fuerte al inicio de la guerra."},
+  {en:"Territory",es:"Territorio",mean:"Tierra que un país controla. El gran premio de la guerra fue quedarse con más territorio."},
+  {en:"Gender equality",es:"Igualdad de género",mean:"Trato igual entre hombres y mujeres. Muchas naciones nativas la practicaban más que los europeos de la época."},
+  {en:"Property",es:"Propiedad",mean:"Lo que alguien posee. Los nativos americanos entendían la tierra de forma distinta: no como algo que una persona pudiera 'poseer' en privado."}
+];
+
+const glossEl=document.getElementById('gloss');
+function renderGloss(filter=''){
+  const f=filter.trim().toLowerCase();
+  glossEl.innerHTML='';
+  const matches=GLOSSARY.filter(g=>!f || g.en.toLowerCase().includes(f) || g.es.toLowerCase().includes(f) || g.mean.toLowerCase().includes(f));
+  document.getElementById('no-results').style.display = matches.length? 'none':'block';
+  matches.forEach(g=>{
+    const c=document.createElement('div');
+    c.className='gcard';
+    c.innerHTML=`<div class="pair"><span class="en-t">${g.en}</span><span class="arrow">→</span><span class="es-t">${g.es}</span></div><div class="mean">${g.mean}</div>`;
+    glossEl.appendChild(c);
+  });
+}
+renderGloss();
+document.getElementById('gloss-search').addEventListener('input',e=>renderGloss(e.target.value));
+
+/* clicking an in-text term jumps to the bank and searches it */
+document.querySelectorAll('.term').forEach(t=>{
+  t.addEventListener('click',()=>{
+    tabBtns.forEach(x=>x.classList.remove('active'));
+    panels.forEach(x=>x.classList.remove('show'));
+    document.querySelector('[data-tab="t3"]').classList.add('active');
+    document.getElementById('t3').classList.add('show');
+    const term=t.dataset.term;
+    document.getElementById('gloss-search').value=term;
+    renderGloss(term);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* -------- QUIZ -------- */
+const QUIZ=[
+  {topic:"Public Sphere",q:"In the old society, what was the 'sphere of authority'?",
+   opts:["Your home and family","The country and the people who made the laws","A coffeehouse","A type of newspaper"],correct:1,
+   ok:"Right — it was the world of rulers and law-makers, separate from ordinary people.",no:"The sphere of authority was the country and its rulers (the law-makers). Your home and family were the 'private sphere'.",
+   es:"La esfera de autoridad era el país y sus gobernantes; tu casa era la esfera privada."},
+  {topic:"Public Sphere",q:"What did it mean that people 'had no voice in the state'?",
+   opts:["They were not allowed to sing","They could not take part in decisions about their country","They had no telephone","They could not read"],correct:1,
+   ok:"Exactly. Ordinary people couldn't take part in political decisions.",no:"It means they could not take part in decisions about their own country — they had no political power.",
+   es:"Significa que no podían participar en las decisiones sobre su propio país."},
+  {topic:"Public Sphere",q:"Where did the public sphere mainly grow?",
+   opts:["In churches and castles","In coffeehouses and salons","In schools","In the royal palace"],correct:1,
+   ok:"Yes — coffeehouses and salons were where people gathered to share ideas.",no:"It grew in coffeehouses and salons, where people met to talk and debate freely.",
+   es:"Creció en los cafés (coffeehouses) y los salones."},
+  {topic:"Public Sphere",q:"The notes say 'Philosophers = Influencers.' What does this mean?",
+   opts:["Philosophers were rich","Their ideas spread fast and shaped what people believed","They owned social media","They were friends with the king"],correct:1,
+   ok:"Correct — like today's influencers, their ideas spread and changed minds.",no:"It means their ideas spread quickly and shaped public opinion, just like influencers do today.",
+   es:"Sus ideas se difundían rápido y moldeaban lo que la gente creía, como los influencers de hoy."},
+  {topic:"Public Sphere",q:"Why did writers use pseudonyms (fake names)?",
+   opts:["To sound funnier","To stay anonymous and safe while criticizing those in power","Because they forgot their real names","To sell more books"],correct:1,
+   ok:"Right — staying anonymous protected them from punishment.",no:"They used fake names to stay anonymous and safe, because criticizing the king was dangerous.",
+   es:"Para mantenerse anónimos y a salvo, ya que criticar al rey era peligroso."},
+  {topic:"Public Sphere",q:"What does the idea 'Monarch ≠ God' express?",
+   opts:["The king is more powerful than God","A king is just a person, not a divine being","God chose the king","The king should be worshipped"],correct:1,
+   ok:"Exactly — it questions the king's right to absolute power.",no:"It means a king is only a human being, not a god — which led people to ask if he should rule at all.",
+   es:"Que un rey es solo una persona, no un ser divino."},
+  {topic:"Public Sphere",q:"'Silent to noisy' describes…",
+   opts:["A change from people afraid to speak, to people sharing opinions openly","A music concert","A war between two countries","The sound of a printing press"],correct:0,
+   ok:"Correct — that 'noise' is the rise of the public sphere.",no:"It describes society changing from silent and afraid, to openly speaking up — that's 'the rise'.",
+   es:"Describe el paso de gente callada y temerosa a gente que opina en voz alta."},
+  {topic:"French & Indian War",q:"Great Britain is made up of…",
+   opts:["England, Wales and Scotland","England and Northern Ireland","France and Spain","The 13 colonies"],correct:0,
+   ok:"Right. Add Northern Ireland and you get the United Kingdom.",no:"Great Britain = England + Wales + Scotland. Add Northern Ireland to get the United Kingdom.",
+   es:"Gran Bretaña = Inglaterra + Gales + Escocia."},
+  {topic:"French & Indian War",q:"What region did Britain and France clash over?",
+   opts:["The Atlantic Ocean","The Ohio River Valley","Florida","Spain"],correct:1,
+   ok:"Yes — both wanted it for trade and resources.",no:"They clashed over the Ohio River Valley, wanted for its trade connections and resources.",
+   es:"Chocaron por el valle del río Ohio."},
+  {topic:"French & Indian War",q:"Which was an ADVANTAGE of Great Britain?",
+   opts:["Knew how to fight in forests","Had a large population and a strong navy","Had very few people in America","Used surprise attacks best"],correct:1,
+   ok:"Correct — big population and strong navy.",no:"Britain's advantages were its large population and strong navy. Forest fighting and surprise attacks were France's strengths.",
+   es:"La ventaja de Gran Bretaña era su gran población y su armada fuerte."},
+  {topic:"French & Indian War",q:"Which was a WEAKNESS (con) of Great Britain?",
+   opts:["Too few soldiers","Wore bright red coats and didn't know how to fight in a forest","No money","No allies at all"],correct:1,
+   ok:"Right — bright coats made them easy targets in the woods.",no:"Britain wore bright red coats (easy to spot) and didn't know forest fighting. They actually had lots of soldiers and money.",
+   es:"Usaban casacas rojas brillantes y no sabían pelear en el bosque."},
+  {topic:"French & Indian War",q:"Who were France's allies?",
+   opts:["The Iroquois only","Many Native American tribes and Spain","Great Britain","No one"],correct:1,
+   ok:"Correct — many Native nations plus Spain.",no:"France was allied with many Native American tribes and with Spain.",
+   es:"Francia se alió con muchas tribus nativas y con España."},
+  {topic:"French & Indian War",q:"How did the Native Americans view land and property?",
+   opts:["Exactly like Europeans","Differently — not as something one person could privately 'own'","They had no use for land","Only the king could own it"],correct:1,
+   ok:"Right — their idea of property was different from the European one.",no:"They saw land and property differently — not as something a single person could privately own.",
+   es:"La veían distinto: no como algo que una persona pudiera 'poseer' en privado."},
+  {topic:"French & Indian War",q:"Who won the war, and what did Britain gain?",
+   opts:["France won; it gained Canada","Britain won; it gained Florida and Canada","Spain won; it gained everything","No one won"],correct:1,
+   ok:"Correct — Britain won and took Florida (from Spain) and Canada (from France).",no:"Great Britain won. It gained Florida (from Spain) and Canada (from France), plus the Atlantic Coast.",
+   es:"Ganó Gran Bretaña: obtuvo Florida (de España) y Canadá (de Francia)."},
+  {topic:"French & Indian War",q:"Who lost the most in the end?",
+   opts:["Spain","The Native Americans","Great Britain","No one lost"],correct:1,
+   ok:"Sadly correct — many died and lost their land, even Britain's allies.",no:"The Native Americans lost the most: many died and lost their land, even those allied with the winning side.",
+   es:"Los nativos americanos fueron los que más perdieron, incluso los aliados del bando ganador."}
+];
+
+const quizEl=document.getElementById('quiz');
+const answered={};
+QUIZ.forEach((item,i)=>{
+  const q=document.createElement('div');q.className='q';
+  let inner=`<div class="qn">Question ${i+1} · <span style="font-size:.78rem;color:var(--soft);font-family:Nunito;font-weight:700;">${item.topic}</span></div><div class="qtext">${item.q}</div><div class="opts">`;
+  item.opts.forEach((o,j)=>{inner+=`<button class="opt" data-i="${i}" data-j="${j}">${o}</button>`;});
+  inner+=`</div><div class="feedback" id="fb-${i}"></div>`;
+  q.innerHTML=inner;quizEl.appendChild(q);
+});
+function updateProgress(){
+  const n=Object.keys(answered).length;
+  document.getElementById('progress-text').textContent=`${n} / ${QUIZ.length} answered`;
+  document.getElementById('progress-bar').style.width=(n/QUIZ.length*100)+'%';
+}
+quizEl.addEventListener('click',e=>{
+  if(!e.target.classList.contains('opt'))return;
+  const i=+e.target.dataset.i,j=+e.target.dataset.j;
+  if(answered.hasOwnProperty(i))return;
+  const item=QUIZ[i];
+  quizEl.querySelectorAll(`.opt[data-i="${i}"]`).forEach(b=>{
+    b.disabled=true;const bj=+b.dataset.j;
+    if(bj===item.correct)b.classList.add('correct');
+    if(bj===j&&j!==item.correct)b.classList.add('wrong');
+  });
+  const ok=(j===item.correct);
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(ok?'ok':'no');
+  fb.innerHTML=`<b>${ok?'✓ Correct!':'✗ Let’s review'}</b>${ok?item.ok:item.no}<span class="es-mini">🌐 ${item.es}</span>`;
+  answered[i]=ok;updateProgress();
+});
+document.getElementById('grade-btn').addEventListener('click',()=>{
+  const total=QUIZ.length;
+  const correct=Object.values(answered).filter(Boolean).length;
+  const ansCount=Object.keys(answered).length;
+  const grade=Math.round((correct/total)*20*10)/10;
+  document.getElementById('grade-num').textContent=grade+' / 20';
+  const fs=Math.round(grade/4);
+  document.getElementById('grade-stars').textContent='★'.repeat(fs)+'☆'.repeat(5-fs);
+  let msg;
+  if(grade>=18)msg='Excellent! You really know both topics. · ¡Excelente! Dominás los dos temas.';
+  else if(grade>=12)msg="Good work! Review the red answers and you’ll be solid. · ¡Buen trabajo! Repasá las respuestas en rojo.";
+  else if(grade>=7)msg='Nice start. Re-read the sections you missed and try again. · Buen comienzo, releé y reintentá.';
+  else msg='No worries — read sections 1 and 2 again calmly, then retry. · Tranquila, releé las secciones 1 y 2 y volvé a intentar.';
+  document.getElementById('grade-msg').textContent=msg;
+  const wrong={};QUIZ.forEach((it,i)=>{if(answered[i]===false)wrong[it.topic]=(wrong[it.topic]||0)+1;});
+  let review='';
+  if(ansCount<total)review+=`You left ${total-ansCount} unanswered. `;
+  const tk=Object.keys(wrong);
+  if(tk.length)review+='Review: '+tk.join(', ')+'.';
+  else if(ansCount===total)review+='Perfect — no topic missed!';
+  document.getElementById('grade-review').textContent=review;
+  const res=document.getElementById('result');res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth',block:'center'});
+});
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  for(const k in answered)delete answered[k];
+  document.getElementById('result').classList.remove('show');
+  quizEl.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
+  quizEl.querySelectorAll('.feedback').forEach(f=>{f.className='feedback';f.innerHTML='';});
+  updateProgress();
+  window.scrollTo({top:document.getElementById('t4').offsetTop-60,behavior:'smooth'});
+});
+updateProgress();
+</script>
+</body>
+</html>

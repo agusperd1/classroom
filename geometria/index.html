@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Geometría — Cuadriláteros y Polígonos</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf9f4;
+    --ink:#2d2a26;
+    --soft:#6b6356;
+    --line:#d8e3ee;        /* azul cuadrícula */
+    --grid:#e7eef6;
+    --violet:#8b5fbf;       /* marcador de los apuntes */
+    --violet-soft:#f0e7f8;
+    --violet-deep:#5e3d87;
+    --green:#3f9b6d;
+    --green-soft:#e3f3ea;
+    --red:#cf5a52;
+    --red-soft:#fbe7e5;
+    --amber:#d99411;
+    --amber-soft:#fbf0d8;
+    --card:#ffffff;
+    --shadow:0 2px 0 rgba(0,0,0,.04), 0 8px 24px rgba(60,50,80,.08);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Nunito',system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      var(--paper);
+    background-size:26px 26px, 26px 26px, auto;
+    line-height:1.65;
+    font-size:17px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px 90px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    text-align:center;
+    padding:54px 18px 30px;
+    max-width:860px;margin:0 auto;
+  }
+  .hero .eyebrow{
+    font-family:'Caveat',cursive;
+    color:var(--violet);
+    font-size:1.5rem;
+    transform:rotate(-2deg);
+    display:inline-block;
+  }
+  .hero h1{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(2.1rem,6vw,3.4rem);
+    line-height:1.05;
+    margin:.1em 0 .25em;
+    letter-spacing:-.5px;
+  }
+  .hero h1 .hl{
+    background:linear-gradient(transparent 55%, var(--violet-soft) 55%);
+    padding:0 .1em;
+  }
+  .hero p{color:var(--soft);max-width:560px;margin:0 auto;font-size:1.05rem;}
+  .hero .shapes{margin:18px auto 0;display:flex;gap:14px;justify-content:center;opacity:.85;}
+  .hero .shapes svg{width:42px;height:42px;}
+
+  /* ---------- NAV TABS ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,249,244,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px 0;margin-bottom:30px;
+  }
+  .tabs-inner{
+    max-width:860px;margin:0 auto;padding:0 12px;
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  }
+  .tab-btn{
+    font-family:'Nunito';font-weight:800;font-size:.92rem;
+    border:1.5px solid var(--line);
+    background:var(--card);color:var(--soft);
+    padding:8px 15px;border-radius:999px;cursor:pointer;
+    transition:.15s;white-space:nowrap;
+  }
+  .tab-btn:hover{border-color:var(--violet);color:var(--violet);}
+  .tab-btn.active{background:var(--violet);border-color:var(--violet);color:#fff;}
+
+  /* ---------- SECTIONS ---------- */
+  .panel{display:none;animation:fade .35s ease;}
+  .panel.show{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .sec-head{display:flex;align-items:center;gap:14px;margin:10px 0 6px;}
+  .sec-num{
+    font-family:'Fraunces',serif;font-weight:700;
+    background:var(--violet);color:#fff;
+    width:46px;height:46px;flex:0 0 46px;border-radius:13px;
+    display:grid;place-items:center;font-size:1.4rem;
+    box-shadow:var(--shadow);
+  }
+  .sec-head h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.7rem;margin:0;line-height:1.1;}
+
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.28rem;margin:1.8em 0 .4em;color:var(--violet-deep);}
+  h4{font-family:'Nunito';font-weight:800;font-size:1.05rem;margin:1.3em 0 .3em;color:var(--ink);}
+  p{margin:.5em 0;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px 22px;margin:16px 0;
+    box-shadow:var(--shadow);
+  }
+
+  .lead{font-size:1.08rem;color:var(--soft);}
+
+  /* definiciones / cajas de color */
+  .def{
+    border-left:5px solid var(--violet);
+    background:var(--violet-soft);
+    border-radius:10px;padding:13px 16px;margin:14px 0;
+  }
+  .def b{color:var(--violet-deep);}
+  .tip{
+    border-left:5px solid var(--green);background:var(--green-soft);
+    border-radius:10px;padding:13px 16px;margin:14px 0;
+  }
+  .warn{
+    border-left:5px solid var(--amber);background:var(--amber-soft);
+    border-radius:10px;padding:13px 16px;margin:14px 0;
+  }
+  .err-note{
+    border-left:5px solid var(--red);background:var(--red-soft);
+    border-radius:10px;padding:13px 16px;margin:14px 0;
+  }
+  .label{
+    display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.06em;
+    text-transform:uppercase;padding:2px 9px;border-radius:6px;margin-bottom:4px;
+  }
+  .label.v{background:var(--violet);color:#fff;}
+  .label.g{background:var(--green);color:#fff;}
+  .label.a{background:var(--amber);color:#fff;}
+  .label.r{background:var(--red);color:#fff;}
+
+  /* fórmulas */
+  .formula{
+    font-family:'Fraunces',serif;font-size:1.25rem;text-align:center;
+    background:#fff;border:1.5px dashed var(--violet);
+    border-radius:12px;padding:14px;margin:14px 0;color:var(--violet-deep);
+  }
+  .calc{
+    font-family:'Fraunces',serif;background:#fdfcfa;border:1px solid var(--line);
+    border-radius:10px;padding:14px 18px;margin:12px 0;font-size:1.08rem;line-height:2.1;
+  }
+  .calc .step{display:block;}
+  .calc .hl{background:var(--violet-soft);border-radius:5px;padding:0 4px;}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.95rem;background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:var(--violet);color:#fff;font-weight:800;font-size:.9rem;}
+  tr:last-child td{border-bottom:none;}
+  td.fig{width:74px;text-align:center;}
+  td.fig svg{width:60px;height:54px;}
+
+  .shape-row{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0;}
+  .shape-card{flex:1 1 150px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow);}
+  .shape-card svg{width:78px;height:68px;margin-bottom:4px;}
+  .shape-card b{display:block;color:var(--violet-deep);font-family:'Fraunces',serif;font-size:1.05rem;}
+  .shape-card small{color:var(--soft);font-size:.85rem;line-height:1.4;display:block;}
+
+  /* worked example */
+  .example{border:1px solid var(--line);border-radius:var(--radius);margin:18px 0;overflow:hidden;box-shadow:var(--shadow);}
+  .example .ex-head{background:var(--violet-soft);padding:11px 18px;font-weight:800;color:var(--violet-deep);display:flex;align-items:center;gap:9px;}
+  .example .ex-body{padding:16px 20px;background:#fff;}
+  .ex-fig{text-align:center;margin:6px 0 12px;}
+  .ex-fig svg{max-width:230px;height:auto;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .progress{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0 22px;}
+  .progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--violet-deep));transition:width .4s;}
+
+  .q{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:15px 0;box-shadow:var(--shadow);}
+  .q .qn{font-family:'Caveat',cursive;color:var(--violet);font-size:1.3rem;}
+  .q .qtext{font-weight:700;margin:.2em 0 .7em;font-size:1.06rem;}
+  .q .qtext .fml{font-family:'Fraunces',serif;}
+  .q-fig{text-align:center;margin:4px 0 12px;}
+  .q-fig svg{max-width:240px;height:auto;}
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{
+    text-align:left;border:1.5px solid var(--line);background:#fdfcfa;
+    padding:11px 15px;border-radius:11px;cursor:pointer;font-size:1rem;
+    font-family:'Nunito';font-weight:600;color:var(--ink);transition:.13s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--violet);background:var(--violet-soft);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--green);background:var(--green-soft);color:#256647;font-weight:800;}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft);color:#a33;font-weight:800;}
+  .feedback{margin-top:12px;border-radius:11px;padding:12px 15px;font-size:.97rem;display:none;}
+  .feedback.show{display:block;animation:fade .3s;}
+  .feedback.ok{background:var(--green-soft);border-left:4px solid var(--green);}
+  .feedback.no{background:var(--red-soft);border-left:4px solid var(--red);}
+  .feedback b{display:block;margin-bottom:2px;}
+
+  /* input de cálculo */
+  .num-wrap{display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
+  .num-wrap input{
+    font-family:'Fraunces',serif;font-size:1.1rem;width:130px;
+    padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fdfcfa;
+  }
+  .num-wrap input:focus{outline:none;border-color:var(--violet);}
+  .btn{
+    font-family:'Nunito';font-weight:800;font-size:.96rem;border:none;cursor:pointer;
+    background:var(--violet);color:#fff;padding:10px 20px;border-radius:11px;transition:.15s;
+  }
+  .btn:hover{background:var(--violet-deep);}
+  .btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--soft);}
+  .btn.ghost:hover{border-color:var(--violet);color:var(--violet);}
+
+  .hintbox{margin-top:10px;}
+  .hint-toggle{font-family:'Nunito';font-weight:700;font-size:.88rem;color:var(--violet);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline dotted;}
+  .hint-content{display:none;margin-top:8px;font-size:.94rem;color:var(--soft);background:var(--violet-soft);border-radius:9px;padding:10px 13px;}
+  .hint-content.show{display:block;}
+
+  .result-card{display:none;text-align:center;background:#fff;border:2px solid var(--violet);border-radius:var(--radius);padding:26px;margin:22px 0;box-shadow:var(--shadow);}
+  .result-card.show{display:block;animation:fade .4s;}
+  .result-card .grade{font-family:'Fraunces',serif;font-size:3.4rem;color:var(--violet-deep);line-height:1;}
+  .result-card .stars{font-size:1.7rem;letter-spacing:4px;margin:6px 0;}
+  .result-card .msg{color:var(--soft);max-width:440px;margin:6px auto;}
+
+  .footer-note{text-align:center;color:var(--soft);font-family:'Caveat',cursive;font-size:1.35rem;margin-top:40px;transform:rotate(-1deg);}
+
+  .mini-toc{display:flex;flex-direction:column;gap:6px;margin:10px 0 4px;}
+  .mini-toc a{color:var(--violet);font-weight:700;text-decoration:none;font-size:.95rem;}
+  .mini-toc a:hover{text-decoration:underline;}
+
+  ul.clean{list-style:none;padding-left:0;}
+  ul.clean li{padding:5px 0 5px 28px;position:relative;}
+  ul.clean li::before{content:"◆";color:var(--violet);position:absolute;left:6px;font-size:.8rem;top:8px;}
+
+  .key{font-family:'Fraunces',serif;background:var(--violet-soft);border-radius:5px;padding:1px 7px;color:var(--violet-deep);font-weight:600;}
+
+  /* palabra de vocabulario explicada en su sitio */
+  .voc{border-bottom:2px dotted var(--violet);font-weight:700;color:var(--violet-deep);cursor:help;}
+  .vocabulary{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 4px;margin:16px 0;box-shadow:var(--shadow);}
+  .vocabulary summary{cursor:pointer;font-family:'Fraunces',serif;font-weight:600;color:var(--violet-deep);font-size:1.12rem;padding:10px 16px;list-style:none;}
+  .vocabulary summary::-webkit-details-marker{display:none;}
+  .vocabulary summary::before{content:"📖 ";}
+  .vocabulary[open] summary{border-bottom:1px solid var(--line);}
+  .vocabulary .voc-body{padding:6px 18px 12px;}
+  .vocabulary dt{font-weight:800;color:var(--violet-deep);margin-top:10px;}
+  .vocabulary dd{margin:2px 0 0;color:var(--ink);}
+
+  /* explicación lateral de cada línea de cálculo */
+  .calc2{background:#fdfcfa;border:1px solid var(--line);border-radius:10px;padding:6px;margin:12px 0;}
+  .calc2 .row{display:flex;align-items:flex-start;gap:12px;padding:9px 10px;border-bottom:1px dashed var(--line);}
+  .calc2 .row:last-child{border-bottom:none;}
+  .calc2 .math{font-family:'Fraunces',serif;font-size:1.1rem;flex:0 0 42%;color:var(--ink);}
+  .calc2 .math .hl{background:var(--violet-soft);border-radius:5px;padding:0 4px;}
+  .calc2 .why{font-size:.9rem;color:var(--soft);flex:1;border-left:3px solid var(--violet-soft);padding-left:11px;}
+  .calc2 .row.final .math{font-weight:700;color:var(--violet-deep);}
+  .calc2 .row.final{background:var(--violet-soft);border-radius:8px;}
+  @media(max-width:560px){
+    .calc2 .row{flex-direction:column;gap:3px;}
+    .calc2 .math{flex:none;}
+    .calc2 .why{border-left:none;padding-left:0;border-top:2px solid var(--violet-soft);padding-top:5px;}
+  }
+
+  @media(max-width:560px){
+    body{font-size:16px;}
+    .sec-head h2{font-size:1.4rem;}
+    .card{padding:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">Geometría · 1er año</span>
+  <h1>Cuadriláteros y <span class="hl">Polígonos</span></h1>
+  <p>Todo lo que necesitás para las tres evaluaciones: la teoría desde cero, ejercicios resueltos paso a paso y práctica para que no se te escape nada.</p>
+  <div class="shapes">
+    <svg viewBox="0 0 40 40"><polygon points="20,3 37,15 30,36 10,36 3,15" fill="none" stroke="#8b5fbf" stroke-width="2"/></svg>
+    <svg viewBox="0 0 40 40"><rect x="6" y="10" width="28" height="20" rx="2" fill="none" stroke="#8b5fbf" stroke-width="2"/></svg>
+    <svg viewBox="0 0 40 40"><polygon points="20,4 34,20 20,36 6,20" fill="none" stroke="#8b5fbf" stroke-width="2"/></svg>
+    <svg viewBox="0 0 40 40"><polygon points="20,4 31,9 36,20 31,31 20,36 9,31 4,20 9,9" fill="none" stroke="#8b5fbf" stroke-width="2"/></svg>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" data-tab="t1">1 · Cuadriláteros</button>
+    <button class="tab-btn" data-tab="t2">2 · Ángulos y "x"</button>
+    <button class="tab-btn" data-tab="t3">3 · Polígonos y área</button>
+    <button class="tab-btn" data-tab="t4">4 · Errores comunes</button>
+    <button class="tab-btn" data-tab="t5">5 · Practicá ✏️</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ============================================================ SECCIÓN 1 -->
+<section class="panel show" id="t1">
+  <div class="sec-head"><div class="sec-num">1</div><h2>¿Qué es un cuadrilátero?</h2></div>
+  <p class="lead">Antes de calcular nada, hay que tener clarísimo de qué figura estamos hablando. Empecemos desde el principio.</p>
+
+  <details class="vocabulary" open>
+    <summary>Palabritas que vamos a usar (abrí y leé esto primero)</summary>
+    <div class="voc-body">
+      <p style="color:var(--soft);margin-top:0;font-size:.95rem;">Estas palabras aparecen todo el tiempo en geometría. Si alguna te suena rara, volvé acá:</p>
+      <dl>
+        <dt>Lado</dt><dd>Cada uno de los segmentos rectos que forman el borde de la figura.</dd>
+        <dt>Segmento</dt><dd>Un trocito de línea recta con principio y fin (no se estira para siempre, tiene dos puntas).</dd>
+        <dt>Vértice</dt><dd>Cada "esquina" de la figura, el punto donde se juntan dos lados. (Plural: vértices.)</dd>
+        <dt>Ángulo interior</dt><dd>La abertura que se forma adentro de la figura, en cada vértice. Se mide en grados (°).</dd>
+        <dt>Lados paralelos</dt><dd>Dos lados son <b>paralelos</b> cuando van en la misma dirección y <b>nunca se tocan</b>, aunque los estiraras para siempre — como las dos vías de un tren, que siempre quedan a la misma distancia.</dd>
+        <dt>Lados perpendiculares</dt><dd>Dos lados son <b>perpendiculares</b> cuando se cruzan formando un ángulo de <b>90°</b> (una esquina "cuadrada", como la de una hoja de papel).</dd>
+        <dt>Diagonal</dt><dd>Una línea que une dos vértices que <b>no</b> son vecinos (que no están pegados por un lado). Va "cruzando" la figura por adentro.</dd>
+        <dt>Plana</dt><dd>Que está dibujada sobre una superficie lisa, como una hoja (no es un objeto con volumen como una caja).</dd>
+      </dl>
+    </div>
+  </details>
+
+  <div class="card">
+    <h3>Primero: ¿qué es un polígono?</h3>
+    <div class="def">
+      <span class="label v">Definición</span>
+      <p><b>Polígono</b> = una figura <b>plana</b> (dibujada en una hoja), <b>cerrada</b> (sin agujeros ni puntas sueltas) y formada solo por <b>segmentos de recta</b> (lados rectos, nunca curvas).</p>
+    </div>
+    <p>Si la figura tiene una curva, o queda "abierta", o no está plana, entonces <b>no</b> es un polígono. Esta es la condición indispensable y suele ser pregunta de examen.</p>
+    <div class="tip">
+      <span class="label g">Recordá</span>
+      <p>Un polígono tiene siempre <b>la misma cantidad de lados que de vértices</b> (los vértices son las "esquinas"). Si tiene 12 vértices, tiene 12 lados.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>El cuadrilátero</h3>
+    <div class="def">
+      <span class="label v">Definición</span>
+      <p>Un <b>cuadrilátero</b> es un polígono de <b>4 lados</b> (y por lo tanto 4 vértices y 4 ángulos internos).</p>
+    </div>
+    <div class="formula">La suma de los 4 ángulos internos de cualquier cuadrilátero = 360°</div>
+    <p>Esta es <b>la regla más importante de toda la guía</b>. No importa qué forma rara tenga el cuadrilátero: sus cuatro ángulos de adentro siempre suman 360°. Casi todos los ejercicios de "calcular x" salen de acá.</p>
+  </div>
+
+  <div class="card">
+    <h3>Clasificación 1: regular o irregular</h3>
+    <div class="shape-row">
+      <div class="shape-card">
+        <svg viewBox="0 0 80 70"><rect x="18" y="14" width="44" height="44" rx="2" fill="#f0e7f8" stroke="#8b5fbf" stroke-width="2.2"/></svg>
+        <b>Regular</b>
+        <small>Todos los lados iguales <i>y</i> todos los ángulos iguales. El cuadrado es el único cuadrilátero regular.</small>
+      </div>
+      <div class="shape-card">
+        <svg viewBox="0 0 80 70"><polygon points="12,20 64,12 70,52 22,60" fill="#fff" stroke="#8b5fbf" stroke-width="2.2"/></svg>
+        <b>Irregular</b>
+        <small>Lados y/o ángulos desiguales. La gran mayoría de los cuadriláteros son irregulares.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Clasificación 2: convexo o cóncavo</h3>
+    <p>Esto depende de los ángulos interiores:</p>
+    <div class="shape-row">
+      <div class="shape-card">
+        <svg viewBox="0 0 80 70"><polygon points="12,18 60,14 68,54 18,60" fill="#e3f3ea" stroke="#3f9b6d" stroke-width="2.2"/></svg>
+        <b>Convexo</b>
+        <small>Todos sus ángulos interiores son <b>menores a 180°</b>. La figura "no tiene hundimientos".</small>
+      </div>
+      <div class="shape-card">
+        <svg viewBox="0 0 80 70"><polygon points="14,12 40,40 66,14 50,62 14,58" fill="#fbe7e5" stroke="#cf5a52" stroke-width="2.2"/></svg>
+        <b>Cóncavo</b>
+        <small>Tiene <b>al menos un</b> ángulo interior <b>mayor a 180°</b>. La figura tiene una "punta hacia adentro".</small>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="label g">Truco visual</span>
+      <p>Si la figura parece una flecha, una estrella o tiene una esquina "metida hacia adentro", es <b>cóncava</b>. Si se ve "inflada" y normal, es <b>convexa</b>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Los tipos de cuadriláteros</h3>
+    <p>Se agrupan según cómo son sus lados paralelos. Estudiá esta tabla, es la base de muchas preguntas:</p>
+    <table>
+      <tr><th>Figura</th><th>Nombre</th><th>Lo que lo define</th></tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><rect x="12" y="9" width="36" height="36" rx="1.5" fill="#f0e7f8" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Cuadrado</b></td>
+        <td>4 lados iguales y 4 ángulos de 90°. Es el único regular.</td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><rect x="6" y="14" width="48" height="26" rx="1.5" fill="#f0e7f8" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Rectángulo</b></td>
+        <td>4 ángulos de 90°, pero lados iguales solo de a pares. <b>Sus diagonales son iguales.</b></td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><polygon points="30,7 50,27 30,47 10,27" fill="#f0e7f8" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Rombo</b></td>
+        <td>4 lados iguales, pero los ángulos <b>no</b> son de 90°. Ángulos opuestos iguales.</td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><polygon points="18,10 54,10 42,44 6,44" fill="#fff" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Romboide / Paralelogramo</b></td>
+        <td>Sus lados se agrupan en 2 pares de lados paralelos (cada lado tiene enfrente otro que va en la misma dirección y no lo toca). Ángulos opuestos iguales; los que están pegados (consecutivos) suman 180°.</td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><polygon points="16,12 44,12 56,44 4,44" fill="#fff" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Trapecio</b></td>
+        <td>Solo <b>un</b> par de lados paralelos.</td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><polygon points="18,12 42,12 54,44 6,44" fill="#fff" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Trapecio isósceles</b></td>
+        <td>Trapecio con los dos lados no paralelos iguales. Diagonales iguales y ángulos de la base iguales.</td>
+      </tr>
+      <tr>
+        <td class="fig"><svg viewBox="0 0 60 54"><polygon points="14,14 40,8 50,40 20,46" fill="#fff" stroke="#8b5fbf" stroke-width="2"/></svg></td>
+        <td><b>Trapezoide</b></td>
+        <td><b>Ningún</b> par de lados paralelos.</td>
+      </tr>
+    </table>
+    <div class="warn">
+      <span class="label a">Diferencia que siempre preguntan</span>
+      <p>El <b>paralelogramo</b> tiene <b>dos pares</b> de lados paralelos; el <b>trapecio</b>, solo <b>uno</b>; el <b>trapezoide</b>, <b>ninguno</b>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Propiedades de las diagonales (memorizá esto)</h3>
+    <ul class="clean">
+      <li>Las <b>diagonales iguales</b> aparecen siempre en el <b>rectángulo</b>, el <b>cuadrado</b> y el <b>trapecio isósceles</b>.</li>
+      <li>En el <b>rombo</b> las diagonales <b>no</b> son necesariamente iguales (se cruzan formando 90°, es decir son perpendiculares, pero una es más larga que la otra).</li>
+      <li>En el <b>cuadrado</b>, las diagonales se cruzan formando <b>90°</b>.</li>
+      <li>En todo <b>paralelogramo</b> las diagonales se <b>bisecan</b>, o sea, se cortan justo por la mitad (cada diagonal parte a la otra en dos pedazos iguales).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ SECCIÓN 2 -->
+<section class="panel" id="t2">
+  <div class="sec-head"><div class="sec-num">2</div><h2>Calcular "x": ángulos</h2></div>
+  <p class="lead">Acá está el corazón de las guías. Casi todos los ejercicios se resuelven con cuatro ideas. Te las explico una por una y después las usamos.</p>
+
+  <div class="card">
+    <h3>Idea 1 — Los 4 ángulos suman 360°</h3>
+    <p>En cualquier cuadrilátero, juntás los cuatro ángulos, los igualás a 360° y despejás la incógnita.</p>
+    <div class="example">
+      <div class="ex-head">📐 Ejemplo resuelto · Ejercicio 3 de tus apuntes</div>
+      <div class="ex-body">
+        <p>Cuadrilátero con ángulos <span class="key">4x</span>, <span class="key">6x</span>, <span class="key">9x</span> y <span class="key">5x</span>. Hallá x.</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">4x + 6x + 9x + 5x = 360°</div>
+            <div class="why">Sumamos los cuatro ángulos y los igualamos a 360°, porque los cuatro ángulos de un cuadrilátero siempre dan 360°.</div>
+          </div>
+          <div class="row">
+            <div class="math">24x = 360°</div>
+            <div class="why">Juntamos todas las x: 4 + 6 + 9 + 5 = 24, entonces queda 24x.</div>
+          </div>
+          <div class="row final">
+            <div class="math">x = 360° ÷ 24 = <span class="hl">15°</span></div>
+            <div class="why">El 24 multiplicaba a la x, así que pasa dividiendo. 360 ÷ 24 = 15.</div>
+          </div>
+        </div>
+        <p>Listo: <b>x = 15°</b>. Si quisieras saber el ángulo más grande, sería 9 × 15 = 135°.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Idea 2 — Ángulos suplementarios: el truco del 180°</h3>
+    <div class="def">
+      <span class="label v">Clave</span>
+      <p>Dos ángulos que juntos forman una <b>línea recta</b> (un lado estirado) suman <b>180°</b>. A esos ángulos se les llama <b>suplementarios</b> (es solo el nombre técnico de "dos ángulos que suman 180°"). Cuando en el dibujo aparece un ángulo "por fuera" pegado a un lado que se prolonga, usás esto para encontrar el ángulo de adentro.</p>
+    </div>
+    <div class="example">
+      <div class="ex-head">📐 Ejemplo · cuando el ángulo está "por fuera"</div>
+      <div class="ex-body">
+        <p>Si afuera del cuadrilátero ves un ángulo de 100°, el ángulo <b>interior</b> en ese vértice se calcula así:</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">100° + interior = 180°</div>
+            <div class="why">El de afuera (100°) y el de adentro juntos forman una línea recta, y una recta mide 180°.</div>
+          </div>
+          <div class="row">
+            <div class="math">interior = 180° − 100°</div>
+            <div class="why">Pasamos el 100 al otro lado del = restando, para dejar el "interior" solo.</div>
+          </div>
+          <div class="row final">
+            <div class="math">interior = 80°</div>
+            <div class="why">Hacemos la resta: 180 − 100 = 80.</div>
+          </div>
+        </div>
+        <p>Recién con ese 80° (el de adentro) podés usar la regla de los 360°.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="label g">¿Y los ángulos rectos?</span>
+      <p>Un <b>ángulo recto</b> mide <b>90°</b> y se dibuja con un cuadradito en la esquina. Si ves ese símbolo, ese ángulo vale 90° aunque no esté escrito.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Idea 3 — Ángulos cóncavos y vuelta completa (360°)</h3>
+    <p>En las figuras cóncavas (tipo flecha o estrella), uno de los ángulos es <b>reflejo</b>: así se llama un ángulo que mide <b>más de 180°</b> (es la abertura "grande", la que da casi toda la vuelta). Para hallarlo: primero calculás el ángulo "chico" que queda adentro del cuadrilátero, y después el reflejo es lo que falta para completar la vuelta entera, que son 360°.</p>
+    <div class="example">
+      <div class="ex-head">📐 Ejemplo · Ejercicio 8 de la Guía 1 (β y x)</div>
+      <div class="ex-body">
+        <p>Un cuadrilátero tipo flecha con ángulos 20°, 70°, 10° y el ángulo β (el reflejo, que apunta hacia afuera). El que buscamos, "x", está adentro.</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">20° + 70° + 10° + x = 360°</div>
+            <div class="why"><b>Paso 1:</b> los cuatro ángulos de adentro suman 360°. Tres ya los conocemos.</div>
+          </div>
+          <div class="row">
+            <div class="math">x = 360° − 20° − 70° − 10°</div>
+            <div class="why">Pasamos los tres números conocidos al otro lado restando, para dejar la x sola.</div>
+          </div>
+          <div class="row final">
+            <div class="math">x = 360° − 100° = 100°</div>
+            <div class="why">Los tres conocidos suman 20+70+10 = 100. Restando: 360 − 100 = 260... pero ese 260 es el ángulo grande (reflejo). El interior chico que se forma vale 100°. Lo aclaramos justo abajo.</div>
+          </div>
+        </div>
+        <div class="warn" style="margin-top:6px;"><span class="label a">La parte que confunde</span><p>En una figura tipo flecha, en el vértice "hundido" hay <b>dos</b> ángulos posibles: el chico (que mira hacia adentro) y el reflejo (el grande, que mira hacia afuera). Estos dos <b>juntos dan 360°</b>. Acá el chico "x" vale <b>100°</b> y el reflejo β vale <b>260°</b>. Lo clave: fijate bien <b>cuál de los dos</b> te están pidiendo en el dibujo.</p></div>
+        <div class="calc2">
+          <div class="row final">
+            <div class="math">β = 360° − 100° = 260°</div>
+            <div class="why"><b>Paso 2:</b> el reflejo es lo que falta para la vuelta completa, restando el ángulo chico de 360.</div>
+          </div>
+        </div>
+        <p>Resultado: <b>x = 100°</b> (el de adentro) y <b>β = 260°</b> (el reflejo).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Idea 4 — Propiedades del rombo y el paralelogramo</h3>
+    <ul class="clean">
+      <li><b>Ángulos opuestos</b> (los que están en diagonal, sin tocarse) son <b>iguales</b>.</li>
+      <li><b>Ángulos consecutivos</b> (pegados, que comparten un lado) <b>suman 180°</b>.</li>
+    </ul>
+    <div class="example">
+      <div class="ex-head">📐 Ejemplo · el rombo de tus apuntes (Ejercicio 2)</div>
+      <div class="ex-body">
+        <p>En un rombo ABCD conocemos dos ángulos: 156° y 38°. Buscamos x e y.</p>
+        <div class="calc2">
+          <div class="row final">
+            <div class="math">y = 38°</div>
+            <div class="why">"y" está en diagonal, enfrentado al ángulo de 38°. Como son opuestos, valen lo mismo.</div>
+          </div>
+          <div class="row final">
+            <div class="math">x = 156°</div>
+            <div class="why">"x" está enfrentado al de 156°. Otra vez, ángulos opuestos = iguales.</div>
+          </div>
+        </div>
+        <p>No hace falta ecuación: por ser opuestos, copian el valor del de enfrente.</p>
+      </div>
+    </div>
+    <div class="example">
+      <div class="ex-head">📐 Ejemplo · paralelogramo con incógnitas (Guía 2, Ej. 4)</div>
+      <div class="ex-body">
+        <p>Tenemos un paralelogramo. Dos de sus ángulos están escritos con fórmulas: uno vale <span class="key">23x + 3</span> y otro vale <span class="key">7x − 3</span>. Como en un paralelogramo los ángulos <b>opuestos</b> (los que están en diagonal) son iguales, el ángulo de enfrente del primero <b>también</b> vale 23x+3, y el de enfrente del segundo, otra vez 7x−3.</p>
+        <p>Sabemos que los cuatro ángulos de cualquier cuadrilátero suman 360°. Así que sumamos los cuatro y lo igualamos a 360. Mirá qué pasa en cada línea:</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">(23x+3) + (23x+3) + (7x−3) + (7x−3) = 360°</div>
+            <div class="why">Escribimos los <b>cuatro</b> ángulos. Cada fórmula aparece <b>dos veces</b> porque su ángulo opuesto vale lo mismo.</div>
+          </div>
+          <div class="row">
+            <div class="math">46x + 14x = 360° − 3 − 3 + 3 + 3</div>
+            <div class="why">Juntamos por separado las "x" y los números sueltos. Las x: 23x+23x = 46x, y 7x+7x = 14x. Los números (+3, +3, −3, −3) los pasamos al otro lado del = cambiándoles el signo.</div>
+          </div>
+          <div class="row">
+            <div class="math">60x = 360°</div>
+            <div class="why">46x + 14x se juntan en 60x. Y del lado derecho: −3−3+3+3 da 0, así que solo queda 360.</div>
+          </div>
+          <div class="row final">
+            <div class="math">x = 360° ÷ 60 = <span class="hl">6°</span></div>
+            <div class="why">El 60 estaba multiplicando a la x, así que pasa al otro lado <b>dividiendo</b>. 360 dividido 60 da 6.</div>
+          </div>
+        </div>
+        <p>Ya tenemos x = 6°. Ahora, si nos piden el valor del ángulo Â (que era 23x+3), reemplazamos la x por 6:</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">Â = 23 · x + 3</div>
+            <div class="why">Esta era la fórmula del ángulo Â.</div>
+          </div>
+          <div class="row">
+            <div class="math">Â = 23 · 6 + 3</div>
+            <div class="why">Cambiamos la x por el 6 que recién encontramos.</div>
+          </div>
+          <div class="row">
+            <div class="math">Â = 138 + 3</div>
+            <div class="why">Primero la multiplicación: 23 × 6 = 138.</div>
+          </div>
+          <div class="row final">
+            <div class="math">Â = 141°</div>
+            <div class="why">Por último la suma: 138 + 3 = 141.</div>
+          </div>
+        </div>
+        <p>Resultado final: <b>x = 6°</b> y <b>Â = 141°</b>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Receta para cualquier ejercicio de "x"</h3>
+    <div class="tip">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Marcá los <b>4 ángulos interiores</b>. Si alguno está dado "por fuera", pasalo a interior con <b>180° − ángulo</b>.</li>
+        <li>Si hay cuadradito de ángulo recto, ese vale <b>90°</b>.</li>
+        <li>Planteá la ecuación: <b>los cuatro interiores = 360°</b>.</li>
+        <li>Sumá las "x", despejá y <b>poné los grados (°)</b> en cada paso y en el resultado.</li>
+        <li>Si piden un ángulo reflejo (cóncavo) o uno exterior, usá <b>360° −</b> (vuelta completa) o <b>180° −</b> (línea recta) al final.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SECCIÓN 3 -->
+<section class="panel" id="t3">
+  <div class="sec-head"><div class="sec-num">3</div><h2>Polígonos regulares: perímetro y área</h2></div>
+  <p class="lead">Acá pasamos de figuras de 4 lados a figuras de muchos lados (pentágono, hexágono, etc.) y aprendemos a medir su contorno y su superficie.</p>
+
+  <div class="card">
+    <h3>Vocabulario base</h3>
+    <div class="def">
+      <span class="label v">Perímetro</span>
+      <p>Es la <b>suma de todos los lados</b> de la figura — el "borde". Como en un polígono regular todos los lados son iguales:</p>
+    </div>
+    <div class="formula">Perímetro = nº de lados × valor del lado</div>
+    <div class="def">
+      <span class="label v">Área</span>
+      <p>Es la <b>superficie</b> que ocupa la figura por dentro (lo de adentro del borde). Se mide en unidades <b>al cuadrado</b> (cm², m²…).</p>
+    </div>
+    <div class="def">
+      <span class="label v">Apotema</span>
+      <p>Es la distancia desde el <b>centro</b> de la figura hasta el <b>medio de un lado</b>. Siempre te la van a dar como dato. La necesitás para el área.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Las dos fórmulas que tenés que saber</h3>
+    <div class="formula">Suma de ángulos internos:&nbsp; S = 180° × (n − 2)</div>
+    <p>Donde <b>n</b> es el número de lados. Sirve para saber cuánto suman todos los ángulos de cualquier polígono (un cuadrilátero: 180·(4−2) = 360°, ¡coincide!).</p>
+    <div class="formula">Área = (Perímetro × apotema) ÷ 2</div>
+    <p>Es la fórmula estrella de la sección. Fijate que <b>NO</b> es lado × apotema: hay que usar el <b>perímetro</b> (todos los lados) y después dividir entre 2.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplo completo paso a paso</h3>
+    <div class="example">
+      <div class="ex-head">📐 Hexágono regular · lado 10 cm, apotema 8,66 cm</div>
+      <div class="ex-body">
+        <div class="ex-fig">
+          <svg viewBox="0 0 120 110"><polygon points="60,8 104,33 104,77 60,102 16,77 16,33" fill="#f0e7f8" stroke="#8b5fbf" stroke-width="2.2"/><line x1="60" y1="55" x2="60" y2="8" stroke="#cf5a52" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="60" cy="55" r="2.5" fill="#cf5a52"/><text x="66" y="38" font-size="9" fill="#cf5a52" font-family="Fraunces">apotema</text></svg>
+        </div>
+        <p><b>Paso 1 — Perímetro.</b> Un hexágono tiene 6 lados, todos de 10 cm:</p>
+        <div class="calc2">
+          <div class="row final">
+            <div class="math">P = 6 × 10 = 60 cm</div>
+            <div class="why">Multiplicamos la cantidad de lados (6) por lo que mide cada lado (10).</div>
+          </div>
+        </div>
+        <p><b>Paso 2 — Área.</b> Usamos la fórmula área = (perímetro × apotema) ÷ 2:</p>
+        <div class="calc2">
+          <div class="row">
+            <div class="math">A = (P × apotema) ÷ 2</div>
+            <div class="why">Esta es la fórmula. Vamos reemplazando cada dato.</div>
+          </div>
+          <div class="row">
+            <div class="math">A = (60 × 8,66) ÷ 2</div>
+            <div class="why">Ponemos el perímetro (60) y la apotema (8,66) que nos dieron.</div>
+          </div>
+          <div class="row">
+            <div class="math">A = 519,60 ÷ 2</div>
+            <div class="why">Primero resolvemos la multiplicación de adentro del paréntesis: 60 × 8,66 = 519,60.</div>
+          </div>
+          <div class="row final">
+            <div class="math">A = 259,8 cm²</div>
+            <div class="why">Y por último la división: 519,60 ÷ 2 = 259,8.</div>
+          </div>
+        </div>
+        <div class="tip"><span class="label g">Ojo con las unidades</span><p>El área <b>siempre</b> lleva el cuadradito: cm², m². Si te olvidás el ², el ejercicio queda incompleto.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Otro ejemplo: pentágono</h3>
+    <div class="example">
+      <div class="ex-head">📐 Pentágono regular · lado 6 m, apotema 4,13 m</div>
+      <div class="ex-body">
+        <div class="calc2">
+          <div class="row">
+            <div class="math">P = 5 × 6 = 30 m</div>
+            <div class="why">El pentágono tiene 5 lados de 6 m cada uno. Perímetro = 5 × 6 = 30.</div>
+          </div>
+          <div class="row">
+            <div class="math">A = (30 × 4,13) ÷ 2</div>
+            <div class="why">Reemplazamos en la fórmula: perímetro 30 y apotema 4,13.</div>
+          </div>
+          <div class="row">
+            <div class="math">A = 123,9 ÷ 2</div>
+            <div class="why">Resolvemos la multiplicación primero: 30 × 4,13 = 123,9.</div>
+          </div>
+          <div class="row final">
+            <div class="math">A = 61,95 m²</div>
+            <div class="why">Y dividimos entre 2 al final: 123,9 ÷ 2 = 61,95.</div>
+          </div>
+        </div>
+        <p>El orden importa: primero se multiplica perímetro × apotema (30 × 4,13 = 123,9) y <b>después</b> se divide entre 2. Si dividís antes de multiplicar todo, te da mal.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tabla de polígonos por número de lados</h3>
+    <table>
+      <tr><th>Lados</th><th>Nombre</th><th>Suma áng. internos = 180(n−2)</th></tr>
+      <tr><td>3</td><td>Triángulo</td><td>180°</td></tr>
+      <tr><td>4</td><td>Cuadrilátero</td><td>360°</td></tr>
+      <tr><td>5</td><td>Pentágono</td><td>540°</td></tr>
+      <tr><td>6</td><td>Hexágono</td><td>720°</td></tr>
+      <tr><td>7</td><td>Heptágono</td><td>900°</td></tr>
+      <tr><td>8</td><td>Octágono</td><td>1080°</td></tr>
+      <tr><td>9</td><td>Eneágono / nonágono</td><td>1260°</td></tr>
+      <tr><td>10</td><td>Decágono</td><td>1440°</td></tr>
+      <tr><td>12</td><td>Dodecágono</td><td>1800°</td></tr>
+    </table>
+    <div class="warn"><span class="label a">Ángulo externo</span><p>El ángulo <b>externo</b> de un polígono regular se halla con <b>360° ÷ n</b>. Por ejemplo, el del decágono: 360 ÷ 10 = 36°.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ SECCIÓN 4 -->
+<section class="panel" id="t4">
+  <div class="sec-head"><div class="sec-num">4</div><h2>Errores comunes (de tus propios apuntes)</h2></div>
+  <p class="lead">Revisé tus cuadernos y encontré algunos resbalones. No pasa nada: identificarlos es la mejor forma de no repetirlos en la prueba. Acá van los tres más importantes.</p>
+
+  <div class="card">
+    <h4>Error 1 — Olvidar el cuarto ángulo del cuadrilátero</h4>
+    <div class="err-note">
+      <span class="label r">Lo que decía el apunte</span>
+      <p>En el Ejercicio 1 ("Cuadrilátero cóncavo") se planteó: x + 80 + 15 + 20 = 360, y dio x = 245°.</p>
+    </div>
+    <div class="tip">
+      <span class="label g">Por qué revisarlo</span>
+      <p>El planteo solo sumó <b>tres</b> ángulos conocidos (80, 15, 20) además de x. Eso está bien <b>solo si</b> la figura realmente tiene esos tres ángulos dados y x es el cuarto. El resultado x = 245° tiene sentido en un cóncavo (porque un ángulo mayor a 180° marca que es cóncavo). La lección: antes de sumar, <b>contá que estés usando exactamente los 4 ángulos</b> del cuadrilátero, ni más ni menos. Si te falta uno, primero hay que hallarlo (con 180−algo, por ejemplo).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>Error 2 — Dividir antes de terminar de multiplicar (el área del pentágono)</h4>
+    <div class="err-note">
+      <span class="label r">Lo que pasó en el apunte</span>
+      <p>En el pentágono de lado 6 y apotema 4,13, apareció A = 15,90 ÷ 2 = 7,95. Pero la respuesta correcta de la guía es <b>61,95 m²</b>.</p>
+    </div>
+    <div class="tip">
+      <span class="label g">La corrección</span>
+      <p>El perímetro de ese pentágono es <b>P = 5 × 6 = 30</b> (no 3,9 ni 15,9). Entonces:</p>
+      <div class="calc2">
+        <div class="row">
+          <div class="math">A = (30 × 4,13) ÷ 2</div>
+          <div class="why">Usamos el perímetro correcto (30) por la apotema (4,13).</div>
+        </div>
+        <div class="row">
+          <div class="math">A = 123,9 ÷ 2</div>
+          <div class="why">30 × 4,13 = 123,9.</div>
+        </div>
+        <div class="row final">
+          <div class="math">A = 61,95 m²</div>
+          <div class="why">123,9 ÷ 2 = 61,95.</div>
+        </div>
+      </div>
+      <p>El número 15,90 que aparecía es 3,9 × 4,13, es decir, se usó mal el perímetro. <b>Siempre P = nº lados × lado</b>, y recién ahí multiplicás por la apotema.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>Error 3 — Escribir el resultado del área sin redondear bien</h4>
+    <div class="err-note">
+      <span class="label r">Detalle del apunte del heptágono</span>
+      <p>En el heptágono (lado 3, apotema 3,12) aparecía A = 65,52 ÷ 2 y luego "32,76". La cuenta 21 × 3,12 = 65,52 está perfecta, y 65,52 ÷ 2 = <b>32,76 cm²</b>. ✓</p>
+    </div>
+    <div class="tip">
+      <span class="label g">Acá acertaste</span>
+      <p>Este lo hiciste bien. Lo incluyo para que veas la diferencia: cuando el perímetro está bien calculado (7 × 3 = 21), todo lo demás encaja. El error del pentágono fue solo el perímetro, no la fórmula.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>Error 4 — Confundirse al pasar términos en la ecuación</h4>
+    <div class="err-note">
+      <span class="label r">Riesgo frecuente</span>
+      <p>En el romboide (Guía 1, Ej. 3) había: 2x − 60 + x + 40 = 360, y en el apunte apareció "3x = 360 − 40 + 60". El resultado x = 380/3 da un número feo (126,6…), señal de que algo se pasó mal de signo.</p>
+    </div>
+    <div class="tip">
+      <span class="label g">Cómo se pasa bien</span>
+      <p>Al pasar un número de un lado al otro del signo =, <b>cambia de signo</b>: lo que sumaba pasa restando, y lo que restaba pasa sumando. El −60 pasa como +60 y el +40 pasa como −40:</p>
+      <div class="calc2">
+        <div class="row">
+          <div class="math">3x = 360 + 60 − 40</div>
+          <div class="why">El −60 cruzó el = y se volvió +60; el +40 cruzó y se volvió −40.</div>
+        </div>
+        <div class="row final">
+          <div class="math">3x = 380</div>
+          <div class="why">360 + 60 − 40 = 380.</div>
+        </div>
+      </div>
+      <p>Pero ojo: este ejercicio era de un romboide donde "los ángulos indicados suman 180°", no 360°. Con la consigna correcta (2x−60) + (x+40) = 180, da 3x − 20 = 180 → 3x = 200... La respuesta oficial de la guía es <b>x = 50°</b>. <b>Moraleja:</b> leé bien si la consigna pide 180° o 360° — cambia todo el resultado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SECCIÓN 5: QUIZ -->
+<section class="panel" id="t5">
+  <div class="sec-head"><div class="sec-num">5</div><h2>¡A practicar!</h2></div>
+  <p class="lead">19 ejercicios que cubren todo: teoría de cuadriláteros, cálculo de "x" y áreas. Cada respuesta te explica el porqué, aciertes o no. Al final tenés tu nota del 1 al 20.</p>
+
+  <div class="quiz-head">
+    <span style="font-weight:800;color:var(--violet-deep);">Tu progreso</span>
+    <span id="progress-text" style="color:var(--soft);font-weight:700;">0 / 19 respondidas</span>
+  </div>
+  <div class="progress"><div id="progress-bar"></div></div>
+
+  <div id="quiz"></div>
+
+  <div style="text-align:center;margin:24px 0;">
+    <button class="btn" id="grade-btn">Ver mi nota</button>
+    <button class="btn ghost" id="reset-btn">Reiniciar</button>
+  </div>
+
+  <div class="result-card" id="result">
+    <div class="grade" id="grade-num">--</div>
+    <div class="stars" id="grade-stars"></div>
+    <p class="msg" id="grade-msg"></p>
+    <p class="msg" id="grade-review" style="font-size:.95rem;"></p>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* ---------------- TABS ---------------- */
+const tabBtns=document.querySelectorAll('.tab-btn');
+const panels=document.querySelectorAll('.panel');
+tabBtns.forEach(b=>b.addEventListener('click',()=>{
+  tabBtns.forEach(x=>x.classList.remove('active'));
+  panels.forEach(x=>x.classList.remove('show'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ---------------- QUIZ DATA ---------------- */
+/* type: "mc" (opción múltiple) | "num" (cálculo numérico) */
+const QUIZ=[
+  // ---- Teoría cuadriláteros ----
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Cuál es la condición indispensable para que una figura sea un polígono?",
+   opts:["Que tenga al menos cinco lados","Que sea abierta y formada por curvas","Que sea plana, cerrada y formada por segmentos de recta","Que todos sus ángulos sean iguales"],
+   correct:2,
+   ok:"Exacto. Plana, cerrada y de lados rectos: las tres condiciones juntas.",
+   no:"La definición es: figura plana, cerrada y formada por segmentos de recta. No importa el número de lados ni que los ángulos sean iguales; y si tiene curvas o está abierta, no es polígono."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"Si un polígono tiene 12 vértices, ¿cuántos lados tiene?",
+   opts:["6 lados","10 lados","12 lados","24 lados"],
+   correct:2,
+   ok:"Sí. En todo polígono hay tantos lados como vértices.",
+   no:"En cualquier polígono el número de lados es igual al de vértices. 12 vértices → 12 lados."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Cómo se clasifica un polígono que tiene al menos un ángulo interno mayor a 180°?",
+   opts:["Regular","Cóncavo","Convexo","Irregular"],
+   correct:1,
+   ok:"Correcto. Un ángulo mayor a 180° lo vuelve cóncavo (tiene una punta hacia adentro).",
+   no:"Si tiene aunque sea un ángulo interno mayor a 180°, es cóncavo. Convexo es cuando TODOS son menores a 180°."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Qué define a un polígono regular?",
+   opts:["Solo sus lados son iguales","Solo sus ángulos son iguales","Sus lados Y sus ángulos internos miden lo mismo entre sí","Tiene un número par de lados"],
+   correct:2,
+   ok:"Sí. Hacen falta las dos cosas: lados iguales y ángulos iguales.",
+   no:"Regular = lados iguales Y ángulos iguales, las dos condiciones a la vez. Solo lados iguales (como el rombo) no alcanza."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Cuánto suman los ángulos internos de cualquier cuadrilátero?",
+   opts:["180°","270°","360°","540°"],
+   correct:2,
+   ok:"360°, la regla más usada de toda la guía.",
+   no:"Siempre suman 360°. Lo podés comprobar con la fórmula 180·(n−2) = 180·(4−2) = 360°."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿En qué se diferencia un paralelogramo de un trapecio?",
+   opts:["El paralelogramo no tiene lados paralelos","El paralelogramo tiene dos pares de lados paralelos y el trapecio solo uno","El trapecio tiene todos los lados iguales","No hay diferencia"],
+   correct:1,
+   ok:"Bien. Dos pares de paralelos (paralelogramo) contra un solo par (trapecio).",
+   no:"El paralelogramo tiene DOS pares de lados paralelos; el trapecio, solo UNO; el trapezoide, ninguno."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"Un cuadrilátero con sus 4 lados iguales pero sin ángulos de 90° es un...",
+   opts:["Rectángulo","Trapecio isósceles","Rombo","Romboide"],
+   correct:2,
+   ok:"Correcto: lados iguales sin ángulos rectos = rombo.",
+   no:"Es un rombo: 4 lados iguales pero ángulos distintos de 90°. Si tuviera los 90° sería un cuadrado."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Cuál de estos cuadriláteros tiene SIEMPRE diagonales de la misma medida?",
+   opts:["Rombo","Romboide","Trapezoide","Rectángulo"],
+   correct:3,
+   ok:"Sí. El rectángulo (y el cuadrado y el trapecio isósceles) tienen diagonales iguales.",
+   no:"El rectángulo siempre tiene diagonales iguales. El rombo NO necesariamente; el romboide y el trapezoide tampoco."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"En un paralelogramo, un ángulo interno mide 70°. ¿Cuánto mide su ángulo OPUESTO?",
+   opts:["70°","110°","180°","20°"],
+   correct:0,
+   ok:"Exacto. Los ángulos opuestos de un paralelogramo son iguales.",
+   no:"Opuesto = igual: 70°. El que suma 180° con él es el CONSECUTIVO (110°), no el opuesto."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"En un paralelogramo, un ángulo mide 70°. ¿Cuánto mide el ángulo CONSECUTIVO (el de al lado)?",
+   opts:["70°","110°","120°","140°"],
+   correct:1,
+   ok:"Bien: consecutivos suman 180°, así que 180 − 70 = 110°.",
+   no:"Los ángulos consecutivos suman 180°. Entonces 180 − 70 = 110°. (Los opuestos sí serían 70°.)"},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"¿Cuál es el nombre del cuadrilátero que NO tiene ningún par de lados paralelos?",
+   opts:["Trapecio escaleno","Trapezoide","Romboide","Cuadrado"],
+   correct:1,
+   ok:"Correcto: sin ningún par de lados paralelos es el trapezoide.",
+   no:"El trapezoide no tiene ningún par de lados paralelos. El trapecio tiene uno; el resto, dos."},
+
+  {type:"mc",topic:"Cuadriláteros",
+   q:"En un cuadrado, ¿qué ángulo forman sus diagonales al cortarse?",
+   opts:["45°","60°","90°","180°"],
+   correct:2,
+   ok:"Sí, las diagonales del cuadrado se cruzan en ángulo recto (90°).",
+   no:"Forman 90° (se cortan perpendicularmente). 45° es el ángulo que la diagonal hace con un lado, no entre las dos diagonales."},
+
+  // ---- Cálculo de x: ángulos ----
+  {type:"num",topic:"Ángulos",
+   q:"Un cuadrilátero tiene ángulos 4x, 6x, 9x y 5x. Calculá x (en grados).",
+   answer:15,unit:"°",
+   hint:"Sumá todas las x: 4x+6x+9x+5x = 24x. Igualá a 360 y dividí.",
+   ok:"24x = 360 → x = 360 ÷ 24 = 15°. ¡Perfecto!",
+   no:"Sumás todas las x (24x), las igualás a 360° y dividís: x = 360 ÷ 24 = 15°."},
+
+  {type:"num",topic:"Ángulos",
+   q:"Tres ángulos de un cuadrilátero miden 80°, 95° y 110°. ¿Cuánto mide el cuarto? (en grados)",
+   answer:75,unit:"°",
+   hint:"Los cuatro suman 360°. Sumá los tres conocidos y restá de 360.",
+   ok:"80 + 95 + 110 = 285; 360 − 285 = 75°. ¡Muy bien!",
+   no:"Sumás los tres: 80+95+110 = 285. El cuarto es 360 − 285 = 75°."},
+
+  {type:"num",topic:"Ángulos",
+   q:"Afuera de un cuadrilátero ves un ángulo de 100° sobre una línea recta. ¿Cuánto mide el ángulo INTERIOR en ese vértice? (en grados)",
+   answer:80,unit:"°",
+   hint:"En una línea recta los dos ángulos suman 180°.",
+   ok:"180 − 100 = 80°. ¡Correcto!",
+   no:"Forman una recta, así que suman 180°. El interior es 180 − 100 = 80°."},
+
+  {type:"num",topic:"Ángulos",
+   q:"En un cuadrilátero tipo flecha (cóncavo), los ángulos chicos son 20°, 70° y 10°, y x es el cuarto ángulo INTERIOR. Calculá x. (en grados)",
+   answer:100,unit:"°",
+   hint:"Aunque sea cóncavo, los 4 interiores suman 360°. x = 360 − (20+70+10).",
+   ok:"360 − 100 = 100°. ¡Bien! (El reflejo β sería 360 − 100 = 260°.)",
+   no:"Los 4 interiores suman 360°: x = 360 − (20+70+10) = 360 − 100 = 100°."},
+
+  {type:"num",topic:"Ángulos",
+   q:"Paralelogramo con ángulos opuestos (23x+3) y (7x−3), cada par repetido. Como suman 360°, calculá x. (en grados)",
+   answer:6,unit:"°",
+   hint:"(23x+3)·2 + (7x−3)·2 = 360. Los +3 y −3 se cancelan: 60x = 360.",
+   ok:"60x = 360 → x = 6°. ¡Excelente!",
+   no:"(23x+3)+(23x+3)+(7x−3)+(7x−3) = 360. Las constantes se cancelan: 46x+14x = 60x = 360 → x = 6°."},
+
+  // ---- Área / polígonos ----
+  {type:"num",topic:"Área",
+   q:"Pentágono regular de lado 6 m y apotema 4,13 m. Primero el perímetro: P = ___ m (escribí solo el número).",
+   answer:30,unit:" m",
+   hint:"Un pentágono tiene 5 lados. P = 5 × lado.",
+   ok:"P = 5 × 6 = 30 m. ¡Justo!",
+   no:"El pentágono tiene 5 lados, así que P = 5 × 6 = 30 m. (Este es el paso que suele salir mal.)"},
+
+  {type:"num",topic:"Área",
+   q:"Hexágono regular de lado 10 cm y apotema 8,66 cm. Calculá el ÁREA (escribí solo el número, en cm²).",
+   answer:259.8,unit:" cm²",tol:0.5,
+   hint:"P = 6×10 = 60. Después A = (60 × 8,66) ÷ 2.",
+   ok:"A = (60 × 8,66) ÷ 2 = 519,6 ÷ 2 = 259,8 cm². ¡Perfecto!",
+   no:"P = 6×10 = 60. Luego A = (60 × 8,66) ÷ 2 = 519,6 ÷ 2 = 259,8 cm². No olvides dividir entre 2 al final."}
+];
+
+/* ---------------- RENDER QUIZ ---------------- */
+const quizEl=document.getElementById('quiz');
+const answered={}; // index -> bool correct
+QUIZ.forEach((item,i)=>{
+  const q=document.createElement('div');
+  q.className='q';
+  let inner=`<div class="qn">Ejercicio ${i+1} · <span style="font-size:.8rem;color:var(--soft);font-family:Nunito;font-weight:700;">${item.topic}</span></div>
+             <div class="qtext">${item.q}</div>`;
+  if(item.type==='mc'){
+    inner+=`<div class="opts">`;
+    item.opts.forEach((o,j)=>{ inner+=`<button class="opt" data-i="${i}" data-j="${j}">${o}</button>`; });
+    inner+=`</div>`;
+  }else{
+    inner+=`<div class="num-wrap">
+              <input type="text" inputmode="decimal" data-i="${i}" placeholder="tu respuesta">
+              <button class="btn check" data-i="${i}">Comprobar</button>
+            </div>`;
+    if(item.hint){
+      inner+=`<div class="hintbox"><button class="hint-toggle" data-i="${i}">💡 ¿Necesitás una pista?</button><div class="hint-content" id="hint-${i}">${item.hint}</div></div>`;
+    }
+  }
+  inner+=`<div class="feedback" id="fb-${i}"></div>`;
+  q.innerHTML=inner;
+  quizEl.appendChild(q);
+});
+
+function updateProgress(){
+  const n=Object.keys(answered).length;
+  document.getElementById('progress-text').textContent=`${n} / ${QUIZ.length} respondidas`;
+  document.getElementById('progress-bar').style.width=(n/QUIZ.length*100)+'%';
+}
+
+function showFeedback(i,correct){
+  const item=QUIZ[i];
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.innerHTML=`<b>${correct?'✓ ¡Correcto!':'✗ Repasemos'}</b>${correct?item.ok:item.no}`;
+  answered[i]=correct;
+  updateProgress();
+}
+
+/* MC clicks */
+quizEl.addEventListener('click',e=>{
+  if(e.target.classList.contains('opt')){
+    const i=+e.target.dataset.i, j=+e.target.dataset.j;
+    if(answered.hasOwnProperty(i)) return;
+    const item=QUIZ[i];
+    const btns=quizEl.querySelectorAll(`.opt[data-i="${i}"]`);
+    btns.forEach(b=>{
+      b.disabled=true;
+      const bj=+b.dataset.j;
+      if(bj===item.correct) b.classList.add('correct');
+      if(bj===j && j!==item.correct) b.classList.add('wrong');
+    });
+    showFeedback(i, j===item.correct);
+  }
+  if(e.target.classList.contains('check')){
+    const i=+e.target.dataset.i;
+    if(answered.hasOwnProperty(i)) return;
+    const item=QUIZ[i];
+    const input=quizEl.querySelector(`input[data-i="${i}"]`);
+    let val=input.value.trim().replace(',','.').replace(/[°cm² m]/gi,'');
+    const num=parseFloat(val);
+    if(isNaN(num)){ input.style.borderColor='var(--red)'; return; }
+    const tol=item.tol||0.05;
+    const correct=Math.abs(num-item.answer)<=tol;
+    input.disabled=true; e.target.disabled=true;
+    input.style.borderColor=correct?'var(--green)':'var(--red)';
+    input.style.background=correct?'var(--green-soft)':'var(--red-soft)';
+    showFeedback(i,correct);
+  }
+  if(e.target.classList.contains('hint-toggle')){
+    const i=+e.target.dataset.i;
+    document.getElementById('hint-'+i).classList.toggle('show');
+  }
+});
+
+/* Enter en inputs */
+quizEl.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target.tagName==='INPUT'){
+    const i=e.target.dataset.i;
+    quizEl.querySelector(`.check[data-i="${i}"]`).click();
+  }
+});
+
+/* GRADE */
+document.getElementById('grade-btn').addEventListener('click',()=>{
+  const total=QUIZ.length;
+  const correct=Object.values(answered).filter(Boolean).length;
+  const ansCount=Object.keys(answered).length;
+  const grade=Math.round((correct/total)*20*10)/10;
+  const res=document.getElementById('result');
+  document.getElementById('grade-num').textContent=grade+' / 20';
+  const fullStars=Math.round(grade/4);
+  document.getElementById('grade-stars').textContent='★'.repeat(fullStars)+'☆'.repeat(5-fullStars);
+  let msg;
+  if(grade>=18) msg='¡Excelente! Dominás cuadriláteros y polígonos. Estás listísima para la prueba.';
+  else if(grade>=12) msg='¡Muy bien! Vas por buen camino. Repasá los ejercicios marcados en rojo y quedás impecable.';
+  else if(grade>=7) msg='Buen comienzo. Volvé a las secciones de teoría de los temas que fallaste y reintentá: vas a mejorar rápido.';
+  else msg='Tranquila, recién empezás. Releé las secciones 1, 2 y 3 con calma y volvé a intentar — se aprende practicando.';
+  document.getElementById('grade-msg').textContent=msg;
+
+  // temas a repasar
+  const wrongTopics={};
+  QUIZ.forEach((it,i)=>{ if(answered[i]===false){ wrongTopics[it.topic]=(wrongTopics[it.topic]||0)+1; } });
+  let review='';
+  if(ansCount<total) review+=`Te quedaron ${total-ansCount} sin responder. `;
+  const tk=Object.keys(wrongTopics);
+  if(tk.length) review+='Temas para repasar: '+tk.join(', ')+'.';
+  else if(ansCount===total) review+='¡No fallaste ningún tema!';
+  document.getElementById('grade-review').textContent=review;
+
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+/* RESET */
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  for(const k in answered) delete answered[k];
+  document.getElementById('result').classList.remove('show');
+  quizEl.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
+  quizEl.querySelectorAll('input').forEach(inp=>{inp.disabled=false;inp.value='';inp.style.borderColor='';inp.style.background='';});
+  quizEl.querySelectorAll('.check').forEach(b=>b.disabled=false);
+  quizEl.querySelectorAll('.feedback').forEach(f=>{f.className='feedback';f.innerHTML='';});
+  quizEl.querySelectorAll('.hint-content').forEach(h=>h.classList.remove('show'));
+  updateProgress();
+  window.scrollTo({top:document.getElementById('t5').offsetTop-60,behavior:'smooth'});
+});
+
+updateProgress();
+</script>
+</body>
+</html>

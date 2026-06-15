@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Teatro — Repaso breve</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf6f4;
+    --ink:#2c2522;
+    --soft:#6e6058;
+    --line:#ecd9d2;
+    --grid:#f4e6e0;
+    --rose:#c2506a;          /* telón / acento teatro */
+    --rose-soft:#fbe6ec;
+    --rose-deep:#8f3550;
+    --gold:#c79a3a;          /* dorado de escenario */
+    --gold-soft:#f7eecf;
+    --green:#3f9b6d;
+    --green-soft:#e3f3ea;
+    --red:#cf5a52;
+    --red-soft:#fbe7e5;
+    --card:#ffffff;
+    --shadow:0 2px 0 rgba(0,0,0,.04), 0 8px 22px rgba(90,40,55,.10);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
+    background:linear-gradient(var(--grid) 1px, transparent 1px), var(--paper);
+    background-size:100% 30px, auto;line-height:1.65;font-size:18px;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px 80px;}
+
+  header.hero{text-align:center;padding:56px 18px 24px;}
+  .hero .eyebrow{font-family:'Caveat',cursive;color:var(--rose);font-size:1.6rem;transform:rotate(-2deg);display:inline-block;}
+  .hero h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.3rem);line-height:1.05;margin:.1em 0 .3em;letter-spacing:-.5px;}
+  .hero h1 .hl{background:linear-gradient(transparent 55%, var(--gold-soft) 55%);padding:0 .12em;}
+  .hero p{color:var(--soft);max-width:520px;margin:0 auto;font-size:1.04rem;}
+  .masks{font-size:2rem;margin-bottom:6px;letter-spacing:6px;}
+
+  .sec-head{display:flex;align-items:center;gap:13px;margin:34px 0 6px;}
+  .sec-dot{width:14px;height:14px;border-radius:50%;background:var(--rose);flex:0 0 14px;box-shadow:0 0 0 4px var(--rose-soft);}
+  .sec-head h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;margin:0;line-height:1.1;color:var(--rose-deep);}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px;margin:14px 0;box-shadow:var(--shadow);}
+  .card p{margin:.5em 0;}
+  .card h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;margin:.2em 0 .3em;color:var(--ink);}
+
+  .def{border-left:5px solid var(--rose);background:var(--rose-soft);border-radius:10px;padding:13px 16px;margin:8px 0;}
+  .vs-line{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;}
+  .vs-line .chip{flex:1 1 220px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow);}
+  .vs-line .chip b{color:var(--rose-deep);font-family:'Fraunces',serif;}
+
+  /* línea de tiempo de historia */
+  .era{border-left:3px solid var(--gold);padding-left:18px;margin:10px 0;position:relative;}
+  .era::before{content:"";position:absolute;left:-8px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid var(--paper);}
+  .era b{font-family:'Fraunces',serif;color:var(--rose-deep);font-size:1.08rem;}
+  .flow{font-family:'Caveat',cursive;color:var(--rose);font-size:1.25rem;margin:4px 0;}
+
+  /* tarjetas de tipos */
+  .types{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;margin:8px 0;}
+  .type{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 17px;box-shadow:var(--shadow);}
+  .type .t-icon{font-size:1.6rem;}
+  .type b{display:block;font-family:'Fraunces',serif;color:var(--rose-deep);font-size:1.1rem;margin:4px 0 2px;}
+  .type small{color:var(--soft);font-size:.94rem;line-height:1.45;}
+
+  /* QUIZ */
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .progress{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0 20px;}
+  .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--rose-deep));transition:width .4s;}
+  .q{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px 20px;margin:14px 0;box-shadow:var(--shadow);}
+  .q .qn{font-family:'Caveat',cursive;color:var(--rose);font-size:1.25rem;}
+  .q .qtext{font-weight:700;margin:.2em 0 .7em;font-size:1.05rem;}
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{text-align:left;border:1.5px solid var(--line);background:#fdfaf9;padding:11px 15px;border-radius:11px;cursor:pointer;font-size:1rem;font-family:'Nunito';font-weight:600;color:var(--ink);transition:.13s;}
+  .opt:hover:not(:disabled){border-color:var(--rose);background:var(--rose-soft);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--green);background:var(--green-soft);color:#256647;font-weight:800;}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft);color:#a33;font-weight:800;}
+  .feedback{margin-top:11px;border-radius:11px;padding:11px 14px;font-size:.96rem;display:none;}
+  .feedback.show{display:block;animation:fade .3s;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .feedback.ok{background:var(--green-soft);border-left:4px solid var(--green);}
+  .feedback.no{background:var(--red-soft);border-left:4px solid var(--red);}
+  .feedback b{display:block;margin-bottom:2px;}
+  .btn{font-family:'Nunito';font-weight:800;font-size:.95rem;border:none;cursor:pointer;background:var(--rose);color:#fff;padding:11px 22px;border-radius:11px;transition:.15s;}
+  .btn:hover{background:var(--rose-deep);}
+  .btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--soft);}
+  .btn.ghost:hover{border-color:var(--rose);color:var(--rose);}
+  .result-card{display:none;text-align:center;background:#fff;border:2px solid var(--rose);border-radius:var(--radius);padding:24px;margin:20px 0;box-shadow:var(--shadow);}
+  .result-card.show{display:block;animation:fade .4s;}
+  .result-card .grade{font-family:'Fraunces',serif;font-size:3rem;color:var(--rose-deep);line-height:1;}
+  .result-card .stars{font-size:1.6rem;letter-spacing:4px;margin:5px 0;color:var(--gold);}
+  .result-card .msg{color:var(--soft);max-width:420px;margin:5px auto;}
+
+  @media(min-width:700px) and (max-width:1100px){body{font-size:19px;}.wrap{padding:0 32px 80px;}}
+  @media(max-width:560px){body{font-size:17px;}.sec-head h2{font-size:1.3rem;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="masks">🎭</div>
+  <span class="eyebrow">Taller · Artes escénicas</span>
+  <h1>El <span class="hl">Teatro</span></h1>
+  <p>Repaso breve: qué es, su historia y sus tipos. Lo justo para tener todo fresco.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ¿QUÉ ES? -->
+  <div class="sec-head"><span class="sec-dot"></span><h2>¿Qué es?</h2></div>
+  <div class="card">
+    <div class="def">
+      El teatro es un <b>arte escénico</b> que combina <b>actuación, escenografía, música y diálogo</b> para representar historias.
+    </div>
+    <p>(“Escénico” = que se hace sobre un escenario, frente a un público.)</p>
+    <h3>La diferencia clave: en vivo</h3>
+    <div class="vs-line">
+      <div class="chip"><b>🎬 Película</b><br>Está grabada. Se ve siempre igual, no cambia.</div>
+      <div class="chip"><b>🎭 Teatro</b><br>Es <b>en vivo</b>: pasa en el momento, frente a vos, y cada función es única.</div>
+    </div>
+    <p>Es una de las <b>actividades culturales y artísticas más conocidas</b> de la humanidad.</p>
+  </div>
+
+  <!-- HISTORIA -->
+  <div class="sec-head"><span class="sec-dot"></span><h2>Historia del teatro</h2></div>
+  <div class="card">
+    <div class="era">
+      <b>Edad Moderna</b>
+      <p>El teatro buscaba <b>vincularse con la vida mundana y con la divina</b>. Es decir, hablaba tanto de la vida cotidiana de la gente como de lo religioso/espiritual.</p>
+    </div>
+    <div class="era">
+      <b>Edad Contemporánea</b>
+      <p>Hay mucha más <b>amplitud</b> (libertad y variedad de temas). Empieza con un <b>temario romántico</b> que evoluciona:</p>
+      <p class="flow">temario romántico → fantasía → creatividad y novedad</p>
+      <p>Y un cambio importante: el <b>público se incorpora</b> como <b>agente transformador y partícipe</b> — ya no solo mira, también forma parte y puede influir en la obra.</p>
+    </div>
+  </div>
+
+  <!-- TIPOS -->
+  <div class="sec-head"><span class="sec-dot"></span><h2>Tipos de teatro</h2></div>
+  <div class="card">
+    <div class="types">
+      <div class="type">
+        <div class="t-icon">🎶</div>
+        <b>Musical</b>
+        <small>Forma de representación que combina <b>canciones, diálogo hablado, actuación y danza</b>.</small>
+      </div>
+      <div class="type">
+        <div class="t-icon">🤫</div>
+        <b>Mimo</b>
+        <small>Se cuenta solo con <b>gestos físicos y expresiones faciales</b>, sin palabras.</small>
+      </div>
+      <div class="type">
+        <div class="t-icon">🧍</div>
+        <b>Solitario</b>
+        <small>Un <b>monólogo</b>: un <b>solo actor</b>, sin intervenciones de otros.</small>
+      </div>
+      <div class="type">
+        <div class="t-icon">✨</div>
+        <b>“Mágico” / clásico</b>
+        <small>El teatro de <b>diálogo hablado</b> combinado con <b>acción física</b>.</small>
+      </div>
+    </div>
+    <div class="def" style="margin-top:14px;">
+      Truco para no confundirlos: <b>mimo</b> = sin hablar (solo el cuerpo); <b>solitario</b> = uno solo hablando; <b>musical</b> = se canta y se baila.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="sec-head"><span class="sec-dot"></span><h2>Mini-quiz ✏️</h2></div>
+  <p style="color:var(--soft);margin-top:0;">Seis preguntas rápidas por si toman algo. Cada respuesta te explica el porqué.</p>
+  <div class="quiz-head">
+    <span style="font-weight:800;color:var(--rose-deep);">Tu progreso</span>
+    <span id="progress-text" style="color:var(--soft);font-weight:700;">0 / 6 respondidas</span>
+  </div>
+  <div class="progress"><div id="progress-bar"></div></div>
+  <div id="quiz"></div>
+  <div style="text-align:center;margin:22px 0;">
+    <button class="btn" id="grade-btn">Ver mi nota</button>
+    <button class="btn ghost" id="reset-btn">Reiniciar</button>
+  </div>
+  <div class="result-card" id="result">
+    <div class="grade" id="grade-num">--</div>
+    <div class="stars" id="grade-stars"></div>
+    <p class="msg" id="grade-msg"></p>
+  </div>
+
+</div>
+
+<script>
+const QUIZ=[
+  {q:"¿Qué combina el teatro para representar historias?",
+   opts:["Solo música y baile","Actuación, escenografía, música y diálogo","Únicamente diálogo hablado","Cámaras y edición"],correct:1,
+   ok:"Exacto: actuación, escenografía, música y diálogo, todo junto.",
+   no:"El teatro combina actuación, escenografía, música y diálogo. No es solo una de esas cosas."},
+  {q:"¿Cuál es la diferencia principal entre una película y el teatro?",
+   opts:["El teatro es más corto","El teatro es en vivo y la película está grabada","La película no tiene actores","No hay ninguna diferencia"],correct:1,
+   ok:"Correcto. El teatro ocurre en vivo, en el momento; la película ya está grabada.",
+   no:"La clave es que el teatro es en vivo (pasa en el momento, frente al público) y la película está grabada."},
+  {q:"En la Edad Moderna, ¿con qué buscaba vincularse el teatro?",
+   opts:["Con la tecnología","Con la vida mundana y con la divina","Solo con la política","Con la danza"],correct:1,
+   ok:"Sí: con lo mundano (la vida cotidiana) y lo divino (lo religioso/espiritual).",
+   no:"Buscaba vincularse con la vida mundana (lo cotidiano) y con la divina (lo religioso)."},
+  {q:"En la Edad Contemporánea, ¿qué nuevo papel toma el público?",
+   opts:["Solo observa en silencio","Se incorpora como agente transformador y partícipe","Deja de existir","Escribe las obras"],correct:1,
+   ok:"Correcto: el público participa y puede transformar la obra, ya no solo mira.",
+   no:"El público se incorpora como agente transformador y partícipe: forma parte, no solo observa."},
+  {q:"El teatro que usa solo gestos físicos y expresiones faciales (sin palabras) es el…",
+   opts:["Musical","Mimo","Solitario","Mágico"],correct:1,
+   ok:"¡Sí! El mimo se cuenta solo con el cuerpo y la cara, sin hablar.",
+   no:"Es el mimo: usa gestos físicos y expresiones faciales, sin palabras."},
+  {q:"¿Qué caracteriza al teatro solitario?",
+   opts:["Muchos actores cantando","Un monólogo con un solo actor, sin intervenciones","Solo danza","Diálogo entre dos personajes"],correct:1,
+   ok:"Correcto: un solo actor, en monólogo, sin intervenciones de otros.",
+   no:"El teatro solitario es un monólogo: un solo actor, sin intervenciones de nadie más."}
+];
+
+const quizEl=document.getElementById('quiz');
+const answered={};
+QUIZ.forEach((item,i)=>{
+  const q=document.createElement('div');q.className='q';
+  let inner=`<div class="qn">Pregunta ${i+1}</div><div class="qtext">${item.q}</div><div class="opts">`;
+  item.opts.forEach((o,j)=>{inner+=`<button class="opt" data-i="${i}" data-j="${j}">${o}</button>`;});
+  inner+=`</div><div class="feedback" id="fb-${i}"></div>`;
+  q.innerHTML=inner;quizEl.appendChild(q);
+});
+function updateProgress(){
+  const n=Object.keys(answered).length;
+  document.getElementById('progress-text').textContent=`${n} / ${QUIZ.length} respondidas`;
+  document.getElementById('progress-bar').style.width=(n/QUIZ.length*100)+'%';
+}
+quizEl.addEventListener('click',e=>{
+  if(!e.target.classList.contains('opt'))return;
+  const i=+e.target.dataset.i,j=+e.target.dataset.j;
+  if(answered.hasOwnProperty(i))return;
+  const item=QUIZ[i];
+  quizEl.querySelectorAll(`.opt[data-i="${i}"]`).forEach(b=>{
+    b.disabled=true;const bj=+b.dataset.j;
+    if(bj===item.correct)b.classList.add('correct');
+    if(bj===j&&j!==item.correct)b.classList.add('wrong');
+  });
+  const ok=(j===item.correct);
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(ok?'ok':'no');
+  fb.innerHTML=`<b>${ok?'✓ ¡Correcto!':'✗ Repasemos'}</b>${ok?item.ok:item.no}`;
+  answered[i]=ok;updateProgress();
+});
+document.getElementById('grade-btn').addEventListener('click',()=>{
+  const total=QUIZ.length;
+  const correct=Object.values(answered).filter(Boolean).length;
+  const grade=Math.round((correct/total)*20*10)/10;
+  document.getElementById('grade-num').textContent=grade+' / 20';
+  const fs=Math.round(grade/4);
+  document.getElementById('grade-stars').textContent='★'.repeat(fs)+'☆'.repeat(5-fs);
+  let msg;
+  if(grade>=18)msg='¡Excelente! Te sabés el teatro de memoria.';
+  else if(grade>=12)msg='¡Muy bien! Un repasito a lo que fallaste y listo.';
+  else if(grade>=7)msg='Buen comienzo. Volvé a leer las tarjetas de arriba y reintentá.';
+  else msg='Tranquila, releé el repaso con calma y volvé a probar.';
+  document.getElementById('grade-msg').textContent=msg;
+  const res=document.getElementById('result');res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth',block:'center'});
+});
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  for(const k in answered)delete answered[k];
+  document.getElementById('result').classList.remove('show');
+  quizEl.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
+  quizEl.querySelectorAll('.feedback').forEach(f=>{f.className='feedback';f.innerHTML='';});
+  updateProgress();
+});
+updateProgress();
+</script>
+</body>
+</html>

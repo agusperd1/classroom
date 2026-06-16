@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Français A1 · Révisions examen final</title>
+<style>
+:root{
+  --paper:#f7f5f2;
+  --paper2:#ffffff;
+  --ink:#1d2733;
+  --ink2:#5d6875;
+  --line:#e3e1dc;
+  --rule:#d2cfc8;
+  --bleu:#1b3a8c;       /* azul bandera */
+  --bleubg:#e7ecf8;
+  --rouge:#d12b3c;      /* rojo bandera */
+  --rougebg:#fbe7e9;
+  --green:#2f8f5b;
+  --greenbg:#e4f3ea;
+  --gold:#b8841f;
+  --goldbg:#f8efd9;
+  --es:#6a4ea3;         /* color "ver en español" */
+  --esbg:#efe9f7;
+  --display:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;padding-bottom:60px}
+
+/* franja tricolor decorativa */
+.flag{height:5px;display:flex}
+.flag i{flex:1}
+.flag .b{background:var(--bleu)}.flag .w{background:#fff}.flag .r{background:var(--rouge)}
+
+header{background:linear-gradient(180deg,#fff,var(--paper));border-bottom:1px solid var(--line);padding:26px 22px 22px;text-align:center}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:6px}
+header h1{font-family:var(--display);font-size:29px;font-weight:700;line-height:1.15;color:var(--ink)}
+header h1 .ac{color:var(--bleu)}
+header p{color:var(--ink2);font-size:15px;margin-top:8px;max-width:580px;margin-inline:auto}
+
+/* navegación por unidades + secciones */
+nav{position:sticky;top:0;z-index:30;background:rgba(247,245,242,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:8px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+nav button{flex:0 0 auto;border:1px solid var(--rule);background:#fff;color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 12px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+nav button:hover{border-color:var(--bleu);color:var(--ink)}
+nav button.active{background:var(--bleu);color:#fff;border-color:var(--bleu)}
+nav button.u4.active{background:var(--rouge);border-color:var(--rouge)}
+
+main{max-width:760px;margin:0 auto;padding:24px 18px}
+section.view{display:none;animation:fade .3s ease}
+section.view.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.sec-title{font-family:var(--display);font-size:25px;font-weight:700;color:var(--ink);margin:4px 0 2px;line-height:1.2}
+.sec-fr{color:var(--ink2);font-size:14px;font-style:italic;margin-bottom:16px}
+.unitchip{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.unitchip.u3{background:var(--bleubg);color:var(--bleu)}
+.unitchip.u4{background:var(--rougebg);color:var(--rouge)}
+
+h3{font-family:var(--display);font-size:20px;font-weight:700;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+h4{font-size:16.5px;font-weight:700;margin:16px 0 6px}
+p{margin:9px 0}
+strong{font-weight:700}
+.fr{font-style:italic;color:var(--bleu)}
+.hl{background:linear-gradient(transparent 60%,var(--goldbg) 60%);padding:0 2px;font-weight:600}
+ul,ol{margin:9px 0 9px 4px;padding-left:22px}li{margin:4px 0}
+
+.card{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.card.tinted{border-left:4px solid var(--bleu)}
+.card.tinted.u4{border-left-color:var(--rouge)}
+
+/* botón ver en español */
+.es-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--es);background:var(--esbg);color:var(--es);font-family:var(--sans);font-weight:600;font-size:13.5px;padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:8px;transition:all .12s}
+.es-btn:hover{background:var(--es);color:#fff}
+.es-box{display:none;background:var(--esbg);border:1px solid #d9cdee;border-radius:9px;padding:12px 14px;margin-top:10px;font-size:14.5px;color:#3f2d63}
+.es-box.show{display:block}
+.es-box b{color:var(--es)}
+
+.note{background:var(--goldbg);border:1px solid #ecd9a8;border-radius:10px;padding:12px 14px;margin:14px 0;font-size:15px}
+.note b{color:var(--gold)}
+.note.blue{background:var(--bleubg);border-color:#c4d2f0}.note.blue b{color:var(--bleu)}
+.note.red{background:var(--rougebg);border-color:#f0c4c9}.note.red b{color:var(--rouge)}
+
+.tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:15px;background:var(--paper2);border-radius:10px;overflow:hidden}
+.tbl th,.tbl td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+.tbl th{background:var(--bleu);color:#fff;font-weight:600;font-size:14px}
+.tbl.u4 th{background:var(--rouge)}
+.tbl tr:nth-child(even) td{background:#faf9f6}
+.tbl .ej{color:var(--ink2);font-style:italic}
+.tbl .fr{font-style:normal}
+
+/* conjugación */
+.conj{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0}
+.conj div{background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:15px}
+.conj b{color:var(--rouge)}
+
+/* vocab grid */
+.voc{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:12px 0}
+.voc div{background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:14.5px}
+.voc .w{font-weight:700;color:var(--bleu);font-style:italic}
+.voc .t{color:var(--ink2);font-size:13px}
+
+/* ejercicios */
+.ex{background:var(--paper2);border:1px solid var(--rule);border-left:4px solid var(--gold);border-radius:12px;padding:16px 18px;margin:20px 0}
+.ex .extag{display:inline-block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.ex .q{font-weight:600;font-size:16px;margin-bottom:12px}
+.ex .q .qn{color:var(--gold)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{border:1.5px solid var(--rule);background:#fff;border-radius:9px;padding:11px 13px;cursor:pointer;font-size:15.5px;transition:all .12s;display:flex;align-items:center;gap:10px;text-align:left}
+.opt:hover{border-color:var(--bleu)}
+.opt .mk{width:22px;height:22px;border-radius:50%;border:2px solid var(--rule);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.opt.correct{background:var(--greenbg);border-color:var(--green)}
+.opt.correct .mk{border-color:var(--green);background:var(--green);color:#fff}
+.opt.wrong{background:var(--rougebg);border-color:var(--rouge)}
+.opt.wrong .mk{border-color:var(--rouge);background:var(--rouge);color:#fff}
+.opt.disabled{pointer-events:none;opacity:.85}
+.fb{margin-top:12px;border-radius:9px;padding:11px 13px;font-size:14.5px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--greenbg);border:1px solid #c2e3cf;color:#235c3a}
+.fb.bad{background:var(--rougebg);border:1px solid #f0c4c9;color:#7a2630}
+.fb b{font-weight:700}
+
+.vfrow{display:flex;gap:8px;margin-top:8px}
+.vf{flex:1;border:1.5px solid var(--rule);background:#fff;border-radius:9px;padding:10px;cursor:pointer;font-weight:700;font-size:15px;transition:all .12s}
+.vf:hover{border-color:var(--bleu)}
+.vf.correct{background:var(--greenbg);border-color:var(--green);color:var(--green)}
+.vf.wrong{background:var(--rougebg);border-color:var(--rouge);color:var(--rouge)}
+.vf.disabled{pointer-events:none}
+
+.fill{border:none;border-bottom:2px solid var(--bleu);background:#fff;font-family:var(--display);font-size:16px;padding:3px 6px;width:130px;text-align:center;color:var(--ink);border-radius:4px 4px 0 0;font-style:italic}
+.fill:focus{outline:none;background:var(--bleubg)}
+.fill.correct{border-color:var(--green);background:var(--greenbg);color:var(--green)}
+.fill.wrong{border-color:var(--rouge);background:var(--rougebg);color:var(--rouge)}
+.btn{border:none;background:var(--ink);color:#fff;font-family:var(--sans);font-weight:600;font-size:14.5px;padding:9px 18px;border-radius:8px;cursor:pointer;margin-top:12px;transition:opacity .15s}
+.btn:hover{opacity:.88}
+.btn.ghost{background:#fff;color:var(--bleu);border:1.5px solid var(--bleu)}
+
+/* drag&drop */
+.dd-source{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:12px;background:#fff;border:1px dashed var(--rule);border-radius:10px;min-height:54px}
+.chip{background:var(--bleu);color:#fff;border-radius:8px;padding:8px 12px;font-size:15px;cursor:grab;user-select:none;font-weight:600;font-style:italic;touch-action:none}
+.chip.picked{outline:3px solid var(--gold);outline-offset:2px}
+.dd-zones{display:grid;gap:10px;margin-top:12px}
+.zone{border:2px dashed var(--rule);border-radius:10px;padding:10px 12px;min-height:60px;background:var(--paper2)}
+.zone h5{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);margin-bottom:8px}
+.zone.over{border-color:var(--gold);background:var(--goldbg)}
+.zone .drops{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
+.zone .chip.correct{background:var(--green)}
+.zone .chip.wrong{background:var(--rouge)}
+
+/* quiz */
+.quiz-q{border-bottom:1px dashed var(--line);padding:18px 0}
+.quiz-q:first-child{padding-top:4px}
+.scorebox{background:var(--ink);color:#fff;border-radius:14px;padding:22px;text-align:center;margin-top:18px;display:none}
+.scorebox.show{display:block}
+.scorebox .num{font-family:var(--display);font-size:48px;font-weight:700;line-height:1}
+.scorebox .lbl{font-size:14px;color:#c7cdd6;margin-top:4px}
+.scorebox .msg{font-size:15px;margin-top:12px}
+.progress{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0 4px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--bleu),var(--rouge));transition:width .4s}
+
+footer{text-align:center;color:var(--ink2);font-size:13px;padding:30px 20px 10px}
+.backtop{display:inline-block;margin-top:8px;color:var(--bleu);font-weight:600;text-decoration:none;font-size:14px}
+
+@media(max-width:560px){header h1{font-size:23px}main{padding:18px 14px}.sec-title{font-size:21px}.conj{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="flag"><i class="b"></i><i class="w"></i><i class="r"></i></div>
+<header>
+  <div class="eyebrow">Examen final · A1</div>
+  <h1>Français — <span class="ac">Unités 3 &amp; 4</span></h1>
+  <p>Guía de repaso para el examen. Las explicaciones están en francés con un botón «Ver en español» por si algo no se entiende. Practicá con los ejercicios de cada tema.</p>
+</header>
+
+<nav id="nav"></nav>
+
+<main id="main">
+
+<!-- ============ U3-1 PREPOSITIONS DE LIEU ============ -->
+<section class="view" data-sec="3·Prép. de lieu" data-unit="u3">
+  <div class="unitchip u3">Unité 3 · p.50</div>
+  <div class="sec-title">Les prépositions de lieu</div>
+  <div class="sec-fr">à, chez, de — où on est, où on va, d'où on vient</div>
+
+  <div class="card tinted">
+    <p>Les prépositions <span class="fr">à</span> et <span class="fr">chez</span> indiquent <strong>le lieu où on est ou où on va</strong> (la destination).</p>
+    <ul>
+      <li><span class="fr">à / à la / à l' / aux</span> + un <strong>lieu</strong> : <span class="fr">Je vais à la poissonnerie.</span></li>
+      <li><span class="fr">chez</span> + une <strong>personne</strong> : <span class="fr">Je vais chez le poissonnier. / chez Paula.</span></li>
+    </ul>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>à</b> y <b>chez</b> indican dónde estás o adónde vas. Usás <b>à</b> (à la, à l', aux) con un <b>lugar</b>, y <b>chez</b> con una <b>persona</b> (chez le poissonnier = en lo del pescadero, como «chez» = «en casa de»).</div>
+  </div>
+
+  <h3>Les contractions de «à»</h3>
+  <table class="tbl">
+    <tr><th>Forma</th><th>Se contrae a</th><th>Exemple</th></tr>
+    <tr><td>à + le</td><td><strong>au</strong></td><td class="ej">au rayon, au marché</td></tr>
+    <tr><td>à + la</td><td><strong>à la</strong></td><td class="ej">à la poissonnerie</td></tr>
+    <tr><td>à + l'</td><td><strong>à l'</strong></td><td class="ej">à l'entrée</td></tr>
+    <tr><td>à + les</td><td><strong>aux</strong></td><td class="ej">aux caisses</td></tr>
+  </table>
+
+  <div class="note blue"><b>Remarque :</b> la préposition <span class="fr">de</span> indique <strong>d'où on vient</strong> (la provenance) : du, de la, des. <span class="fr">Je viens du rayon produits laitiers.</span>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>de</b> indica de dónde venís (procedencia): du, de la, des. «Je viens du rayon...» = vengo de la sección...</div>
+  </div>
+
+  <h3>Chez : masculin / féminin / voyelle / pluriel</h3>
+  <p>Del apunte: <span class="fr">chez</span> también sigue el patrón → <span class="fr">le</span> (masc.), <span class="fr">la</span> (fém.), <span class="fr">l'</span> (voyelle), <span class="fr">les</span> (pluriel).</p>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! «boulangerie» es un lieu femenino → à la boulangerie.","bad":"«boulangerie» es un LUGAR (no una persona) y es femenino, así que va «à la»: Je vais à la boulangerie."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Je vais ___ boulangerie.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">au</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">à la</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">chez la</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Correcto! «le boucher» es una persona → chez le boucher.","bad":"«le boucher» (el carnicero) es una PERSONA, así que se usa «chez»: chez le boucher."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> <span class="fr">Je vais ___ boucher pour la viande.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">au</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">à la</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">chez le</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"¡Bien! à + les = aux → aux caisses.","bad":"à + les se contrae en «aux»: Je vais aux caisses."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">3.</span> <span class="fr">Je vais ___ caisses pour payer.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">aux</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">à les</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">au</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U3-2 VOCABULAIRE ALIMENTS ============ -->
+<section class="view" data-sec="3·Aliments" data-unit="u3">
+  <div class="unitchip u3">Unité 3 · p.51</div>
+  <div class="sec-title">Vocabulaire : les aliments et les marchands</div>
+  <div class="sec-fr">la nourriture, les commerces, les quantités, les moyens de paiement</div>
+
+  <h3>Les commerces et les commerçants</h3>
+  <p>Los nombres de comerciantes suelen terminar en <span class="hl">-er / -ère</span>: <span class="fr">le boulanger, la boulangère</span>.</p>
+  <table class="tbl">
+    <tr><th>Le commerce</th><th>Le/la commerçant(e)</th></tr>
+    <tr><td class="fr">la boucherie</td><td class="fr">le boucher / la bouchère</td></tr>
+    <tr><td class="fr">la boulangerie</td><td class="fr">le boulanger / la boulangère</td></tr>
+    <tr><td class="fr">la fromagerie</td><td class="fr">le fromager / la fromagère</td></tr>
+    <tr><td class="fr">la poissonnerie</td><td class="fr">le poissonnier / la poissonnière</td></tr>
+    <tr><td class="fr">le marché / le primeur</td><td class="fr">le/la marchand(e)</td></tr>
+  </table>
+
+  <h3>Les aliments</h3>
+  <div class="voc">
+    <div><span class="w">les fruits</span><div class="t">la pomme, la fraise, le citron, l'orange, la poire, le raisin, la banane</div></div>
+    <div><span class="w">les légumes</span><div class="t">la carotte, l'oignon, le poivron, la salade, la tomate</div></div>
+    <div><span class="w">le pain / pâtisseries</span><div class="t">la baguette, le croissant, la tarte</div></div>
+    <div><span class="w">produits laitiers</span><div class="t">le beurre, le fromage, le camembert, le lait, le yaourt</div></div>
+    <div><span class="w">autres</span><div class="t">l'œuf, le poisson, la viande</div></div>
+  </div>
+
+  <h3>Les quantités</h3>
+  <p><span class="fr">une barquette de</span> · <span class="fr">une bouteille de</span> · <span class="fr">un kilo de</span> · <span class="fr">un morceau de</span> · <span class="fr">une part de</span> · <span class="fr">une tranche de</span></p>
+
+  <h3>Les moyens de paiement</h3>
+  <p><span class="fr">la carte bancaire / la carte bleue</span> · <span class="fr">le chèque</span> · <span class="fr">les espèces</span> (la pièce, le billet).</p>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! En la boulangerie trabaja le boulanger / la boulangère.","bad":"Quien vende pan es «le boulanger / la boulangère», en «la boulangerie»."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> ¿Quién vende el pan? <span class="fr">Je vais chez…</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">le boucher</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">le boulanger</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">le poissonnier</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex">
+    <span class="extag">Glisser-déposer</span>
+    <div class="q"><span class="qn">2.</span> Clasificá los alimentos. (Arrastrá o tocá la palabra y luego la caja.)</div>
+    <div class="dd-source" id="dd-ali">
+      <div class="chip" draggable="true" data-z="fr">la pomme</div>
+      <div class="chip" draggable="true" data-z="lg">la carotte</div>
+      <div class="chip" draggable="true" data-z="la">le fromage</div>
+      <div class="chip" draggable="true" data-z="fr">le raisin</div>
+      <div class="chip" draggable="true" data-z="lg">le poivron</div>
+      <div class="chip" draggable="true" data-z="la">le yaourt</div>
+    </div>
+    <div class="dd-zones">
+      <div class="zone" data-zone="fr"><h5>Les fruits</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="lg"><h5>Les légumes</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="la"><h5>Produits laitiers</h5><div class="drops"></div></div>
+    </div>
+    <button class="btn" onclick="checkDD('dd-ali',this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U3-3 LE VERBE FAIRE ============ -->
+<section class="view" data-sec="3·Faire" data-unit="u3">
+  <div class="unitchip u3">Unité 3 · p.52</div>
+  <div class="sec-title">Le verbe « faire »</div>
+  <div class="sec-fr">un verbe irrégulier très utile</div>
+
+  <div class="card tinted">
+    <h4>Conjugaison au présent</h4>
+    <div class="conj">
+      <div>je <b>fais</b></div><div>nous <b>faisons</b></div>
+      <div>tu <b>fais</b></div><div>vous <b>faites</b></div>
+      <div>il/elle <b>fait</b></div><div>ils/elles <b>font</b></div>
+    </div>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>faire</b> = hacer. Es irregular, conviene memorizarlo. Ojo con <b>vous faites</b> (no «faisez») y <b>ils font</b> (no «faisent»).</div>
+  </div>
+  <div class="note"><b>Attention :</b> las dos formas más «trampa» son <span class="fr">vous <b>faites</b></span> y <span class="fr">ils/elles <b>font</b></span>. Se usa mucho: <span class="fr">faire les courses</span> (hacer las compras), <span class="fr">faire du shopping</span>, <span class="fr">faire des affaires</span> (hacer buenas compras).</div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Bien! «vous faites» — es una de las formas irregulares clave.","bad":"Con «vous», faire se conjuga «faites» (irregular, no «faisez»)."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Vous ___ les courses ?</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">faisez</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">faisons</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">faites</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-fill='{"answers":["font"],"good":"¡Correcto! ils/elles font.","bad":"Con «ils», faire es «font» (irregular)."}'>
+    <span class="extag">Compléter</span>
+    <div class="q"><span class="qn">2.</span> Conjugá <span class="fr">faire</span>: <span class="fr">Ils <input class="fill" data-a="font" placeholder="…"> du sport.</span></div>
+    <button class="btn" onclick="checkFill(this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U3-4 QUANTITÉ NON DÉFINIE ============ -->
+<section class="view" data-sec="3·Quantité" data-unit="u3">
+  <div class="unitchip u3">Unité 3 · p.55</div>
+  <div class="sec-title">La quantité non définie</div>
+  <div class="sec-fr">les articles partitifs : du, de la, de l', des</div>
+
+  <div class="card tinted">
+    <p>Cuando <strong>no se puede o no se quiere contar</strong> una cantidad (alimentos «incontables»), se usan los <strong>articles partitifs</strong>.</p>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box">Son como decir «algo de / un poco de» sin precisar cantidad. En español muchas veces no se traduce: «du café» = café (en general). Se usan con cosas que no contás de a una (agua, café, pan en masa…).</div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Caso</th><th>Article</th><th>Exemple</th></tr>
+    <tr><td>Masculin singulier</td><td><strong>du</strong> (de+le)</td><td class="ej">du café, du pain</td></tr>
+    <tr><td>Féminin singulier</td><td><strong>de la</strong></td><td class="ej">de la viande, de la crème</td></tr>
+    <tr><td>Devant voyelle / h</td><td><strong>de l'</strong></td><td class="ej">de l'eau, de l'huile</td></tr>
+    <tr><td>Pluriel</td><td><strong>des</strong> (de+les)</td><td class="ej">des céréales</td></tr>
+  </table>
+  <div class="note blue"><b>Remarques :</b> para cantidades chicas o grandes: <span class="fr">un peu de / d'</span> y <span class="fr">beaucoup de / d'</span>. En <strong>forma negativa</strong> → <span class="fr">pas de / d'</span>: <span class="fr">Il n'y a pas de sel et pas d'huile.</span></div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"¡Bien! «café» es masculino → du café.","bad":"«café» es masculino singular, así que el partitivo es «du»: du café."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Un café crème, c'est ___ café et ___ lait.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">du … du</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">de la … de la</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">des … des</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Bien! «eau» empieza por vocal → de l'eau.","bad":"«eau» empieza con vocal, así que el partitivo es «de l'»: de l'eau."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> <span class="fr">Je voudrais ___ eau, s'il vous plaît.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">du</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">de la</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">de l'</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Correcto! En negativa, el partitivo se vuelve «pas de» (o pas d').","bad":"En forma negativa, los partitivos cambian a «pas de / pas d'»: Il n'y a pas de sel."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">3.</span> <span class="fr">Il n'y a ___ sel dans la salade.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">du</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">pas de</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">de la</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U3-5 LE PRONOM EN ============ -->
+<section class="view" data-sec="3·Pronom en" data-unit="u3">
+  <div class="unitchip u3">Unité 3 · p.56</div>
+  <div class="sec-title">Le pronom « en »</div>
+  <div class="sec-fr">pour éviter la répétition</div>
+
+  <div class="card tinted">
+    <p>El pronom <span class="fr">en</span> <strong>reemplaza un nombre</strong> para no repetirlo. Se coloca <strong>antes del verbo</strong>.</p>
+    <ul>
+      <li><span class="fr">– Vous voulez des tartes ? – Oui, j'<b>en</b> veux !</span></li>
+      <li><span class="fr">– Vous avez une salle privée ? – Non, on n'<b>en</b> a pas.</span></li>
+    </ul>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>en</b> sustituye algo ya mencionado (normalmente con du/de la/des o una cantidad) para no repetirlo. «J'en veux» = quiero (de eso). Va siempre <b>delante del verbo</b>: j'<b>en</b> mange beaucoup.</div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! «en» reemplaza «du café» y va antes del verbo: j'en veux.","bad":"«en» reemplaza «du café» y se coloca delante del verbo: Oui, j'en veux."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">– Tu veux du café ? – Oui, ___ !</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">je veux en</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">j'en veux</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">je veux du</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-fill='{"answers":["non, je n'en veux pas","non je n'en veux pas"],"good":"¡Correcto! En negativa: Non, je n'en veux pas.","bad":"En negativa, «en» va entre ne y el verbo: Non, je n'en veux pas."}'>
+    <span class="extag">Compléter</span>
+    <div class="q"><span class="qn">2.</span> Respondé en negativo con <span class="fr">en</span>: <span class="fr">– Tu veux du sucre ?</span><br>
+      <input class="fill" style="width:240px" data-a="non, je n'en veux pas" placeholder="Non, …"></div>
+    <button class="btn" onclick="checkFill(this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U4-1 GENRE ET NOMBRE DES ADJ ============ -->
+<section class="view" data-sec="4·Genre adj." data-unit="u4">
+  <div class="unitchip u4">Unité 4 · p.63</div>
+  <div class="sec-title">Le genre et le nombre des adjectifs</div>
+  <div class="sec-fr">masculin / féminin, singulier / pluriel</div>
+
+  <div class="card tinted u4">
+    <h4>Les règles</h4>
+    <ul>
+      <li><strong>Féminin :</strong> en general se agrega una <span class="fr">-e</span>. <span class="fr">petit → petite</span>.</li>
+      <li>Algunos adjetivos son <strong>iguales</strong> en masc. y fem.: <span class="fr">simple → simple</span>.</li>
+      <li>Algunos <strong>doblan la consonante</strong> final en femenino: <span class="fr">bon → bonne</span>.</li>
+      <li><strong>Pluriel :</strong> se agrega una <span class="fr">-s</span>. <span class="fr">petit → petits</span>.</li>
+    </ul>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box">El adjetivo concuerda en género y número con el sustantivo. Femenino normalmente con <b>-e</b>; plural con <b>-s</b>. Si ya termina en -e (simple), no cambia en femenino. Algunos doblan la consonante (bon → bonne).</div>
+  </div>
+
+  <table class="tbl u4">
+    <tr><th>Masc. sing.</th><th>Fém. sing.</th><th>Masc. plur.</th><th>Fém. plur.</th></tr>
+    <tr><td class="fr">petit</td><td class="fr">petite</td><td class="fr">petits</td><td class="fr">petites</td></tr>
+    <tr><td class="fr">cher</td><td class="fr">chère</td><td class="fr">chers</td><td class="fr">chères</td></tr>
+    <tr><td class="fr">simple</td><td class="fr">simple</td><td class="fr">simples</td><td class="fr">simples</td></tr>
+    <tr><td class="fr">bon</td><td class="fr">bonne</td><td class="fr">bons</td><td class="fr">bonnes</td></tr>
+  </table>
+  <div class="note red"><b>Remarques (irréguliers) :</b> <span class="fr">beau → belle</span> (fém.) / <span class="fr">beaux</span> (plur.) · <span class="fr">blanc → blanche</span> · <span class="fr">long → longue</span>.</div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! chemise es femenino → jolie (joli + e).","bad":"«chemise» es femenino, así que joli → «jolie»: une jolie chemise."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Bilel a une ___ chemise. (joli)</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">joli</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">jolie</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">jolies</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-fill='{"answers":["blanche"],"good":"¡Correcto! blanc → blanche (femenino irregular).","bad":"«blanc» en femenino es irregular: «blanche». Une chemise blanche."}'>
+    <span class="extag">Compléter</span>
+    <div class="q"><span class="qn">2.</span> <span class="fr">Isadora a une chemise <input class="fill" data-a="blanche" placeholder="(blanc)">.</span></div>
+    <button class="btn" onclick="checkFill(this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Bien! beau es irregular en plural → beaux.","bad":"«beau» en plural masculino es «beaux» (irregular): les beaux sacs."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">3.</span> <span class="fr">J'adore les ___ sacs ! (beau)</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">beaus</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">belles</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">beaux</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U4-2 PLACE DES ADJ ============ -->
+<section class="view" data-sec="4·Place adj." data-unit="u4">
+  <div class="unitchip u4">Unité 4 · p.64</div>
+  <div class="sec-title">La place des adjectifs</div>
+  <div class="sec-fr">avant ou après le nom ?</div>
+
+  <div class="card tinted u4">
+    <ul>
+      <li>En general, los adjetivos van <strong>después</strong> del sustantivo: <span class="fr">un costume gris</span>.</li>
+      <li>Algunos adjetivos cortos van <strong>antes</strong>: <span class="fr">petit, grand, beau, bon, joli</span> → <span class="fr">une petite robe, une jolie veste</span>.</li>
+      <li>Los adjetivos de <strong>color</strong> van <strong>siempre después</strong>: <span class="fr">une robe jaune</span>.</li>
+    </ul>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box">A diferencia del español, en francés el adjetivo normalmente va <b>detrás</b>. Pero unos pocos cortos y frecuentes (petit, grand, beau, bon, joli) van <b>delante</b>. Los colores van <b>siempre detrás</b>.</div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"¡Bien! «joli» es de los que van antes: un joli manteau.","bad":"«joli» es uno de los adjetivos cortos que van ANTES del nombre: un joli manteau."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> Colocá bien <span class="fr">joli</span>: <span class="fr">Oscar a un manteau.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">un joli manteau</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">un manteau joli</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Correcto! «gris» es color → siempre después: un manteau gris.","bad":"«gris» es un color, y los colores van SIEMPRE después: un manteau gris."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> Colocá bien <span class="fr">gris</span>: <span class="fr">Elle porte un manteau.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">un gris manteau</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">un manteau gris</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex">
+    <span class="extag">Glisser-déposer</span>
+    <div class="q"><span class="qn">3.</span> ¿El adjetivo va antes o después del nombre?</div>
+    <div class="dd-source" id="dd-place">
+      <div class="chip" draggable="true" data-z="av">petit</div>
+      <div class="chip" draggable="true" data-z="ap">noir</div>
+      <div class="chip" draggable="true" data-z="av">beau</div>
+      <div class="chip" draggable="true" data-z="ap">rouge</div>
+      <div class="chip" draggable="true" data-z="av">grand</div>
+      <div class="chip" draggable="true" data-z="ap">sportif</div>
+    </div>
+    <div class="dd-zones">
+      <div class="zone" data-zone="av"><h5>Avant le nom</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="ap"><h5>Après le nom</h5><div class="drops"></div></div>
+    </div>
+    <button class="btn" onclick="checkDD('dd-place',this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U4-3 VOCABULAIRE VÊTEMENTS / MÉTÉO ============ -->
+<section class="view" data-sec="4·Vêtements/Météo" data-unit="u4">
+  <div class="unitchip u4">Unité 4 · p.65</div>
+  <div class="sec-title">Vocabulaire : vêtements, accessoires, météo</div>
+  <div class="sec-fr">les vêtements, les matières, les couleurs, le temps</div>
+
+  <h3>Les vêtements</h3>
+  <div class="voc">
+    <div><span class="w">la chemise</span><div class="t">la camisa</div></div>
+    <div><span class="w">le pantalon</span><div class="t">el pantalón</div></div>
+    <div><span class="w">la jupe</span><div class="t">la pollera</div></div>
+    <div><span class="w">la robe</span><div class="t">el vestido</div></div>
+    <div><span class="w">le manteau</span><div class="t">el abrigo</div></div>
+    <div><span class="w">le pull</span><div class="t">el suéter</div></div>
+    <div><span class="w">la veste</span><div class="t">la chaqueta</div></div>
+    <div><span class="w">le tee-shirt</span><div class="t">la remera</div></div>
+    <div><span class="w">le costume</span><div class="t">el traje</div></div>
+  </div>
+
+  <h3>Les accessoires</h3>
+  <div class="voc">
+    <div><span class="w">les chaussures / bottes</span><div class="t">zapatos / botas</div></div>
+    <div><span class="w">la ceinture</span><div class="t">el cinturón</div></div>
+    <div><span class="w">le chapeau</span><div class="t">el sombrero</div></div>
+    <div><span class="w">les lunettes (de soleil)</span><div class="t">los lentes (de sol)</div></div>
+    <div><span class="w">le sac à main</span><div class="t">la cartera</div></div>
+    <div><span class="w">le(s) bijou(x)</span><div class="t">la(s) joya(s)</div></div>
+    <div><span class="w">le parapluie</span><div class="t">el paraguas</div></div>
+  </div>
+
+  <h3>Les matières et les couleurs</h3>
+  <p><strong>Matières :</strong> <span class="fr">en coton, en cuir, en jean, en laine</span> (algodón, cuero, jean, lana).</p>
+  <p><strong>Couleurs :</strong> <span class="fr">beige, blanc, bleu, gris, jaune, marron, noir, rose, rouge, vert</span>.</p>
+
+  <h3>La météo et les températures</h3>
+  <table class="tbl u4">
+    <tr><th>Pour parler du temps</th><th>Sens</th></tr>
+    <tr><td class="fr">Il fait beau. / Il y a du soleil.</td><td>Hace lindo / hay sol</td></tr>
+    <tr><td class="fr">Il pleut. / Il y a de la pluie.</td><td>Llueve / hay lluvia</td></tr>
+    <tr><td class="fr">Il y a du vent.</td><td>Hay viento</td></tr>
+    <tr><td class="fr">Il fait chaud. ≠ Il fait froid.</td><td>Hace calor ≠ hace frío</td></tr>
+    <tr><td class="fr">Il fait 18°C, il fait -5°C.</td><td>Hace 18°, hace -5°</td></tr>
+  </table>
+  <div class="note red"><b>Au fait :</b> <span class="fr">mais</span> sirve para oponer dos ideas: <span class="fr">Il fait beau <b>mais</b> il fait froid !</span> (Hace lindo PERO hace frío).</div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Bien! «Il pleut» = llueve, así que necesitás el paraguas.","bad":"Si necesitás el paraguas es porque «il pleut» (llueve)."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Je prends mon parapluie parce qu'…</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">il fait chaud</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">il y a du soleil</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">il pleut</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"¡Bien! «le sac à main» es la cartera.","bad":"«le sac à main» es la cartera / bolso de mano."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> ¿Cómo se dice «la cartera» en francés?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">le sac à main</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">la ceinture</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">le chapeau</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U4-4 FUTUR PROCHE / PASSÉ RÉCENT ============ -->
+<section class="view" data-sec="4·Futur/Passé" data-unit="u4">
+  <div class="unitchip u4">Unité 4 · p.68</div>
+  <div class="sec-title">Le futur proche et le passé récent</div>
+  <div class="sec-fr">une action future proche / une action passée proche</div>
+
+  <div class="card tinted u4">
+    <h4>Le futur proche</h4>
+    <p>Para una acción <strong>futura cercana</strong>: <span class="hl">verbe «aller» au présent + infinitif</span>.</p>
+    <p class="fr">Elle va faire les courses. · Nous allons faire de bonnes affaires.</p>
+    <div class="conj">
+      <div>je <b>vais</b> + inf.</div><div>nous <b>allons</b> + inf.</div>
+      <div>tu <b>vas</b> + inf.</div><div>vous <b>allez</b> + inf.</div>
+      <div>il/elle <b>va</b> + inf.</div><div>ils/elles <b>vont</b> + inf.</div>
+    </div>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>Futur proche</b> = «voy a + infinitivo». Se arma con el verbo <b>aller</b> conjugado + el infinitivo. «Je vais manger» = voy a comer. Se usa con: demain, ce soir, lundi matin…</div>
+  </div>
+
+  <div class="card tinted u4">
+    <h4>Le passé récent</h4>
+    <p>Para una acción <strong>recién pasada</strong>: <span class="hl">verbe «venir» au présent + de / d' + infinitif</span>.</p>
+    <p class="fr">Nous venons de vendre la voiture. · Tu viens de faire de bonnes affaires.</p>
+    <div class="conj">
+      <div>je <b>viens</b> de + inf.</div><div>nous <b>venons</b> de + inf.</div>
+      <div>tu <b>viens</b> de + inf.</div><div>vous <b>venez</b> de + inf.</div>
+      <div>il/elle <b>vient</b> de + inf.</div><div>ils/elles <b>viennent</b> de + inf.</div>
+    </div>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box"><b>Passé récent</b> = «acabo de + infinitivo». Se arma con <b>venir</b> conjugado + <b>de</b> + infinitivo. «Je viens de manger» = acabo de comer. Ojo: lleva siempre «de».</div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! Futur proche = aller + infinitivo: il va acheter.","bad":"Futur proche se arma con aller + infinitivo: Il va acheter une tablette."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">Demain, il ___ une nouvelle tablette. (acheter)</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">vient d'acheter</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">va acheter</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">allez acheter</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Correcto! Passé récent = venir de + infinitivo: la fête est finie, mes amis viennent de partir.","bad":"Passé récent = venir + de + infinitivo: mes amis viennent de partir."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> <span class="fr">La fête est finie, mes amis ___ . (partir)</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">vont partir</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">viennent partir</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">viennent de partir</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-fill='{"answers":["allons faire"],"good":"¡Correcto! nous allons faire (futur proche).","bad":"Con «nous», aller = «allons». Futur proche: nous allons faire les soldes."}'>
+    <span class="extag">Compléter</span>
+    <div class="q"><span class="qn">3.</span> Futur proche: <span class="fr">Demain, mes amis et moi <input class="fill" style="width:160px" data-a="allons faire" placeholder="(faire)"> les soldes.</span></div>
+    <button class="btn" onclick="checkFill(this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ U4-5 ADJECTIFS DÉMONSTRATIFS ============ -->
+<section class="view" data-sec="4·Démonstratifs" data-unit="u4">
+  <div class="unitchip u4">Unité 4 · p.70</div>
+  <div class="sec-title">Les adjectifs démonstratifs</div>
+  <div class="sec-fr">ce, cet, cette, ces — pour montrer ou désigner</div>
+
+  <div class="card tinted u4">
+    <p>Se usan para <strong>mostrar algo</strong> o <strong>designar un objeto ya nombrado</strong> (= este/esta/estos en español).</p>
+    <button class="es-btn" onclick="toggleEs(this)">🌐 Ver en español</button>
+    <div class="es-box">Equivalen a «este / esta / estos / estas». Elegís la forma según género y número del sustantivo. Importante: delante de vocal o h muda, <b>ce</b> se vuelve <b>cet</b> (cet ordinateur, cet homme).</div>
+  </div>
+
+  <table class="tbl u4">
+    <tr><th></th><th>Singulier</th><th>Pluriel</th></tr>
+    <tr><td><strong>Masculin</strong></td><td class="fr">ce sac · ce portefeuille</td><td class="fr">ces livres</td></tr>
+    <tr><td><strong>Féminin</strong></td><td class="fr">cette valise · cette écharpe</td><td class="fr">ces lunettes</td></tr>
+  </table>
+  <div class="note red"><b>Remarque :</b> delante de vocal o <span class="fr">h</span> muda, <span class="fr">ce → cet</span>: <span class="fr">cet ordinateur, cet homme</span>.</div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"¡Bien! «ordinateur» empieza por vocal → cet ordinateur.","bad":"Delante de vocal, ce → «cet»: cet ordinateur."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">1.</span> <span class="fr">___ ordinateur est trop cher.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">Ce</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">Cette</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">Cet</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"¡Bien! «veste» es femenino singular → cette veste.","bad":"«veste» es femenino, así que el demostrativo es «cette»: cette veste grise."}'>
+    <span class="extag">Choix multiple</span>
+    <div class="q"><span class="qn">2.</span> <span class="fr">___ veste grise est trop petite.</span></div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span class="fr">Ce</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span class="fr">Cette</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span class="fr">Ces</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex">
+    <span class="extag">Glisser-déposer</span>
+    <div class="q"><span class="qn">3.</span> Asociá cada palabra con su demostrativo correcto.</div>
+    <div class="dd-source" id="dd-dem">
+      <div class="chip" draggable="true" data-z="ce">sac</div>
+      <div class="chip" draggable="true" data-z="cet">hiver</div>
+      <div class="chip" draggable="true" data-z="cette">écharpe</div>
+      <div class="chip" draggable="true" data-z="ces">lunettes</div>
+      <div class="chip" draggable="true" data-z="cette">valise</div>
+      <div class="chip" draggable="true" data-z="ces">livres</div>
+    </div>
+    <div class="dd-zones">
+      <div class="zone" data-zone="ce"><h5>ce</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="cet"><h5>cet (voyelle/h)</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="cette"><h5>cette</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="ces"><h5>ces (pluriel)</h5><div class="drops"></div></div>
+    </div>
+    <button class="btn" onclick="checkDD('dd-dem',this)">Vérifier</button>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ FINAL ============ -->
+<section class="view" data-sec="★ Examen blanc" data-unit="u4">
+  <div class="unitchip u4" style="background:var(--ink);color:#fff">Évaluation</div>
+  <div class="sec-title">Examen blanc</div>
+  <div class="sec-fr">15 questions des unités 3 et 4 · note sur 20</div>
+  <p style="color:var(--ink2);font-size:15px">Respondé las 15 preguntas y tocá «Calculer ma note». Te explica cada respuesta.</p>
+
+  <div class="progress"><div id="qbar"></div></div>
+  <p id="qcount" style="font-size:13px;color:var(--ink2);margin:0 0 4px">0 / 15 répondues</p>
+  <div id="quizbox"></div>
+  <button class="btn" id="quizbtn" onclick="gradeQuiz()" style="width:100%;padding:13px;font-size:16px">Calculer ma note</button>
+  <div class="scorebox" id="scorebox">
+    <div class="num" id="scoreNum">–</div>
+    <div class="lbl">sur 20</div>
+    <div class="msg" id="scoreMsg"></div>
+    <button class="btn ghost" onclick="resetQuiz()" style="margin-top:16px">Recommencer</button>
+  </div>
+  <footer>Bon courage pour l'examen ! 🇫🇷<br><a class="backtop" href="#" onclick="show(0);return false;">↑ Volver al inicio</a></footer>
+</section>
+
+</main>
+<div id="more"></div>
+
+<script>
+/* ---------- toggle español ---------- */
+function toggleEs(btn){
+  const box=btn.nextElementSibling;
+  const open=box.classList.toggle('show');
+  btn.textContent=open?'🌐 Ocultar español':'🌐 Ver en español';
+}
+/* ---------- NAV ---------- */
+const nav=document.getElementById('nav');
+function buildNav(){
+  nav.innerHTML='';
+  document.querySelectorAll('section.view').forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.textContent=s.dataset.sec;
+    if(s.dataset.unit==='u4')b.classList.add('u4');
+    b.onclick=()=>show(i);
+    nav.appendChild(b);
+  });
+}
+function show(i){
+  const all=[...document.querySelectorAll('section.view')];
+  all.forEach((s,k)=>s.classList.toggle('show',k===i));
+  [...nav.children].forEach((b,k)=>b.classList.toggle('active',k===i));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* ---------- MC ---------- */
+function wireMC(root=document){
+  root.querySelectorAll('.ex[data-mc]').forEach(ex=>{
+    if(ex.dataset.wired)return;ex.dataset.wired=1;
+    const cfg=JSON.parse(ex.dataset.mc);const fb=ex.querySelector('.fb');
+    ex.querySelectorAll('.opt').forEach(opt=>{
+      opt.onclick=()=>{
+        const i=+opt.dataset.i;
+        ex.querySelectorAll('.opt').forEach(o=>o.classList.add('disabled'));
+        if(i===cfg.correct){opt.classList.add('correct');opt.querySelector('.mk').textContent='✓';fb.className='fb show good';fb.innerHTML='<b>Correct !</b> '+cfg.good;}
+        else{opt.classList.add('wrong');opt.querySelector('.mk').textContent='✗';const c=ex.querySelector('.opt[data-i="'+cfg.correct+'"]');c.classList.add('correct');c.querySelector('.mk').textContent='✓';fb.className='fb show bad';fb.innerHTML='<b>Presque.</b> '+cfg.bad;}
+      };
+    });
+  });
+}
+/* ---------- VF ---------- */
+function wireVF(root=document){
+  root.querySelectorAll('.ex[data-vf]').forEach(ex=>{
+    if(ex.dataset.wired)return;ex.dataset.wired=1;
+    const cfg=JSON.parse(ex.dataset.vf);const fb=ex.querySelector('.fb');
+    ex.querySelectorAll('.vf').forEach(btn=>{
+      btn.onclick=()=>{
+        const v=btn.dataset.v==='true';
+        ex.querySelectorAll('.vf').forEach(b=>b.classList.add('disabled'));
+        if(v===cfg.answer){btn.classList.add('correct');fb.className='fb show good';fb.innerHTML='<b>Correct !</b> '+cfg.good;}
+        else{btn.classList.add('wrong');fb.className='fb show bad';fb.innerHTML='<b>Non.</b> '+cfg.bad;ex.querySelector('.vf[data-v="'+cfg.answer+'"]').classList.add('correct');}
+      };
+    });
+  });
+}
+/* ---------- FILL ---------- */
+function checkFill(btn){
+  const ex=btn.closest('.ex');const cfg=JSON.parse(ex.dataset.fill);const fb=ex.querySelector('.fb');
+  let ok=true;
+  ex.querySelectorAll('.fill').forEach(inp=>{
+    const val=inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+    const ans=(inp.dataset.a||'').toLowerCase();
+    if(val===ans){inp.classList.remove('wrong');inp.classList.add('correct');}
+    else{inp.classList.remove('correct');inp.classList.add('wrong');ok=false;}
+  });
+  if(ok){fb.className='fb show good';fb.innerHTML='<b>Correct !</b> '+cfg.good;}
+  else{fb.className='fb show bad';fb.innerHTML='<b>Pas tout à fait.</b> '+cfg.bad;}
+}
+/* ---------- DD ---------- */
+let picked=null;
+function wireDD(root=document){
+  root.querySelectorAll('.chip').forEach(chip=>{
+    if(chip.dataset.wired)return;chip.dataset.wired=1;
+    chip.addEventListener('dragstart',e=>{picked=chip;e.dataTransfer.setData('text','x')});
+    chip.addEventListener('click',()=>{
+      if(picked===chip){chip.classList.remove('picked');picked=null;return;}
+      document.querySelectorAll('.chip.picked').forEach(c=>c.classList.remove('picked'));
+      picked=chip;chip.classList.add('picked');
+    });
+  });
+  root.querySelectorAll('.zone').forEach(z=>{
+    if(z.dataset.wired)return;z.dataset.wired=1;
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});
+    z.addEventListener('dragleave',()=>z.classList.remove('over'));
+    z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');if(picked)z.querySelector('.drops').appendChild(picked);picked=null});
+    z.addEventListener('click',()=>{if(picked){z.querySelector('.drops').appendChild(picked);picked.classList.remove('picked');picked=null;}});
+  });
+}
+function checkDD(srcId,btn){
+  const ex=btn.closest('.ex');const fb=ex.querySelector('.fb');
+  let total=0,ok=0;
+  ex.querySelectorAll('.zone').forEach(z=>{const zone=z.dataset.zone;z.querySelectorAll('.chip').forEach(ch=>{total++;if(ch.dataset.z===zone){ch.classList.add('correct');ok++;}else ch.classList.add('wrong');});});
+  const left=document.getElementById(srcId).querySelectorAll('.chip').length;
+  if(left>0){fb.className='fb show bad';fb.innerHTML='<b>Il manque des mots.</b> Colocá todas las palabras antes de verificar.';ex.querySelectorAll('.chip').forEach(c=>c.classList.remove('correct','wrong'));return;}
+  if(ok===total){fb.className='fb show good';fb.innerHTML='<b>Parfait !</b> Las '+total+' palabras bien clasificadas.';}
+  else{fb.className='fb show bad';fb.innerHTML='<b>'+ok+'/'+total+' bien.</b> Las rojas van en otra caja.';}
+  btn.disabled=true;
+}
+
+/* ---------- QUIZ ---------- */
+const QUIZ=[
+  {q:'<i>Je vais ___ poissonnerie.</i>',o:['au','à la','chez le'],c:1,e:'«poissonnerie» es un lugar femenino → à la.'},
+  {q:'<i>Je vais ___ boucher.</i> (la viande)',o:['à la','au','chez le'],c:2,e:'«le boucher» es una persona → chez le.'},
+  {q:'<i>Je vais ___ caisses pour payer.</i>',o:['aux','à les','au'],c:0,e:'à + les = aux.'},
+  {q:'<i>Vous ___ les courses ?</i> (faire)',o:['faisez','faites','font'],c:1,e:'vous faites (irregular).'},
+  {q:'<i>Un café crème, c\'est ___ café.</i>',o:['du','de la','des'],c:0,e:'café es masculino → du (partitivo).'},
+  {q:'<i>Je voudrais ___ eau.</i>',o:['du','de l\'','de la'],c:1,e:'eau empieza por vocal → de l\'.'},
+  {q:'<i>Il n\'y a ___ sel.</i> (negativa)',o:['du','de la','pas de'],c:2,e:'En negativa el partitivo → pas de.'},
+  {q:'<i>– Tu veux du café ? – Oui, ___ !</i>',o:['je veux du','j\'en veux','je veux en'],c:1,e:'«en» reemplaza «du café» y va antes del verbo.'},
+  {q:'<i>Bilel a une ___ chemise.</i> (joli)',o:['joli','jolie','jolies'],c:1,e:'chemise es femenino → jolie.'},
+  {q:'<i>J\'adore les ___ sacs !</i> (beau)',o:['beaus','beaux','belles'],c:1,e:'beau → beaux (plural masculino irregular).'},
+  {q:'Colocá <i>gris</i>: <i>un manteau ___</i>',o:['gris manteau (antes)','manteau gris (después)'],c:1,e:'Los colores van siempre después del nombre.'},
+  {q:'<i>Il fait beau ___ il fait froid.</i>',o:['mais','et','ou'],c:0,e:'«mais» (pero) opone dos ideas.'},
+  {q:'<i>Demain, il ___ une tablette.</i> (acheter)',o:['va acheter','vient d\'acheter','allez acheter'],c:0,e:'Futur proche: aller + infinitivo → va acheter.'},
+  {q:'<i>Mes amis ___ partir.</i> (acaban de irse)',o:['vont','viennent de','viennent'],c:1,e:'Passé récent: venir + de + infinitivo.'},
+  {q:'<i>___ ordinateur est cher.</i>',o:['Ce','Cet','Cette'],c:1,e:'Delante de vocal, ce → cet.'}
+];
+let quizAns={};
+function buildQuiz(){
+  const box=document.getElementById('quizbox');box.innerHTML='';
+  QUIZ.forEach((item,qi)=>{
+    const d=document.createElement('div');d.className='quiz-q';
+    let html='<div class="q"><span class="qn">'+(qi+1)+'.</span> '+item.q+'</div><div class="opts">';
+    item.o.forEach((op,oi)=>{html+='<button class="opt" data-q="'+qi+'" data-o="'+oi+'"><span class="mk"></span><span class="fr">'+op+'</span></button>';});
+    html+='</div><div class="fb"></div>';d.innerHTML=html;box.appendChild(d);
+  });
+  box.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      const qi=+o.dataset.q;
+      o.parentElement.querySelectorAll('.opt').forEach(x=>{x.style.outline='';x.querySelector('.mk').textContent='';});
+      o.style.outline='2px solid var(--bleu)';o.querySelector('.mk').textContent='•';
+      quizAns[qi]=+o.dataset.o;updateQuizCount();
+    };
+  });
+}
+function updateQuizCount(){
+  const n=Object.keys(quizAns).length;
+  document.getElementById('qcount').textContent=n+' / '+QUIZ.length+' répondues';
+  document.getElementById('qbar').style.width=(n/QUIZ.length*100)+'%';
+}
+function gradeQuiz(){
+  if(Object.keys(quizAns).length<QUIZ.length){alert('Te faltan preguntas ('+Object.keys(quizAns).length+'/'+QUIZ.length+'). Completá todas.');return;}
+  let correct=0;
+  QUIZ.forEach((item,qi)=>{
+    const qd=document.querySelectorAll('.quiz-q')[qi];const fb=qd.querySelector('.fb');
+    qd.querySelectorAll('.opt').forEach(o=>{o.classList.add('disabled');o.style.outline='';});
+    const chosen=quizAns[qi];const right=qd.querySelector('.opt[data-o="'+item.c+'"]');
+    if(chosen===item.c){correct++;right.classList.add('correct');right.querySelector('.mk').textContent='✓';fb.className='fb show good';fb.innerHTML='<b>Correct !</b> '+item.e;}
+    else{const w=qd.querySelector('.opt[data-o="'+chosen+'"]');w.classList.add('wrong');w.querySelector('.mk').textContent='✗';right.classList.add('correct');right.querySelector('.mk').textContent='✓';fb.className='fb show bad';fb.innerHTML='<b>Incorrect.</b> '+item.e;}
+  });
+  const nota=Math.round(correct/QUIZ.length*20);
+  const sb=document.getElementById('scorebox');sb.classList.add('show');
+  document.getElementById('scoreNum').textContent=nota;
+  let msg;
+  if(nota>=18)msg='Excellent ! Estás muy bien preparada. 🎉';
+  else if(nota>=14)msg='Très bien ! Acertaste '+correct+'/'+QUIZ.length+'. Repasá las que fallaste.';
+  else if(nota>=10)msg='Pas mal, pero conviene repasar. '+correct+'/'+QUIZ.length+'.';
+  else msg='Repasá los temas con calma y volvé a intentar. '+correct+'/'+QUIZ.length+'.';
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('quizbtn').style.display='none';
+  sb.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetQuiz(){
+  quizAns={};buildQuiz();updateQuizCount();
+  document.getElementById('scorebox').classList.remove('show');
+  document.getElementById('quizbtn').style.display='';
+  document.querySelector('[data-sec="★ Examen blanc"]').scrollIntoView({behavior:'smooth'});
+}
+
+buildNav();show(0);
+buildQuiz();
+wireMC();wireVF();wireDD();
+</script>
+</body>
+</html>

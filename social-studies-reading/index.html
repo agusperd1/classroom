@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Studies · Reading Practice</title>
+<style>
+:root{
+  --bg:#3b4a3a;          /* verde pizarra (presentaciones) */
+  --paper:#f4efe3;       /* papel periódico */
+  --paper2:#fbf8f0;
+  --ink:#2a2a24;
+  --ink2:#5f5b50;
+  --line:#e0d9c6;
+  --rule:#cfc6ad;
+  --gold:#c2741b;        /* ámbar títulos */
+  --goldbg:#f7ecd9;
+  --goldbg2:#f8eedb;
+  --green:#3f7d4e;
+  --greenbg:#e6f1e7;
+  --red:#b23b32;
+  --redbg:#f7e6e3;
+  --blue:#37618c;
+  --bluebg:#e7eef6;
+  --es:#6a4ea3;
+  --esbg:#efe9f7;
+  --display:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;padding-bottom:60px}
+
+header{background:var(--bg);color:#f4efe3;padding:30px 22px 26px;text-align:center;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,.02) 61px);pointer-events:none}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+header h1{font-family:var(--display);font-size:28px;font-weight:700;line-height:1.15}
+header p{color:#cdd3c5;font-size:15px;margin-top:8px;max-width:580px;margin-inline:auto}
+
+nav{position:sticky;top:0;z-index:30;background:rgba(244,239,227,.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);padding:8px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+nav button{flex:0 0 auto;border:1px solid var(--rule);background:var(--paper2);color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 13px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+nav button:hover{border-color:var(--gold);color:var(--ink)}
+nav button.active{background:var(--bg);color:#f4efe3;border-color:var(--bg)}
+
+main{max-width:760px;margin:0 auto;padding:24px 18px}
+section.view{display:none;animation:fade .3s ease}
+section.view.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.sec-title{font-family:var(--display);font-size:25px;font-weight:700;margin:4px 0 2px;line-height:1.2}
+.sec-intro{color:var(--ink2);font-size:15px;margin-bottom:18px}
+.pill{display:inline-block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px;background:var(--goldbg2);color:var(--gold)}
+
+h3{font-family:var(--display);font-size:20px;font-weight:700;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+h4{font-size:16.5px;font-weight:700;margin:14px 0 6px}
+p{margin:9px 0}strong{font-weight:700}
+.hl{background:linear-gradient(transparent 60%,var(--goldbg2) 60%);padding:0 2px;font-weight:600}
+
+/* texto de lectura tipo recorte de diario */
+.reading{background:var(--paper2);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.reading h4{font-family:var(--display);font-size:17px;color:var(--bg);margin-top:0}
+.reading p{font-size:15.5px;margin:8px 0}
+.reading .src{font-size:13px;color:var(--ink2);font-style:italic;margin-top:8px}
+.reading.quote{border-left:4px solid var(--gold);font-style:italic}
+.reading.quote p::before{content:"“"}
+.reading.quote p::after{content:"”"}
+
+/* botón español */
+.es-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--es);background:var(--esbg);color:var(--es);font-family:var(--sans);font-weight:600;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .12s}
+.es-btn:hover{background:var(--es);color:#fff}
+.es-box{display:none;background:var(--esbg);border:1px solid #d9cdee;border-radius:9px;padding:12px 14px;margin-top:10px;font-size:14.5px;color:#3f2d63}
+.es-box.show{display:block}
+
+.note{background:var(--goldbg2);border:1px solid #ecd9a8;border-radius:10px;padding:12px 14px;margin:14px 0;font-size:15px}
+.note b{color:var(--gold)}
+.note.blue{background:var(--bluebg);border-color:#c4d4e8}.note.blue b{color:var(--blue)}
+.note.green{background:var(--greenbg);border-color:#c2ddc7}.note.green b{color:var(--green)}
+
+/* ejercicios */
+.ex{background:var(--paper2);border:1px solid var(--rule);border-left:4px solid var(--blue);border-radius:12px;padding:16px 18px;margin:18px 0}
+.ex .extag{display:inline-block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:8px}
+.ex .pts{float:right;font-size:11.5px;color:var(--ink2);font-weight:600;text-transform:none;letter-spacing:0}
+.ex .q{font-weight:600;font-size:15.5px;margin-bottom:12px}
+.ex .q .qn{color:var(--blue)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{border:1.5px solid var(--rule);background:#fff;border-radius:9px;padding:11px 13px;cursor:pointer;font-size:15px;transition:all .12s;display:flex;align-items:flex-start;gap:10px;text-align:left}
+.opt:hover{border-color:var(--blue)}
+.opt .mk{width:22px;height:22px;border-radius:50%;border:2px solid var(--rule);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:1px}
+.opt .lt{font-weight:700;color:var(--ink2);margin-right:2px}
+.opt.correct{background:var(--greenbg);border-color:var(--green)}
+.opt.correct .mk{border-color:var(--green);background:var(--green);color:#fff}
+.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.opt.wrong .mk{border-color:var(--red);background:var(--red);color:#fff}
+.opt.disabled{pointer-events:none;opacity:.9}
+.fb{margin-top:12px;border-radius:9px;padding:11px 13px;font-size:14.5px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--greenbg);border:1px solid #c2ddc7;color:#235c3a}
+.fb.bad{background:var(--redbg);border:1px solid #e8c4bf;color:#7a2a23}
+.fb b{font-weight:700}
+.fb .ev{display:block;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.15);font-style:italic}
+
+/* V/F con evidencia */
+.vfrow{display:flex;gap:8px;margin-top:8px}
+.vf{flex:1;border:1.5px solid var(--rule);background:#fff;border-radius:9px;padding:10px;cursor:pointer;font-weight:700;font-size:15px;transition:all .12s}
+.vf:hover{border-color:var(--blue)}
+.vf.correct{background:var(--greenbg);border-color:var(--green);color:var(--green)}
+.vf.wrong{background:var(--redbg);border-color:var(--red);color:var(--red)}
+.vf.disabled{pointer-events:none}
+
+.btn{border:none;background:var(--bg);color:#f4efe3;font-family:var(--sans);font-weight:600;font-size:14.5px;padding:9px 18px;border-radius:8px;cursor:pointer;margin-top:12px;transition:opacity .15s}
+.btn:hover{opacity:.9}
+.btn.ghost{background:#fff;color:var(--bg);border:1.5px solid var(--bg)}
+
+/* vocab grid */
+.voc{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:12px 0}
+.voc div{background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:14.5px}
+.voc .w{font-weight:700;color:var(--bg)}
+.voc .t{color:var(--ink2);font-size:13px}
+
+/* drag&drop */
+.dd-source{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:12px;background:#fff;border:1px dashed var(--rule);border-radius:10px;min-height:54px}
+.chip{background:var(--bg);color:#f4efe3;border-radius:8px;padding:8px 12px;font-size:14.5px;cursor:grab;user-select:none;font-weight:600;touch-action:none}
+.chip.picked{outline:3px solid var(--gold);outline-offset:2px}
+.dd-zones{display:grid;gap:10px;margin-top:12px}
+.zone{border:2px dashed var(--rule);border-radius:10px;padding:10px 12px;min-height:56px;background:var(--paper2)}
+.zone h5{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);margin-bottom:8px}
+.zone.over{border-color:var(--gold);background:var(--goldbg2)}
+.zone .drops{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
+.zone .chip.correct{background:var(--green)}
+.zone .chip.wrong{background:var(--red)}
+
+/* quiz */
+.quiz-q{border-bottom:1px dashed var(--line);padding:18px 0}
+.quiz-q:first-child{padding-top:4px}
+.scorebox{background:var(--bg);color:#f4efe3;border-radius:14px;padding:22px;text-align:center;margin-top:18px;display:none}
+.scorebox.show{display:block}
+.scorebox .num{font-family:var(--display);font-size:48px;font-weight:700;line-height:1}
+.scorebox .lbl{font-size:14px;color:#cdd3c5;margin-top:4px}
+.scorebox .msg{font-size:15px;margin-top:12px}
+.progress{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0 4px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--red));transition:width .4s}
+
+footer{text-align:center;color:var(--ink2);font-size:13px;padding:30px 20px 10px}
+.backtop{display:inline-block;margin-top:8px;color:var(--blue);font-weight:600;text-decoration:none;font-size:14px}
+@media(max-width:560px){header h1{font-size:23px}main{padding:18px 14px}.sec-title{font-size:21px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Social Studies · Reading Practice</div>
+  <h1>Reading Comprehension — Exam Prep</h1>
+  <p>Practicá los dos readings del examen: <em>The Rise of the Public Sphere</em> y <em>The Seven Years' War</em>. Leé cada texto y respondé las preguntas. Hay un botón «Ver en español» si necesitás ayuda.</p>
+</header>
+
+<nav id="nav"></nav>
+
+<main id="main">
+
+<!-- ================= READING 1 ================= -->
+<section class="view" data-sec="Reading 1 · Public Sphere">
+  <div class="pill">Reading #1</div>
+  <div class="sec-title">The Rise of the Public Sphere</div>
+  <p class="sec-intro">Read the text carefully, then answer. <strong>How to read these texts:</strong> first read once for the general idea, then again looking for the answer to each question. For True/False, find the exact line in the text that proves your answer (that is the «evidence»).</p>
+
+  <div class="reading">
+    <h4>The Rise of the Public Sphere</h4>
+    <p>During the 18th century, society was split into two worlds. The first was the <strong>private sphere</strong>, which included your home and family. The second was the <strong>sphere of authority</strong>, where kings and the state held all the power. In this system, ordinary people did not have a voice in how the country was run.</p>
+    <p>Everything changed during the Enlightenment with the arrival of the <strong>public sphere</strong>. This was a new space where people gathered in coffeehouses and salons to talk about politics and society. For the first time, <strong>public opinion</strong> was born. These conversations were powerful because they gave people the strength to challenge and even change their government.</p>
+    <p>However, spreading these new ideas was dangerous. Philosophers were like the influencers of their time, but they faced heavy <strong>censorship</strong> from the state. To avoid prison, they used <strong>subversion</strong>. This meant they wrote under fake names (<strong>pseudonyms</strong>) or hid their political messages inside stories. Through underground newspapers and word of mouth, their ideas went viral and forever changed the way we think about freedom.</p>
+  </div>
+  <button class="es-btn" onclick="toggleEs(this)">🌐 Ver el texto en español</button>
+  <div class="es-box">
+    <p>Durante el siglo XVIII, la sociedad estaba dividida en dos mundos. El primero era la <b>esfera privada</b>, que incluía tu hogar y tu familia. El segundo era la <b>esfera de autoridad</b>, donde los reyes y el Estado tenían todo el poder. En este sistema, la gente común no tenía voz en cómo se gobernaba el país.</p>
+    <p>Todo cambió durante la Ilustración con la llegada de la <b>esfera pública</b>: un nuevo espacio donde la gente se reunía en cafés y salones para hablar de política y sociedad. Por primera vez nació la <b>opinión pública</b>. Esas conversaciones eran poderosas porque le daban a la gente la fuerza para cuestionar e incluso cambiar a su gobierno.</p>
+    <p>Pero difundir estas ideas era peligroso. Los filósofos eran como los <i>influencers</i> de su época, pero enfrentaban una fuerte <b>censura</b> del Estado. Para evitar la cárcel usaban la <b>subversión</b>: escribían con nombres falsos (<b>seudónimos</b>) o escondían sus mensajes políticos dentro de historias. A través de periódicos clandestinos y el boca a boca, sus ideas se volvían virales y cambiaron para siempre cómo pensamos sobre la libertad.</p>
+  </div>
+
+  <h3>Comprehension questions</h3>
+
+  <div class="ex" data-mc='{"correct":0,"good":"Correct! The sphere of authority was where the King and the state held all the power — the opposite of ordinary people having a voice.","bad":"Look at the text: the sphere of authority was where kings and the state held all the power. (B is the private sphere; C and D are wrong because ordinary people had no voice.)"}'>
+    <span class="extag">Multiple choice</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">1.</span> How was the «sphere of authority» different from the «private sphere»?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> It was the place where the King and the state held all the power.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> It was only about family life and what happened inside the home.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> It allowed ordinary citizens to share their personal opinions.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> It was a place where everyone had an equal voice in the law.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"Correct! Coffeehouses and salons were social spaces where people talked and formed public opinion.","bad":"The text says people gathered in coffeehouses and salons to talk and form public opinion — that is option C."}'>
+    <span class="extag">Multiple choice</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">2.</span> What was a primary reason for the popularity of coffeehouses and salons?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> They were the only official buildings owned by the King.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> They were used by the government to announce new taxes.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> They provided a social space to talk and form public opinion.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> They were the only places where people could buy food.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"Correct! Philosophers acted as influential figures who shared ideas with the public — «the influencers of their time».","bad":"The text compares philosophers to influencers who shared ideas with the public — option B."}'>
+    <span class="extag">Multiple choice</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">3.</span> What was the role of philosophers during the Enlightenment?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> They worked as state officials to protect the King's rules.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> They acted as influential figures who shared ideas with the public.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> They stayed in the private sphere and never talked about politics.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> They were hired by the state to stop people from talking.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":3,"good":"Correct! «Anonymous» means without showing your real name — exactly what pseudonyms (forged names) do.","bad":"A «forged name» is a fake name, so the writer stayed «anonymous» (D). The other words do not fit the meaning."}'>
+    <span class="extag">Vocabulary in context</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">4.</span> To avoid the dangers of the state, philosophers often remained __________ by using forged names.</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> Authoritative</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> Viral</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> Famous</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> Anonymous</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":3,"good":"Correct! It was dangerous because authors risked prison or having their work banned (censorship).","bad":"The text says philosophers faced censorship and risked prison — that is option D."}'>
+    <span class="extag">Multiple choice</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">5.</span> Why was the process of spreading new ideas considered a dangerous task?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> The public sphere was too small for anyone to hear them.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> Most people at the time did not know how to read stories.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> Philosophers were not allowed to visit local coffeehouses.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> Authors faced the risk of prison or having their work banned.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"Correct! Pseudonyms and fictional stories protected writers from government censorship.","bad":"They used fake names and stories to protect themselves from censorship — option C."}'>
+    <span class="extag">Multiple choice</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">6.</span> The use of pseudonyms and fictional stories was used to:</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> Help the government find the most popular writers.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> Make the ideas of philosophy easier for children to read.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> Protect writers from the consequences of government censorship.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> Ensure that only the King could understand the secret codes.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"Correct! «Impactful» fits: public opinion was powerful because it let people question the state.","bad":"The sentence needs a word meaning «powerful / with effect» → «Impactful» (A). The text says these conversations were powerful."}'>
+    <span class="extag">Vocabulary in context</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">7.</span> The growth of public opinion was _______ because it gave people the power to question the state.</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> Impactful</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> Private</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> Fictional</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> Subversive</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <h3>True or False <span style="font-size:13px;color:var(--ink2);font-weight:400">— choose, then check the evidence</span></h3>
+  <div class="note blue"><b>Tip del examen:</b> en el examen real tenés que <b>escribir la evidencia del texto</b> (no con tus palabras). Acá, después de responder, te muestro la línea exacta que sirve como evidencia. Practicá copiándola.</div>
+
+  <div class="ex" data-vf='{"answer":false,"good":"Correct — it is FALSE.","bad":"It is FALSE.","ev":"Evidence: «ordinary people did not have a voice in how the country was run.»"}'>
+    <span class="extag">True / False + evidence</span><span class="pts">1 + 2 pts</span>
+    <div class="q"><span class="qn">8.</span> In the 18th century, ordinary people helped run the country.</div>
+    <div class="vfrow">
+      <button class="vf" data-v="true">True</button>
+      <button class="vf" data-v="false">False</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-vf='{"answer":true,"good":"Correct — it is TRUE.","bad":"It is TRUE.","ev":"Evidence: «they wrote under fake names (pseudonyms) or hid their political messages inside stories.»"}'>
+    <span class="extag">True / False + evidence</span><span class="pts">1 + 2 pts</span>
+    <div class="q"><span class="qn">9.</span> Philosophers used methods like fake names and stories to hide their messages.</div>
+    <div class="vfrow">
+      <button class="vf" data-v="true">True</button>
+      <button class="vf" data-v="false">False</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ================= READING 2 ================= -->
+<section class="view" data-sec="Reading 2 · Seven Years' War">
+  <div class="pill">Reading #2</div>
+  <div class="sec-title">The Seven Years' War — primary sources</div>
+  <p class="sec-intro">Estos son <strong>fuentes primarias</strong> (textos escritos por gente de la época). Aquí no se pregunta solo «qué dice», sino <strong>qué se puede deducir</strong> (inference) y qué significan las palabras en contexto. Leé cada fragmento y respondé.</p>
+
+  <div class="reading quote">
+    <h4>Washington's Letter</h4>
+    <p>By the all-powerful dispensations of Providence, I have been protected beyond all human expectation. I had four bullets through my coat, and two horses shot under me, yet I escaped unhurt. Our poor soldiers were struck with such panic that they broke and ran like sheep before hounds. The officers behaved with bravery, but they were nearly all killed.</p>
+  </div>
+  <div class="reading quote">
+    <h4>Diary of a Soldier</h4>
+    <p>We have been marching through the thick woods for many days, and our bodies are very tired. Food is scarce now, and today we were only given a small piece of bread and some salted meat. Tomorrow, we must begin cutting down large trees to build a wooden fort to protect ourselves from the enemy. The nights are becoming very cold, and many men in our camp are falling sick.</p>
+  </div>
+  <div class="reading quote">
+    <h4>Native American Speech</h4>
+    <p>Brothers, look at this belt of wampum. It is a sign that we want to take the old chain of friendship in our hands again. The clouds have been dark over our heads for a long time because of this war, but we want to clear the sky. Let us bury the hatchet deep in the ground so that our children can live in peace together.</p>
+  </div>
+  <button class="es-btn" onclick="toggleEs(this)">🌐 Ver los textos en español</button>
+  <div class="es-box">
+    <p><b>Carta de Washington:</b> «Por las disposiciones todopoderosas de la Providencia, he sido protegido más allá de toda expectativa humana. Tuve cuatro balas en mi abrigo y dos caballos cayeron bajo mi mando, pero escapé ileso. Nuestros pobres soldados sintieron tal pánico que se quebraron y huyeron como ovejas ante los perros de caza. Los oficiales se comportaron con valentía, pero casi todos murieron.»</p>
+    <p><b>Diario de un soldado:</b> «Llevamos muchos días marchando por el bosque espeso y nuestros cuerpos están muy cansados. La comida ahora escasea, y hoy solo nos dieron un pedacito de pan y algo de carne salada. Mañana debemos empezar a cortar árboles grandes para construir un fuerte de madera que nos proteja del enemigo. Las noches son cada vez más frías y muchos hombres del campamento se enferman.»</p>
+    <p><b>Discurso nativo americano:</b> «Hermanos, miren este cinturón de wampum. Es señal de que queremos volver a tomar en nuestras manos la vieja cadena de amistad. Las nubes han estado oscuras sobre nuestras cabezas mucho tiempo por esta guerra, pero queremos despejar el cielo. Enterremos el hacha bien profundo para que nuestros hijos puedan vivir en paz.»</p>
+  </div>
+
+  <h3>Comprehension &amp; inference</h3>
+
+  <div class="ex" data-mc='{"correct":0,"good":"Correct! He was disappointed by the soldiers (they ran in panic) but proud of the officers (they behaved with bravery).","bad":"Washington says the soldiers ran in panic «like sheep», but the officers «behaved with bravery» — so A: disappointed by the soldiers, proud of the officers."}'>
+    <span class="extag">Inference</span><span class="pts">2.5 pts</span>
+    <div class="q"><span class="qn">1.</span> How do you think Washington felt about the soldiers compared to the officers?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> Disappointed by the soldiers' fear but proud of the officers' courage.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> Angry at the soldiers' laziness but pleased with the officers' speed.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> Surprised by the soldiers' energy but worried about the officers' health.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> Confused by the soldiers' choices but amazed by the officers' weapons.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":2,"good":"Correct! Because food is scarce, they were only given a small piece of food and supplies.","bad":"The direct effect of scarce food is that they «were only given a small piece of bread and some salted meat» — option C."}'>
+    <span class="extag">Cause &amp; effect</span><span class="pts">2.5 pts</span>
+    <div class="q"><span class="qn">2.</span> The diary says food is «scarce». What evidence shows the direct effect of this on the soldiers?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> The soldiers have started hunting wild animals in the woods.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> The soldiers are refusing to march until more supplies arrive.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> The soldiers are only given a small piece of food and supplies.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> The soldiers have to cross frozen rivers to find food warehouses.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"Correct! They cut trees to build a fort to keep themselves safe from the enemy.","bad":"The diary says they cut trees «to build a wooden fort to protect ourselves from the enemy» — option B."}'>
+    <span class="extag">Multiple choice</span><span class="pts">2.5 pts</span>
+    <div class="q"><span class="qn">3.</span> What is the main reason the soldiers must start cutting down trees?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> To clear a wide path so they can march faster.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> To keep themselves safe and protected from the enemy.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> To build a warm building for the men who are falling sick.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> To create a safe storage place for their remaining supplies.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":3,"good":"Correct! Natural symbols (clouds, sky) make the ideas easier to understand and picture.","bad":"They used images like «clouds» and «clear the sky» to make their message easier to understand and visualize — option D."}'>
+    <span class="extag">Inference</span><span class="pts">2.5 pts</span>
+    <div class="q"><span class="qn">4.</span> Why did Native leaders use natural symbols like «clouds» and «the sky»?</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> To prove they had better knowledge of the local geography.</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> To explain how the daily weather affected their travel plans.</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> To show they cared more about farming than about ending the war.</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> To make their ideas easier to understand and visualize.</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":3,"good":"Correct! «Scarce» means there is very little of something — the perfect fit for water in a dry village.","bad":"«Scarce» means very little / hard to find. Fresh water became scarce in the dry village — option D."}'>
+    <span class="extag">Vocabulary in context</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">5.</span> «During the dry summer months, fresh water became extremely __________ in the desert village.»</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> wampum</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> dirty</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> fort</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> scarce</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":0,"good":"Correct! «Panic» is a sudden feeling of fear — like the wave that swept through the audience.","bad":"A sudden feeling of fear is «panic» (A). It is the same word used for the soldiers who «were struck with such panic»."}'>
+    <span class="extag">Vocabulary in context</span><span class="pts">2 pts</span>
+    <div class="q"><span class="qn">6.</span> «When the sudden fire alarm rang out, a wave of __________ swept through the audience.»</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> panic</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> scarce</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> hatchet</span></button>
+      <button class="opt" data-i="3"><span class="mk"></span><span><span class="lt">D)</span> hounds</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <h3>True or False <span style="font-size:13px;color:var(--ink2);font-weight:400">— choose, then check the evidence</span></h3>
+
+  <div class="ex" data-vf='{"answer":false,"good":"Correct — it is FALSE.","bad":"It is FALSE.","ev":"Evidence: «By the all-powerful dispensations of Providence, I have been protected…» — he credits Providence (God), not human planning."}'>
+    <span class="extag">True / False + evidence</span><span class="pts">1 + 2 pts</span>
+    <div class="q"><span class="qn">7.</span> George Washington believed his survival was due entirely to human planning and preparation.</div>
+    <div class="vfrow">
+      <button class="vf" data-v="true">True</button>
+      <button class="vf" data-v="false">False</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-vf='{"answer":false,"good":"Correct — it is FALSE.","bad":"It is FALSE.","ev":"Evidence: «we want to take the old chain of friendship in our hands again» — the friendship already existed before; they want to renew it, not create a new one."}'>
+    <span class="extag">True / False + evidence</span><span class="pts">1 + 2 pts</span>
+    <div class="q"><span class="qn">8.</span> The Native leaders want to establish a new relationship that never existed before.</div>
+    <div class="vfrow">
+      <button class="vf" data-v="true">True</button>
+      <button class="vf" data-v="false">False</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ================= KEY VOCABULARY ================= -->
+<section class="view" data-sec="Key vocabulary">
+  <div class="pill">Vocabulary</div>
+  <div class="sec-title">Key words for both readings</div>
+  <p class="sec-intro">Estas palabras aparecen en los textos y en las preguntas de vocabulario. Saber su significado te ayuda a contestar más rápido.</p>
+
+  <h3>Public Sphere</h3>
+  <div class="voc">
+    <div><span class="w">public sphere</span><div class="t">esfera pública: espacio donde la sociedad discute temas comunes</div></div>
+    <div><span class="w">private sphere</span><div class="t">esfera privada: el hogar y la familia</div></div>
+    <div><span class="w">sphere of authority</span><div class="t">esfera de autoridad: el rey y el Estado</div></div>
+    <div><span class="w">public opinion</span><div class="t">opinión pública: lo que piensa la gente</div></div>
+    <div><span class="w">censorship</span><div class="t">censura: prohibir o controlar lo que se publica</div></div>
+    <div><span class="w">subversion</span><div class="t">subversión: actuar en secreto contra el poder</div></div>
+    <div><span class="w">pseudonym</span><div class="t">seudónimo: nombre falso</div></div>
+    <div><span class="w">anonymous</span><div class="t">anónimo: sin mostrar el nombre real</div></div>
+    <div><span class="w">to go viral</span><div class="t">volverse viral: difundirse muy rápido</div></div>
+    <div><span class="w">Enlightenment</span><div class="t">la Ilustración: movimiento de ideas del siglo XVIII</div></div>
+  </div>
+
+  <h3>Seven Years' War</h3>
+  <div class="voc">
+    <div><span class="w">scarce</span><div class="t">escaso: muy poco, difícil de conseguir</div></div>
+    <div><span class="w">panic</span><div class="t">pánico: miedo repentino e intenso</div></div>
+    <div><span class="w">fort</span><div class="t">fuerte: construcción militar de defensa</div></div>
+    <div><span class="w">hatchet</span><div class="t">hacha (pequeña). «Bury the hatchet» = hacer las paces</div></div>
+    <div><span class="w">wampum</span><div class="t">wampum: cuentas usadas por los nativos como símbolo/acuerdo</div></div>
+    <div><span class="w">hounds</span><div class="t">perros de caza</div></div>
+    <div><span class="w">bravery</span><div class="t">valentía, coraje</div></div>
+    <div><span class="w">Providence</span><div class="t">la Providencia: Dios / el destino divino</div></div>
+    <div><span class="w">to surrender</span><div class="t">rendirse</div></div>
+    <div><span class="w">alliance</span><div class="t">alianza: acuerdo entre grupos para apoyarse</div></div>
+  </div>
+
+  <div class="ex">
+    <span class="extag">Match · drag &amp; drop</span>
+    <div class="q">Sort each word into the correct reading topic. (Arrastrá o tocá la palabra y luego la caja.)</div>
+    <div class="dd-source" id="dd-voc">
+      <div class="chip" draggable="true" data-z="ps">censorship</div>
+      <div class="chip" draggable="true" data-z="war">hatchet</div>
+      <div class="chip" draggable="true" data-z="ps">pseudonym</div>
+      <div class="chip" draggable="true" data-z="war">scarce</div>
+      <div class="chip" draggable="true" data-z="ps">public opinion</div>
+      <div class="chip" draggable="true" data-z="war">wampum</div>
+    </div>
+    <div class="dd-zones">
+      <div class="zone" data-zone="ps"><h5>Public Sphere</h5><div class="drops"></div></div>
+      <div class="zone" data-zone="war"><h5>Seven Years' War</h5><div class="drops"></div></div>
+    </div>
+    <button class="btn" onclick="checkDD('dd-voc',this)">Check</button>
+    <div class="fb"></div>
+  </div>
+
+  <div class="ex" data-mc='{"correct":1,"good":"Correct! «Bury the hatchet» is an expression that means to make peace / end a conflict.","bad":"«Bury the hatchet» means to make peace. The Native speaker wants to end the war — option B."}'>
+    <span class="extag">Expression</span>
+    <div class="q"><span class="qn">1.</span> In the Native speech, «bury the hatchet» means…</div>
+    <div class="opts">
+      <button class="opt" data-i="0"><span class="mk"></span><span><span class="lt">A)</span> to hide a weapon for a surprise attack</span></button>
+      <button class="opt" data-i="1"><span class="mk"></span><span><span class="lt">B)</span> to make peace and end the conflict</span></button>
+      <button class="opt" data-i="2"><span class="mk"></span><span><span class="lt">C)</span> to start digging for treasure</span></button>
+    </div>
+    <div class="fb"></div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="view" data-sec="★ Mixed quiz">
+  <div class="pill" style="background:var(--bg);color:#f4efe3">Self-test</div>
+  <div class="sec-title">Mixed quiz</div>
+  <p class="sec-intro">12 preguntas de los dos readings. Respondé todas y tocá «Get my grade» para ver tu nota sobre 20 con la explicación de cada una.</p>
+
+  <div class="progress"><div id="qbar"></div></div>
+  <p id="qcount" style="font-size:13px;color:var(--ink2);margin:0 0 4px">0 / 12 answered</p>
+  <div id="quizbox"></div>
+  <button class="btn" id="quizbtn" onclick="gradeQuiz()" style="width:100%;padding:13px;font-size:16px">Get my grade</button>
+  <div class="scorebox" id="scorebox">
+    <div class="num" id="scoreNum">–</div>
+    <div class="lbl">out of 20</div>
+    <div class="msg" id="scoreMsg"></div>
+    <button class="btn ghost" onclick="resetQuiz()" style="margin-top:16px">Try again</button>
+  </div>
+  <footer>Good luck on your exam! 📖<br><a class="backtop" href="#" onclick="show(0);return false;">↑ Volver al inicio</a></footer>
+</section>
+
+</main>
+<div id="more"></div>
+
+<script>
+function toggleEs(btn){const box=btn.nextElementSibling;const open=box.classList.toggle('show');btn.textContent=open?'🌐 Ocultar español':(btn.textContent.includes('texto')?'🌐 Ver el texto en español':'🌐 Ver en español');}
+const nav=document.getElementById('nav');
+function buildNav(){nav.innerHTML='';document.querySelectorAll('section.view').forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.dataset.sec;b.onclick=()=>show(i);nav.appendChild(b);});}
+function show(i){const all=[...document.querySelectorAll('section.view')];all.forEach((s,k)=>s.classList.toggle('show',k===i));[...nav.children].forEach((b,k)=>b.classList.toggle('active',k===i));window.scrollTo({top:0,behavior:'smooth'});}
+function wireMC(root=document){root.querySelectorAll('.ex[data-mc]').forEach(ex=>{if(ex.dataset.wired)return;ex.dataset.wired=1;const cfg=JSON.parse(ex.dataset.mc);const fb=ex.querySelector('.fb');ex.querySelectorAll('.opt').forEach(opt=>{opt.onclick=()=>{const i=+opt.dataset.i;ex.querySelectorAll('.opt').forEach(o=>o.classList.add('disabled'));if(i===cfg.correct){opt.classList.add('correct');opt.querySelector('.mk').textContent='✓';fb.className='fb show good';fb.innerHTML='<b>Correct!</b> '+cfg.good;}else{opt.classList.add('wrong');opt.querySelector('.mk').textContent='✗';const c=ex.querySelector('.opt[data-i="'+cfg.correct+'"]');c.classList.add('correct');c.querySelector('.mk').textContent='✓';fb.className='fb show bad';fb.innerHTML='<b>Not quite.</b> '+cfg.bad;}};});});}
+function wireVF(root=document){root.querySelectorAll('.ex[data-vf]').forEach(ex=>{if(ex.dataset.wired)return;ex.dataset.wired=1;const cfg=JSON.parse(ex.dataset.vf);const fb=ex.querySelector('.fb');ex.querySelectorAll('.vf').forEach(btn=>{btn.onclick=()=>{const v=btn.dataset.v==='true';ex.querySelectorAll('.vf').forEach(b=>b.classList.add('disabled'));const ev=cfg.ev?'<span class="ev">'+cfg.ev+'</span>':'';if(v===cfg.answer){btn.classList.add('correct');fb.className='fb show good';fb.innerHTML='<b>'+cfg.good+'</b>'+ev;}else{btn.classList.add('wrong');fb.className='fb show bad';fb.innerHTML='<b>'+cfg.bad+'</b>'+ev;ex.querySelector('.vf[data-v="'+cfg.answer+'"]').classList.add('correct');}};});});}
+let picked=null;
+function wireDD(root=document){root.querySelectorAll('.chip').forEach(chip=>{if(chip.dataset.wired)return;chip.dataset.wired=1;chip.addEventListener('dragstart',e=>{picked=chip;e.dataTransfer.setData('text','x')});chip.addEventListener('click',()=>{if(picked===chip){chip.classList.remove('picked');picked=null;return;}document.querySelectorAll('.chip.picked').forEach(c=>c.classList.remove('picked'));picked=chip;chip.classList.add('picked');});});root.querySelectorAll('.zone').forEach(z=>{if(z.dataset.wired)return;z.dataset.wired=1;z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});z.addEventListener('dragleave',()=>z.classList.remove('over'));z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');if(picked)z.querySelector('.drops').appendChild(picked);picked=null});z.addEventListener('click',()=>{if(picked){z.querySelector('.drops').appendChild(picked);picked.classList.remove('picked');picked=null;}});});}
+function checkDD(srcId,btn){const ex=btn.closest('.ex');const fb=ex.querySelector('.fb');let total=0,ok=0;ex.querySelectorAll('.zone').forEach(z=>{const zone=z.dataset.zone;z.querySelectorAll('.chip').forEach(ch=>{total++;if(ch.dataset.z===zone){ch.classList.add('correct');ok++;}else ch.classList.add('wrong');});});const left=document.getElementById(srcId).querySelectorAll('.chip').length;if(left>0){fb.className='fb show bad';fb.innerHTML='<b>Some items are missing.</b> Place every word in a box before checking.';ex.querySelectorAll('.chip').forEach(c=>c.classList.remove('correct','wrong'));return;}if(ok===total){fb.className='fb show good';fb.innerHTML='<b>Perfect!</b> All '+total+' correctly sorted.';}else{fb.className='fb show bad';fb.innerHTML='<b>'+ok+'/'+total+' correct.</b> The red ones go in another box.';}btn.disabled=true;}
+
+/* ---------- QUIZ ---------- */
+const QUIZ=[
+  {q:'The «sphere of authority» was the place where…',o:['ordinary people made the laws','the King and the state held all the power','families discussed daily life'],c:1,e:'The state and the king held all the power; ordinary people had no voice.'},
+  {q:'Where did people gather to form public opinion?',o:['in churches and castles','in coffeehouses and salons','in royal palaces'],c:1,e:'Coffeehouses and salons were the social spaces of the public sphere.'},
+  {q:'Philosophers of the Enlightenment were compared to…',o:['the influencers of their time','soldiers','kings'],c:0,e:'They shared ideas with the public, like influencers.'},
+  {q:'A «pseudonym» is…',o:['a public speech','a fake name','a type of newspaper'],c:1,e:'A pseudonym is a false name used to stay anonymous.'},
+  {q:'Writers used pseudonyms and fictional stories to…',o:['become rich quickly','protect themselves from censorship','please the king'],c:1,e:'They protected themselves from government censorship.'},
+  {q:'«Anonymous» means…',o:['very famous','without showing your real name','very powerful'],c:1,e:'Anonymous = without revealing your identity.'},
+  {q:'In Washington\u2019s letter, the soldiers…',o:['fought bravely to the end','ran away in panic','refused to fight'],c:1,e:'They «broke and ran like sheep before hounds» — they panicked.'},
+  {q:'Washington credited his survival to…',o:['his own careful planning','Providence (God / divine protection)','the strength of his soldiers'],c:1,e:'«By the all-powerful dispensations of Providence…»'},
+  {q:'Why were the soldiers cutting down trees?',o:['to build a wooden fort for protection','to make a faster path','to start a fire for warmth'],c:0,e:'To build a fort to protect themselves from the enemy.'},
+  {q:'«Scarce» means…',o:['plenty / a lot','very little / hard to find','dirty'],c:1,e:'Scarce = there is very little of something.'},
+  {q:'«Bury the hatchet» means…',o:['to prepare for war','to make peace','to dig for gold'],c:1,e:'It is an expression meaning to make peace.'},
+  {q:'The Native leaders wanted to…',o:['renew an old friendship and make peace','create a brand-new alliance never seen before','start a new war'],c:0,e:'They want to «take the old chain of friendship in our hands again».'}
+];
+let quizAns={};
+function buildQuiz(){
+  const box=document.getElementById('quizbox');box.innerHTML='';
+  QUIZ.forEach((item,qi)=>{
+    const d=document.createElement('div');d.className='quiz-q';
+    let html='<div class="q"><span class="qn">'+(qi+1)+'.</span> '+item.q+'</div><div class="opts">';
+    item.o.forEach((op,oi)=>{html+='<button class="opt" data-q="'+qi+'" data-o="'+oi+'"><span class="mk"></span><span>'+op+'</span></button>';});
+    html+='</div><div class="fb"></div>';d.innerHTML=html;box.appendChild(d);
+  });
+  box.querySelectorAll('.opt').forEach(o=>{o.onclick=()=>{const qi=+o.dataset.q;o.parentElement.querySelectorAll('.opt').forEach(x=>{x.style.outline='';x.querySelector('.mk').textContent='';});o.style.outline='2px solid var(--blue)';o.querySelector('.mk').textContent='•';quizAns[qi]=+o.dataset.o;updateQuizCount();};});
+}
+function updateQuizCount(){const n=Object.keys(quizAns).length;document.getElementById('qcount').textContent=n+' / '+QUIZ.length+' answered';document.getElementById('qbar').style.width=(n/QUIZ.length*100)+'%';}
+function gradeQuiz(){
+  if(Object.keys(quizAns).length<QUIZ.length){alert('You still have unanswered questions ('+Object.keys(quizAns).length+'/'+QUIZ.length+').');return;}
+  let correct=0;
+  QUIZ.forEach((item,qi)=>{
+    const qd=document.querySelectorAll('.quiz-q')[qi];const fb=qd.querySelector('.fb');
+    qd.querySelectorAll('.opt').forEach(o=>{o.classList.add('disabled');o.style.outline='';});
+    const chosen=quizAns[qi];const right=qd.querySelector('.opt[data-o="'+item.c+'"]');
+    if(chosen===item.c){correct++;right.classList.add('correct');right.querySelector('.mk').textContent='✓';fb.className='fb show good';fb.innerHTML='<b>Correct!</b> '+item.e;}
+    else{const w=qd.querySelector('.opt[data-o="'+chosen+'"]');w.classList.add('wrong');w.querySelector('.mk').textContent='✗';right.classList.add('correct');right.querySelector('.mk').textContent='✓';fb.className='fb show bad';fb.innerHTML='<b>Incorrect.</b> '+item.e;}
+  });
+  const nota=Math.round(correct/QUIZ.length*20);
+  const sb=document.getElementById('scorebox');sb.classList.add('show');
+  document.getElementById('scoreNum').textContent=nota;
+  let msg;
+  if(nota>=18)msg='Excellent! You are ready for the exam. 🎉';
+  else if(nota>=14)msg='Good job! You got '+correct+'/'+QUIZ.length+'. Review the ones you missed.';
+  else if(nota>=10)msg='Not bad, but keep practising. '+correct+'/'+QUIZ.length+'.';
+  else msg='Re-read the texts and try again. '+correct+'/'+QUIZ.length+'.';
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('quizbtn').style.display='none';
+  sb.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetQuiz(){quizAns={};buildQuiz();updateQuizCount();document.getElementById('scorebox').classList.remove('show');document.getElementById('quizbtn').style.display='';document.querySelector('[data-sec="★ Mixed quiz"]').scrollIntoView({behavior:'smooth'});}
+
+buildNav();show(0);
+buildQuiz();
+wireMC();wireVF();wireDD();
+</script>
+</body>
+</html>

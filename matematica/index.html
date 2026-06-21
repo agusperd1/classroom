@@ -293,6 +293,12 @@
     </div>
     <div><span class="num" style="color:var(--teal)">03</span><h3>Valor absoluto</h3><p>Distancia, propiedades y ecuaciones.</p></div>
   </button>
+  <button class="idx-card" onclick="jump('s-comb')">
+    <div class="idx-ic" style="background:var(--red-soft);color:var(--red-deep)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h4M6 5v4"/><line x1="10" y1="17" x2="16" y2="17"/><path d="M19 6l-3 3M16 6l3 3"/><circle cx="13" cy="7" r="0.5" fill="currentColor"/></svg>
+    </div>
+    <div><span class="num" style="color:var(--red)">04</span><h3>Operaciones combinadas</h3><p>El orden correcto: ( ), [ ], { } y jerarquía.</p></div>
+  </button>
   <button class="idx-card" onclick="jump('s-final')" style="border-color:var(--amber);">
     <div class="idx-ic" style="background:var(--amber-soft);color:var(--amber-deep)">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 4H4v2a3 3 0 0 0 3 3M17 4h3v2a3 3 0 0 1-3 3"/></svg>
@@ -480,6 +486,18 @@
       <div class="fb" id="pfill"></div>
     </div>
 
+    <div class="card">
+      <h4>Ejercicio modelo · juntando varias reglas</h4>
+      <p>En la evaluación pueden aparecer fracciones grandes con potencias arriba y abajo. Se resuelven <b>aplicando las reglas de a una</b>. Mirá este modelo:</p>
+      <div class="eq small" style="margin-bottom:2px">(2<sup>3</sup> · 2<sup>4</sup>) ÷ 2<sup>5</sup></div>
+      <table class="tbl">
+        <tr><td class="k">1. Arriba (multiplicación)</td><td class="v">2<sup>3</sup> · 2<sup>4</sup> = 2<sup>7</sup> &nbsp;(se suman: 3+4)</td></tr>
+        <tr><td class="k">2. División</td><td class="v">2<sup>7</sup> ÷ 2<sup>5</sup> = 2<sup>2</sup> &nbsp;(se restan: 7−5)</td></tr>
+        <tr><td class="k">3. Resultado</td><td class="v">2<sup>2</sup> = <b>4</b></td></tr>
+      </table>
+      <div class="note tip"><span class="ni">💡</span><div>Truco: cuando la base es la misma en toda la fracción, sumás los exponentes de arriba, sumás los de abajo, y al final restás (arriba menos abajo).</div></div>
+    </div>
+
     <div class="ex" id="quiz-pow"></div>
     <div class="toplink"><a href="#top" onclick="goTop();return false">↑ Volver al índice</a></div>
   </section>
@@ -560,7 +578,120 @@
       <div class="fb" id="afill"></div>
     </div>
 
+    <div class="card">
+      <h4>Operaciones con varios valores absolutos</h4>
+      <p>A veces hay que <b>sumar o restar</b> varios valores absolutos. La regla es simple: <b>primero resolvés cada |&nbsp;|</b> por separado (cada uno da un número positivo), y <b>recién después</b> sumás o restás.</p>
+      <div class="eq small">|−2| + |−4| − |−8|</div>
+      <div style="text-align:center;color:var(--soft);font-family:'Caveat',cursive;font-size:1.2rem">resuelvo cada barra ↓</div>
+      <div class="eq small">2 + 4 − 8 = <b>−2</b></div>
+      <div class="note warn"><span class="ni">⚠️</span><div>Ojo: el resultado <b>final</b> sí puede ser negativo. Lo que nunca es negativo es <b>cada valor absoluto por separado</b>. Acá 2 + 4 − 8 = −2, y está bien.</div></div>
+      <div class="note tip"><span class="ni">💡</span><div>Si adentro de la barra hay una cuenta, resolvela primero: |5 + 3| = |8| = 8, y |−9 + 6| = |−3| = 3.</div></div>
+    </div>
+
+    <div class="ex">
+      <span class="extag">ahora vos · completá</span>
+      <div class="q">Resolvé cada valor absoluto y después la cuenta:</div>
+      <div style="display:flex;flex-direction:column;gap:13px">
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">|−7| + |−1| = </span><input class="blank" id="va1" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('vah1').style.display='block'">pista</button><div class="hint" id="vah1">|−7| = 7 y |−1| = 1. Después: 7 + 1 = 8.</div></div>
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">|−3| + |−5| − |−6| = </span><input class="blank" id="va2" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('vah2').style.display='block'">pista</button><div class="hint" id="vah2">3 + 5 − 6. Primero 3 + 5 = 8, luego 8 − 6 = 2.</div></div>
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">|5 + 3| − |−4 + 6| = </span><input class="blank" id="va3" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('vah3').style.display='block'">pista</button><div class="hint" id="vah3">|5+3| = |8| = 8 y |−4+6| = |2| = 2. Después: 8 − 2 = 6.</div></div>
+      </div>
+      <div style="margin-top:14px"><button class="btn" onclick="checkVA()">Revisar</button></div>
+      <div class="fb" id="vafill"></div>
+    </div>
+
     <div class="ex" id="quiz-abs"></div>
+    <div class="toplink"><a href="#top" onclick="goTop();return false">↑ Volver al índice</a></div>
+  </section>
+
+  <!-- ============ OPERACIONES COMBINADAS ============ -->
+  <section class="topic" id="s-comb">
+    <div class="topic-head">
+      <div class="badge" style="background:var(--red-soft);color:var(--red-deep)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h4M6 5v4"/><line x1="10" y1="17" x2="16" y2="17"/><path d="M19 6l-3 3M16 6l3 3"/></svg>
+      </div>
+      <div><span class="kicker">tema 04</span><h2>Operaciones combinadas</h2></div>
+    </div>
+
+    <div class="card">
+      <h4>¿Qué son?</h4>
+      <p class="lead">Son cuentas que mezclan <b>varias operaciones</b> a la vez (sumas, restas, multiplicaciones, divisiones, potencias) y muchas veces tienen <b>signos de agrupación</b>: paréntesis ( ), corchetes [ ] y llaves { }.</p>
+      <p>El secreto es uno solo: <b>hacer las cosas en el orden correcto</b>. Si las hacés en cualquier orden, te da mal.</p>
+    </div>
+
+    <div class="card">
+      <h4>El orden de los signos de agrupación</h4>
+      <p>Cuando hay paréntesis, corchetes y llaves, se resuelven <b>de adentro hacia afuera</b>:</p>
+      <div class="eq">( ) &nbsp;→&nbsp; [ ] &nbsp;→&nbsp; { }</div>
+      <div class="note tip"><span class="ni">💡</span><div>Primero lo de los <b>paréntesis</b> (lo más adentro), después los <b>corchetes</b>, y al final las <b>llaves</b>. Como pelar una cebolla: de adentro hacia afuera.</div></div>
+    </div>
+
+    <div class="card">
+      <h4>La jerarquía: qué va primero dentro de cada grupo</h4>
+      <p>Dentro de un mismo grupo (o cuando no hay signos de agrupación), el orden es:</p>
+      <table class="tbl">
+        <tr><td class="k">1.º</td><td>Potencias y raíces</td></tr>
+        <tr><td class="k">2.º</td><td>Multiplicaciones y divisiones (de izquierda a derecha)</td></tr>
+        <tr><td class="k">3.º</td><td>Sumas y restas (de izquierda a derecha)</td></tr>
+      </table>
+      <div class="note warn"><span class="ni">⚠️</span><div>La multiplicación y la división <b>van antes</b> que la suma y la resta. Por eso 2 + 3 · 4 = 2 + 12 = <b>14</b>, y no 20.</div></div>
+    </div>
+
+    <div class="card">
+      <h4>Ejemplo paso a paso</h4>
+      <div class="eq small" style="margin-bottom:4px">6 + 2 · [ 8 − (3 + 1) ]</div>
+      <table class="tbl">
+        <tr><td class="k">1. Paréntesis</td><td class="v">(3 + 1) = 4 &nbsp;→&nbsp; 6 + 2 · [ 8 − 4 ]</td></tr>
+        <tr><td class="k">2. Corchete</td><td class="v">[ 8 − 4 ] = 4 &nbsp;→&nbsp; 6 + 2 · 4</td></tr>
+        <tr><td class="k">3. Multiplicación</td><td class="v">2 · 4 = 8 &nbsp;→&nbsp; 6 + 8</td></tr>
+        <tr><td class="k">4. Suma</td><td class="v">6 + 8 = <b>14</b></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h4>Cuidado con los negativos y las potencias</h4>
+      <p>Si dentro de un grupo hay una potencia o un número negativo, resolvelos respetando la jerarquía:</p>
+      <div class="eq small">−(−3<sup>2</sup> + 10) = −(−9 + 10) = −(1) = <b>−1</b></div>
+      <div class="note tip"><span class="ni">💡</span><div>Acá −3<sup>2</sup> = −9 (primero la potencia). Después −9 + 10 = 1. Y el signo de afuera lo cambia a −1.</div></div>
+    </div>
+
+    <!-- Ejercicio guiado: ¿qué va primero? -->
+    <div class="ex">
+      <span class="extag">¿qué hago primero?</span>
+      <div class="q">En la cuenta &nbsp;<span style="font-family:'Fraunces',serif">5 + 6 · [ 2 + (4 − 1) ]</span>&nbsp; ¿cuál es el <b>primer</b> paso?</div>
+      <div>
+        <button class="opt" onclick="pick(this,true,'¡Exacto! Se empieza por lo más adentro: el paréntesis (4 − 1) = 3.','cg1')">Resolver el paréntesis (4 − 1)</button>
+        <button class="opt" onclick="pick(this,false,'Todavía no. La multiplicación se hace después de resolver los grupos. Lo primero es el paréntesis más interno: (4 − 1).','cg1')">Multiplicar 6 · 2</button>
+        <button class="opt" onclick="pick(this,false,'Todavía no. La suma de afuera es lo último. Primero hay que resolver lo de adentro: el paréntesis (4 − 1).','cg1')">Sumar 5 + 6</button>
+      </div>
+      <div class="fb" id="cg1"></div>
+    </div>
+
+    <!-- Ejercicio guiado: jerarquía sin paréntesis -->
+    <div class="ex">
+      <span class="extag">jerarquía · sin agrupación</span>
+      <div class="q">¿Cuánto vale &nbsp;<span style="font-family:'Fraunces',serif">10 − 2 · 3</span>?</div>
+      <div>
+        <button class="opt" onclick="pick(this,true,'¡Bien! La multiplicación va primero: 2 · 3 = 6. Después 10 − 6 = 4.','cg2')">4 &nbsp;(primero 2·3 = 6, luego 10 − 6)</button>
+        <button class="opt" onclick="pick(this,false,'Ojo: no se resuelve de izquierda a derecha sin más. La multiplicación va antes que la resta: 2·3 = 6, y 10 − 6 = 4.','cg2')">24 &nbsp;(primero 10 − 2, luego ·3)</button>
+      </div>
+      <div class="fb" id="cg2"></div>
+    </div>
+
+    <!-- Ejercicio completar paso a paso -->
+    <div class="ex">
+      <span class="extag">resolvé paso a paso · completá</span>
+      <div class="q">Vamos juntos con &nbsp;<span style="font-family:'Fraunces',serif">4 + 3 · (10 − 6)</span>. Completá cada paso:</div>
+      <div style="display:flex;flex-direction:column;gap:13px">
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">1) El paréntesis (10 − 6) = </span><input class="blank" id="ci1" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('cih1').style.display='block'">pista</button><div class="hint" id="cih1">10 − 6 = 4.</div></div>
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">2) Ahora 3 · 4 = </span><input class="blank" id="ci2" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('cih2').style.display='block'">pista</button><div class="hint" id="cih2">3 · 4 = 12 (la multiplicación va antes que la suma).</div></div>
+        <div><span style="font-family:'Fraunces',serif;font-size:1.1rem">3) Por último 4 + 12 = </span><input class="blank" id="ci3" placeholder="?"> <button class="hintbtn" onclick="document.getElementById('cih3').style.display='block'">pista</button><div class="hint" id="cih3">4 + 12 = 16. ¡Ese es el resultado final!</div></div>
+      </div>
+      <div style="margin-top:14px"><button class="btn" onclick="checkComb()">Revisar</button></div>
+      <div class="fb" id="cfill"></div>
+    </div>
+
+    <div class="ex" id="quiz-comb"></div>
     <div class="toplink"><a href="#top" onclick="goTop();return false">↑ Volver al índice</a></div>
   </section>
 
@@ -634,6 +765,8 @@
   window.checkRound=function(){ checkInputs([{id:'ri1',ans:'20'},{id:'ri2',ans:'60'},{id:'ri3',ans:'100'}],'rfill','¡Perfectas las tres! 24≈20, 57≈60, 95≈100.'); };
   window.checkPow=function(){ checkInputs([{id:'pi1',ans:'5'},{id:'pi2',ans:'6'},{id:'pi3',ans:'12'}],'pfill','¡Genial! Sumaste (5), restaste (6) y multiplicaste (12) los exponentes correctamente.'); };
   window.checkAbs=function(){ checkInputs([{id:'ai1',ans:'7'}],'afill','¡Correcto! x = 7, el resultado del Caso 1.'); };
+  window.checkVA=function(){ checkInputs([{id:'va1',ans:'8'},{id:'va2',ans:'2'},{id:'va3',ans:'6'}],'vafill','¡Muy bien! Resolviste cada barra primero y después la cuenta: 8, 2 y 6.'); };
+  window.checkComb=function(){ checkInputs([{id:'ci1',ans:'4'},{id:'ci2',ans:'12'},{id:'ci3',ans:'16'}],'cfill','¡Perfecto! Seguiste el orden correcto: paréntesis (4), multiplicación (12) y suma (16).'); };
 
   // ---------- QUIZZES ----------
   const quizzes = {
@@ -659,7 +792,18 @@
       {q:'La ecuación |x + 1| = -7...',o:[['No tiene solución',1],['Tiene una solución',0],['x = -8',0]],e:'Da -7 (negativo). Un valor absoluto nunca da negativo → no tiene solución.'},
       {q:'En |x − 3| = 5, el Caso 1 (positivo) es...',o:[['x − 3 = 5',1],['x − 3 = -5',0],['x + 3 = 5',0]],e:'El Caso 1 toma el lado positivo tal cual: x − 3 = 5 (x = 8).'},
       {q:'En |x − 3| = 5, el Caso 2 (negativo) es...',o:[['x − 3 = -5',1],['x − 3 = 5',0],['x − 3 = 0',0]],e:'El Caso 2 pone el lado derecho en negativo: x − 3 = -5 (x = -2).'},
-      {q:'¿Por qué hacemos la comprobación?',o:[['Para descartar soluciones falsas',1],['Para que sea más largo',0],['No hace falta nunca',0]],e:'Verifica el resultado en la ecuación original y descarta los que no sirven.'}
+      {q:'¿Por qué hacemos la comprobación?',o:[['Para descartar soluciones falsas',1],['Para que sea más largo',0],['No hace falta nunca',0]],e:'Verifica el resultado en la ecuación original y descarta los que no sirven.'},
+      {q:'¿Cuánto vale |−2| + |−4| − |−8|?',o:[['−2',1],['14',0],['2',0]],e:'Cada barra primero: 2 + 4 − 8. Luego 6 − 8 = −2. El final sí puede ser negativo.'},
+      {q:'¿Cuánto vale |5 + 3|?',o:[['8',1],['2',0],['−8',0]],e:'Primero la cuenta de adentro: 5 + 3 = 8. Y |8| = 8.'}
+    ]},
+    comb:{ el:'quiz-comb', title:'Mini-prueba · Operaciones combinadas', qs:[
+      {q:'¿En qué orden se resuelven los signos de agrupación?',o:[['Paréntesis → corchetes → llaves',1],['Llaves → corchetes → paréntesis',0],['Todos a la vez',0]],e:'De adentro hacia afuera: primero ( ), después [ ], al final { }.'},
+      {q:'¿Cuánto vale 2 + 3 · 4?',o:[['14',1],['20',0],['9',0]],e:'La multiplicación va primero: 3 · 4 = 12. Después 2 + 12 = 14.'},
+      {q:'¿Cuánto vale 10 − 2 · 3?',o:[['4',1],['24',0],['8',0]],e:'Primero 2 · 3 = 6. Después 10 − 6 = 4.'},
+      {q:'En 5 · (8 − 3), ¿qué hacés primero?',o:[['El paréntesis (8 − 3)',1],['Multiplicar 5 · 8',0],['Nada, da igual',0]],e:'Lo de adentro del paréntesis primero: 8 − 3 = 5. Después 5 · 5 = 25.'},
+      {q:'¿Cuánto vale 6 + 2 · [ 8 − (3 + 1) ]?',o:[['14',1],['18',0],['28',0]],e:'(3+1)=4 → [8−4]=4 → 2·4=8 → 6+8 = 14.'},
+      {q:'¿Cuánto vale −3² + 10?',o:[['1',1],['19',0],['−19',0]],e:'Primero la potencia: 3² = 9, con el signo es −9. Después −9 + 10 = 1.'},
+      {q:'¿Cuánto vale (12 ÷ 4) + 5 · 2?',o:[['13',1],['16',0],['11',0]],e:'Paréntesis: 12÷4 = 3. Multiplicación: 5·2 = 10. Suma: 3 + 10 = 13.'}
     ]},
     final:{ el:'quiz-final', title:'Prueba final integradora', qs:[
       {q:'Redondeá 4.529 a la centena:',o:[['4.500',1],['4.600',0],['4.000',0]],e:'La centena es el 5, la siguiente es 2 (&lt;5), queda igual → 4.500.'},
@@ -668,10 +812,10 @@
       {q:'(-4)³ tiene resultado...',o:[['Negativo',1],['Positivo',0],['Cero',0]],e:'Base negativa, exponente impar (3) → negativo.'},
       {q:'¿Cuánto da 25⁰?',o:[['1',1],['25',0],['0',0]],e:'Todo número (≠0) elevado a cero da 1.'},
       {q:'¿Cuánto vale |-12|?',o:[['12',1],['-12',0],['0',0]],e:'El valor absoluto siempre es positivo: |-12| = 12.'},
+      {q:'¿Cuánto vale |−3| + |−5|?',o:[['8',1],['−8',0],['2',0]],e:'Cada barra primero: 3 + 5 = 8.'},
       {q:'La ecuación |x − 4| = -2...',o:[['No tiene solución',1],['x = 2',0],['x = 6',0]],e:'Da -2 (negativo), imposible para un valor absoluto. No tiene solución.'},
-      {q:'En |x + 1| = 5, el Caso 2 (negativo) es...',o:[['x + 1 = -5',1],['x + 1 = 5',0],['x − 1 = 5',0]],e:'El Caso 2 pone el lado derecho en negativo: x + 1 = -5.'},
-      {q:'Aproximá a la decena y resolvé: 31 + 63 + 81',o:[['30+60+80 = 170',1],['40+70+90 = 200',0],['30+70+80 = 180',0]],e:'31≈30, 63≈60, 81≈80. Suman 170.'},
-      {q:'(3²)⁴ es igual a...',o:[['3⁸',1],['3⁶',0],['3²ᐟ⁴',0]],e:'Potencia de potencia: se multiplican, 2 × 4 = 8.'}
+      {q:'¿Cuánto vale 4 + 5 · 2?',o:[['14',1],['18',0],['13',0]],e:'Multiplicación primero: 5·2 = 10. Después 4 + 10 = 14.'},
+      {q:'¿Cuánto vale 20 − [ 6 + (2 · 3) ]?',o:[['8',1],['12',0],['36',0]],e:'(2·3)=6 → [6+6]=12 → 20−12 = 8.'}
     ]}
   };
 
@@ -722,7 +866,7 @@
     document.getElementById('res-'+key).scrollIntoView({behavior:'smooth',block:'center'});
   };
 
-  ['round','pow','abs','final'].forEach(renderQuiz);
+  ['round','pow','abs','comb','final'].forEach(renderQuiz);
 })();
 </script>
 </body>
